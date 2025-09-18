@@ -1,12 +1,11 @@
-import { useState } from 'react';
-
+import Home from './components/home/home.tsx';
 
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
     <>
-     
+     <Home></Home>
     </>
   )
 }
