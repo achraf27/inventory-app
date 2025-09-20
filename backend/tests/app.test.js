@@ -1,5 +1,5 @@
-const request = require("supertest");
-const app = require("./app");
+import request from "supertest";
+import app from "../routes/app";
 
 describe("Test the root path", () => {
   test("It should response the GET method", async () => {
@@ -25,5 +25,16 @@ describe('POST /auth', () => {
   
       expect(res.statusCode).toBe(401);
       expect(res.body.error).toBe('Invalid credentials');
+    });
+  });
+
+  describe('POST /create', () => {
+    it('devrait se connecter', async () => {
+      const res = await request(app)
+        .post('/create')
+        .send({ name: 'test', password: '123' ,email: 'hello@gmail.com'}) 
+  
+      expect(res.statusCode).toBe(201);
+      expect(res.body.message).toBe('creation successful')
     });
   });
