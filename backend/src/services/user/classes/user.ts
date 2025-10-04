@@ -1,5 +1,5 @@
 export class user{
-    idUser?:number|undefined = -1;
+    idUser:number = -1;
     name:string;
     password:string;
     mail:string;
@@ -10,11 +10,11 @@ export class user{
         this.mail = mail;
     }
 
-    getId():number | undefined{
+    getId():number{
         return this.idUser;
     }
 
-    setId(id:number | undefined):void{
+    setId(id:number):void{
         this.idUser = id;
     }
 

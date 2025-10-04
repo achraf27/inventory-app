@@ -22,9 +22,9 @@ export class Db{
         const db = await Db.getConnection();
 
         await db.exec(`
-            CREATE TABLE IF NOT EXISTS user (
+            CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nom VARCHAR(200) NOT NULL,
+            name VARCHAR(200) NOT NULL,
             mail TEXT NOT NULL,
             password TEXT NOT NULL
         )

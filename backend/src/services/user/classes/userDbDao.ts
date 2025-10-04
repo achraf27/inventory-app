@@ -12,7 +12,11 @@ export class userDbDao implements userDao{
       user.mail,
       user.password
     );
-    user.setId(result.lastID);
+    if (result.lastID === undefined) {
+        throw new Error("Failed to get last inserted ID");
+      }
+      user.setId(result.lastID);
+      
   }
 
 
@@ -34,9 +38,12 @@ export class userDbDao implements userDao{
       );
     }
 
-    async delete(user:user):Promise<void>{
+    async delete(id:number):Promise<void>{
+        if (!id) {
+            throw new Error('Cannot delete undefined user');
+          }
         const db = await Db.getConnection();
-        await db.run("DELETE FROM Event WHERE id = ?", user.getId());
+        await db.run("DELETE FROM users WHERE id = ?", id);
 
     }
 
@@ -45,8 +52,18 @@ export class userDbDao implements userDao{
         return db.all("SELECT * FROM user");
     }
 
-    async findById(id:number): Promise<user [] | undefined> {
+    async findById(id:number): Promise<user | undefined> {
         const db = await Db.getConnection();
-        return db.get("SELECT * FROM Event WHERE id = ?", id);
+        return db.get("SELECT * FROM users WHERE id = ?", id);
+    }
+
+    async findByEmail(mail:string): Promise<user | undefined> {
+        const db = await Db.getConnection();
+        return db.get("SELECT * FROM users WHERE mail = ?", mail);
+    }
+
+    async findByUsername(name:string): Promise<user | undefined> {
+        const db = await Db.getConnection();
+        return db.get("SELECT * FROM users WHERE name = ?", name);
     }
 }
