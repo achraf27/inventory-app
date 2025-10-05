@@ -1,4 +1,3 @@
-import request from 'supertest';
 import { user } from '../src/services/user/classes/user';
 import { DAODbFactory } from '../src/services/database/classes/DAODbFactory';
 

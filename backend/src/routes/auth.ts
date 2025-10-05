@@ -37,9 +37,6 @@ router.post('/register',(req,res)=>{
         console.log(e);
         return res.status(401).json({message: "user not created"})
     }
-
-
-
 })
 
 

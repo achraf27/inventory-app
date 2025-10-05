@@ -24,4 +24,31 @@ router.delete('/delete', async (req, res) => {
   }
 });
 
+router.post('/modifyMail',async (req,res)=>{
+    const{id,newMail} = req.body;
+    const user = await userDb.findById(id)
+    if(!user) return res.status(401).json({error:"username not changed"})
+    try{
+        await userDb.updateMail(id,newMail);
+        return res.status(201).json({message:"mail changed successuly"})
+    }catch(e){
+        console.log(e)
+        return res.status(500).json({error:"server error"})
+    }
+})
+
+
+router.post('/modifyPassword',async (req,res)=>{
+    const{id,newPassword} = req.body;
+    const user = await userDb.findById(id)
+    if(!user) return res.status(401).json({error:"username not changed"})
+    try{
+        await userDb.updatePassword(id,newPassword);
+        return res.status(201).json({message:"mail changed successuly"})
+    }catch(e){
+        console.log(e)
+        return res.status(500).json({error:"server error"})
+    }
+})
+
 export default router;
