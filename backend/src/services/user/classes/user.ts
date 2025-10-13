@@ -25,4 +25,8 @@ export class user{
     getMail():string{
         return this.mail;
     }
+
+    getPassword():string{
+        return this.password;
+    }
 }

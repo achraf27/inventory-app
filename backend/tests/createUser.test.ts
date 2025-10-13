@@ -27,6 +27,7 @@ describe('User Controller', () => {
         mail: userTest.getMail()
     });
     expect(response.status).toBe(201);
+    userTest.setId(response.body.id);
   });
 
   it('POST /login should log the user', async () => {
