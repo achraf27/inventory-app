@@ -3,9 +3,9 @@ import app from '../src/app'; // Assuming app.ts initializes Express
 import { user } from '../src/services/user/classes/user';
 
 
-const passwordTest = "password"
-let userTest = new user("Achraf",passwordTest,"achraf@gmail.com",)
-
+const passwordTest:string = "password"
+let userTest:user = new user("Achraf",passwordTest,"achraf@gmail.com",)
+let token:string = ""
 
 describe('User Controller', () => {
 
@@ -37,12 +37,39 @@ describe('User Controller', () => {
         password: passwordTest,
     });
     expect(response.status).toBe(200);
+    expect(response.body.token).toBeDefined();
+
+    token = response.body.token
   });
+
+
+   it('POST /modifyMail should update the user mail', async () => {
+    const response = await request(app).post('/user/modifyMail')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+        id: userTest.getId(),
+        newMail:"nouveaumail@gmail.com",
+    });
+    expect(response.status).toBe(201);
+  });
+
+  it('POST /modifyPassword should update the user password', async () => {
+    const response = await request(app).post('/user/modifyPassword')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+        id: userTest.getId(),
+        newPassword:"test123",
+    });
+    expect(response.status).toBe(201);
+  });
+
+
 
   it('POST /user should delete the user', async () => {
     const response = await request(app).delete('/user/delete')
+    .set('Authorization', `Bearer ${token}`)
     .send({
-        username: userTest.getId(),
+        id: userTest.getId(),
     });
     expect(response.status).toBe(200);
   });

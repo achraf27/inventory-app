@@ -1,7 +1,5 @@
 import { Router } from 'express';
-import { DAODbFactory } from '../services/database/classes/DAODbFactory.js';
 
-const factory = new DAODbFactory;
 const router = Router();
 
 

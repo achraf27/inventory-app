@@ -49,7 +49,7 @@ export class userDbDao implements userDao{
 
     async findAll(): Promise<user []> {
         const db = await Db.getConnection();
-        return db.all("SELECT * FROM user");
+        return db.all("SELECT * FROM users");
     }
 
     async findById(id:number): Promise<user | undefined> {
