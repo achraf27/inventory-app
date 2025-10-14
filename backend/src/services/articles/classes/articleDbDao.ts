@@ -36,14 +36,4 @@ export class userDbDao implements articleDao{
         const db = await Db.getConnection();
         return db.get("SELECT * FROM articles WHERE id = ?", id);
     }
-
-    async findByEmail(mail:string): Promise<article | undefined> {
-        const db = await Db.getConnection();
-        return db.get("SELECT * FROM articles WHERE mail = ?", mail);
-    }
-
-    async findByUsername(name:string): Promise<article | undefined> {
-        const db = await Db.getConnection();
-        return db.get("SELECT * FROM articles WHERE name = ?", name);
-    }
 }
