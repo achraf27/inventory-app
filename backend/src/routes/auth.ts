@@ -17,6 +17,8 @@ router.post('/login', async (req:Request, res:Response) => {
   
 
   try{
+    if(!username || !password) return res.status(400).json({error: "empty fields"});
+
     const user = await userDb.findByUsername(username)
     if(!user) return res.status(401).json({ error: "Invalid User" });
 
@@ -36,8 +38,12 @@ router.post('/register',async (req:Request, res:Response)=>{
     
     const {username,password,mail} = req.body;
     const hash = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS!));
-    console.log("creation attempt");
+    console.log("creation attempt username: "+username);
     try{
+
+    if(!username || !password || !mail) return res.status(400).json({error: "empty fields"});
+
+
     const newUser = new user(username,hash,mail)
     await userDb.insert(newUser)
     console.log("user created");
@@ -45,7 +51,7 @@ router.post('/register',async (req:Request, res:Response)=>{
     }
     catch(e){
         console.log(e);
-        return res.status(401).json({message: "user not created"})
+        return res.status(500).json({message: "server error"})
     }
 })
 

@@ -52,22 +52,21 @@ router.get('/:id',async (req:Request, res:Response)=>{
 });
 
 
-router.post('/modifyName/:id',async (req:Request, res:Response)=>{
+router.post('/updateName/:id',async (req:Request, res:Response)=>{
     const {id} = req.params;
     const {name} = req.body;
+
+    console.log("id: "+ id);
     try{
 
-      if(!id) return res.status(400).json({error: "the id field is empty"})
-
-      const article = await articleDb.findById(Number(id));
-
-      if(!article) return res.status(404).json({error:""});
+      if(!id || !name) return res.status(400).json({error: "the fields are empty"})
 
 
-      return res.status(200).json({
-                             message:"article retrived successfully",
-                             article: article 
-                            })
+      const changes = await articleDb.updateName(id,name)
+
+      if(changes === 0) return res.status(404).json({error: "Article not found"})
+
+      return res.status(200).json({message:"article retrived successfully"})
    
     }
     catch(e){
@@ -76,6 +75,25 @@ router.post('/modifyName/:id',async (req:Request, res:Response)=>{
     }
 });
 
+
+router.post('/updateQuantity/:id',async (req:Request, res:Response)=>{
+    const {id} = req.params;
+    const {quantity} = req.body;
+    try{
+
+      if(!id || !quantity) return res.status(400).json({error: "the fields are empty"})
+
+
+      await articleDb.updateQuantity(id,quantity)
+
+      return res.status(200).json({message:"article quantity changed successfully"})
+   
+    }
+    catch(e){
+        console.log(e);
+        return res.status(500).json({ error: "the article was not found"});
+    }
+});
 
 router.get('/',async (req:Request, res:Response)=>{
     try{

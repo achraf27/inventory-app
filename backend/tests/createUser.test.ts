@@ -43,8 +43,8 @@ describe('User Controller', () => {
   });
 
 
-   it('POST /modifyMail should update the user mail', async () => {
-    const response = await request(app).post('/user/modifyMail')
+   it('POST /updateMail should update the user mail', async () => {
+    const response = await request(app).post('/user/updateMail')
     .set('Authorization', `Bearer ${token}`)
     .send({
         id: userTest.getId(),
@@ -53,8 +53,8 @@ describe('User Controller', () => {
     expect(response.status).toBe(201);
   });
 
-  it('POST /modifyPassword should update the user password', async () => {
-    const response = await request(app).post('/user/modifyPassword')
+  it('POST /updatePassword should update the user password', async () => {
+    const response = await request(app).post('/user/updatePassword')
     .set('Authorization', `Bearer ${token}`)
     .send({
         id: userTest.getId(),
@@ -73,10 +73,6 @@ describe('User Controller', () => {
     });
     expect(response.status).toBe(200);
   });
-
-
-    
-
-
+ 
    
   });

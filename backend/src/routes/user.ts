@@ -23,7 +23,7 @@ router.delete('/delete',authMiddleware, async (req:Request, res:Response) => {
 
 
     
-    userDb.delete(id)
+    await userDb.delete(id)
     return res.status(200).json({ message: "account deleted successfuly", user: { id } });
 
     
@@ -33,7 +33,7 @@ router.delete('/delete',authMiddleware, async (req:Request, res:Response) => {
   }
 });
 
-router.post('/modifyMail',authMiddleware,async (req:Request, res:Response)=>{
+router.post('/updateMail',authMiddleware,async (req:Request, res:Response)=>{
     const{id,newMail} = req.body;
     if (!id || !newMail) {
       return res.status(400).json({ error: "Missing fields" });
@@ -44,7 +44,13 @@ router.post('/modifyMail',authMiddleware,async (req:Request, res:Response)=>{
 
         const user = await userDb.findById(id)
         if(!user) return res.status(401).json({error:"mail not changed"})
-        await userDb.updateMail(id,newMail);
+
+
+        const changes = await userDb.updateMail(id,newMail);
+
+        if(changes === 0 ) return res.status(404).json({message: "could not update the mail"})
+
+
         return res.status(201).json({message:"mail changed successuly"})
     }catch(e){
         console.log(e)
@@ -53,7 +59,7 @@ router.post('/modifyMail',authMiddleware,async (req:Request, res:Response)=>{
 })
 
 
-router.post('/modifyPassword',authMiddleware,async (req:Request, res:Response)=>{
+router.post('/updatePassword',authMiddleware,async (req:Request, res:Response)=>{
     const{id,newPassword} = req.body;
     if (!id || !newPassword) {
       return res.status(400).json({ error: "Missing fields" });
@@ -65,7 +71,11 @@ router.post('/modifyPassword',authMiddleware,async (req:Request, res:Response)=>
         
         if(!user) return res.status(401).json({error:"password not changed"})
         const hash = await bcrypt.hash(newPassword, parseInt(process.env.SALT_ROUNDS!));
-        await userDb.updatePassword(id,hash);
+
+        const changes = await userDb.updatePassword(id,hash);
+
+        if(changes === 0 ) return res.status(404).json({message: "could not update the password"})
+
         return res.status(201).json({message:"password changed successuly"})
     }catch(e){
         console.log(e)

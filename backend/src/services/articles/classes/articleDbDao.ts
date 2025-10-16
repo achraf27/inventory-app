@@ -37,4 +37,25 @@ export class articleDbDao implements articleDao{
         const db = await Db.getConnection();
         return db.get("SELECT * FROM articles WHERE id = ?", id);
     }
+
+    async updateName(id:string, name:string):Promise<number>{
+        const db = await Db.getConnection()
+
+       const result = await db.run("UPDATE articles set name = ?  WHERE id = ?",
+            name,
+            id
+      );
+      return result.changes!;
+    }
+
+
+    async updateQuantity(id:string, quantity:number):Promise<number>{
+        const db = await Db.getConnection()
+
+        const result = await db.run("UPDATE articles set quantity = ?  WHERE id = ?",
+            quantity,
+            id
+      );
+      return result.changes!;
+    }
 }

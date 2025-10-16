@@ -8,8 +8,8 @@ export class userDbDao implements userDao{
         const db = await Db.getConnection()
 
       const result = await db.run("INSERT INTO users (name, mail, password) VALUES (?, ?, ?)",
-      user.getName,
-      user.getMail,
+      user.getName(),
+      user.getMail(),
       user.password
     );
     if (result.lastID === undefined) {
@@ -20,22 +20,24 @@ export class userDbDao implements userDao{
   }
 
 
-    async updatePassword(id:string, password:string):Promise<void>{
+    async updatePassword(id:string, password:string):Promise<number>{
         const db = await Db.getConnection()
 
-        await db.run("UPDATE users set password = ?  WHERE id = ?",
+        const result = await db.run("UPDATE users set password = ?  WHERE id = ?",
             password,
             id
       );
+      return result.changes!;
     }
 
-    async updateMail(id:string, mail:string):Promise<void>{
+    async updateMail(id:string, mail:string):Promise<number>{
         const db = await Db.getConnection()
 
-        await db.run("UPDATE users set mail = ?  WHERE id = ?",
+        const result = await db.run("UPDATE users set mail = ?  WHERE id = ?",
             mail,
             id
       );
+      return result.changes!;
     }
 
     async delete(id:number):Promise<void>{

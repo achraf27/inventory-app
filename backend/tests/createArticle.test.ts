@@ -18,9 +18,31 @@ describe('Article Controller', () => {
         Article.setId(response.body.id);
       });
 
-      it('Delete /article should delete an article', async () => {
-        const response = await request(app).delete('/article'+"/"+Article.getId())
+      it('POST /updateQuantity should update the article name', async () => {
+        const response = await request(app).post('/article/updateName/'+Article.getId())
+        .send({
+            name: "Ble",
+        });
         expect(response.status).toBe(200);
       });
+
+
+       it('POST /updateQuantity should update the article quantity', async () => {
+        const response = await request(app).post('/article/updateQuantity/'+Article.getId())
+        .send({
+            quantity:2
+        });
+        expect(response.status).toBe(200);
+      });
+
+
+
+      it('Delete /article should delete an article', async () => {
+        const response = await request(app).delete('/article/'+Article.getId())
+        expect(response.status).toBe(200);
+      });
+
+
+   
 
   });
