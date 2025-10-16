@@ -30,6 +30,14 @@ export class Db{
         )
         `);
 
+        await db.exec(`
+          CREATE TABLE IF NOT EXISTS articles (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name VARCHAR(200) NOT NULL,
+          quantity INTEGER
+        )
+        `);
+
     console.log("Tables créées");
   }
 }

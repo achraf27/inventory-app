@@ -8,8 +8,8 @@ export class userDbDao implements userDao{
         const db = await Db.getConnection()
 
       const result = await db.run("INSERT INTO users (name, mail, password) VALUES (?, ?, ?)",
-      user.name,
-      user.mail,
+      user.getName,
+      user.getMail,
       user.password
     );
     if (result.lastID === undefined) {

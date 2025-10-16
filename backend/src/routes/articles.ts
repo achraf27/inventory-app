@@ -1,39 +1,113 @@
 import { Router } from 'express';
+import type { Request, Response } from "express";
+import { DAODbFactory } from '../services/database/classes/DAODbFactory.js';
+import { article } from '../services/articles/classes/article.js';
 
 const router = Router();
+const factory = new DAODbFactory;
+const articleDb = factory.createArticleDAO();
 
+router.post('/', async (req:Request, res:Response) => {
+  const { name, quantity } = req.body;
 
-router.post('/article', async (req, res) => {
+  
 
   try{
-   
-    return res.status(200).json({ message: "article updated"});
+
+    if(!name || !quantity) return res.status(400).json({ error: "the fields are empty"});
+
+
+    const Article:article = new article(name,quantity);
+    await articleDb.insert(Article)
+    return res.status(200).json({ message: "article: "+ name + " created",
+                                  id:Article.getId()
+    });
   }catch(e){
     console.log(e)
-    return res.status(401).json({ error: "article not created"});
+    return res.status(500).json({ error: "server error"});
   }
 });
 
-router.get('/article',(req,res)=>{
-  
+router.get('/:id',async (req:Request, res:Response)=>{
+    const {id} = req.params;
     try{
+
+      if(!id) return res.status(400).json({error: "the id field is empty"})
+
+      const article = await articleDb.findById(Number(id));
+
+      if(!article) return res.status(404).json({error:""});
+
+
+      return res.status(200).json({
+                             message:"article retrived successfully",
+                             article: article 
+                            })
    
     }
     catch(e){
         console.log(e);
-        return res.status(401).json({ error: "article not found"});
+        return res.status(500).json({ error: "the article was not found"});
     }
 });
 
 
-router.delete('/article',(req,res)=>{
-  
+router.post('/modifyName/:id',async (req:Request, res:Response)=>{
+    const {id} = req.params;
+    const {name} = req.body;
+    try{
+
+      if(!id) return res.status(400).json({error: "the id field is empty"})
+
+      const article = await articleDb.findById(Number(id));
+
+      if(!article) return res.status(404).json({error:""});
+
+
+      return res.status(200).json({
+                             message:"article retrived successfully",
+                             article: article 
+                            })
+   
+    }
+    catch(e){
+        console.log(e);
+        return res.status(500).json({ error: "the article was not found"});
+    }
+});
+
+
+router.get('/',async (req:Request, res:Response)=>{
+    try{
+
+      const articles = await articleDb.findAll();
+      return res.status(200).json({message:"the articles were successfully retrived",
+                                    articles:articles
+      })  
+   
+    }
+    catch(e){
+        console.log(e);
+        return res.status(500).json({ error: "server error"});
+    }
+});
+
+
+router.delete('/:id',async (req:Request, res:Response)=>{
+  const {id}= req.params;
+
+  console.log("id: " + id)
+
   try{
- 
+    if(!id || Number(id) < 0) return res.status(400).json({ error: "the id field is empty"});
+
+
+    await articleDb.delete(Number(id));
+    return res.status(200).json({message : "the article was successfully deleted"})
   }
   catch(e){
       console.log(e);
-      return res.status(500).json({ error: "article not deleted"});
+      return res.status(500).json({ error: "server error"});
   }
 });
 

@@ -2,19 +2,20 @@ import type { articleDao } from "../interfaces/articleDao.js";
 import { article } from "./article.js";
 import { Db } from "../../database/classes/dbSqlite.js";
 
-export class userDbDao implements articleDao{
+export class articleDbDao implements articleDao{
 
-    async insert(Article: article):Promise<void>{
+    async insert(article: article):Promise<void>{
         const db = await Db.getConnection()
 
-      const result = await db.run("INSERT INTO articles (name) VALUES (?)",
-      article.name,
+      const result = await db.run("INSERT INTO articles (name,quantity) VALUES (?,?)",
+      article.getName(),
+      article.getQuantity()
 
     );
     if (result.lastID === undefined) {
         throw new Error("Failed to get last inserted ID");
       }
-      Article.setId(result.lastID);
+      article.setId(result.lastID);
       
   }
 
