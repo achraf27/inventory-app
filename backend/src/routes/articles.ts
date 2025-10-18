@@ -2,12 +2,13 @@ import { Router } from 'express';
 import type { Request, Response } from "express";
 import { DAODbFactory } from '../services/database/classes/DAODbFactory.js';
 import { article } from '../services/articles/classes/article.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
 
 const router = Router();
 const factory = new DAODbFactory;
 const articleDb = factory.createArticleDAO();
 
-router.post('/', async (req:Request, res:Response) => {
+router.post('/',authMiddleware, async (req:Request, res:Response) => {
   const { name, quantity } = req.body;
 
   
@@ -28,7 +29,7 @@ router.post('/', async (req:Request, res:Response) => {
   }
 });
 
-router.get('/:id',async (req:Request, res:Response)=>{
+router.get('/:id',authMiddleware,async (req:Request, res:Response)=>{
     const {id} = req.params;
     try{
 
@@ -52,7 +53,7 @@ router.get('/:id',async (req:Request, res:Response)=>{
 });
 
 
-router.post('/updateName/:id',async (req:Request, res:Response)=>{
+router.post('/updateName/:id',authMiddleware,async (req:Request, res:Response)=>{
     const {id} = req.params;
     const {name} = req.body;
 
@@ -76,7 +77,7 @@ router.post('/updateName/:id',async (req:Request, res:Response)=>{
 });
 
 
-router.post('/updateQuantity/:id',async (req:Request, res:Response)=>{
+router.post('/updateQuantity/:id',authMiddleware,async (req:Request, res:Response)=>{
     const {id} = req.params;
     const {quantity} = req.body;
     try{
@@ -95,7 +96,7 @@ router.post('/updateQuantity/:id',async (req:Request, res:Response)=>{
     }
 });
 
-router.get('/',async (req:Request, res:Response)=>{
+router.get('/',authMiddleware,async (req:Request, res:Response)=>{
     try{
 
       const articles = await articleDb.findAll();
@@ -111,7 +112,7 @@ router.get('/',async (req:Request, res:Response)=>{
 });
 
 
-router.delete('/:id',async (req:Request, res:Response)=>{
+router.delete('/:id',authMiddleware,async (req:Request, res:Response)=>{
   const {id}= req.params;
 
   console.log("id: " + id)

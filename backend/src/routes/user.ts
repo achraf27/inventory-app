@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { DAODbFactory } from '../services/database/classes/DAODbFactory.js';
 import bcrypt from 'bcryptjs';
-import authMiddleware from '../middlewares/authMiiddlewares.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
 import type { Request, Response } from "express";
 
 
@@ -82,5 +82,30 @@ router.post('/updatePassword',authMiddleware,async (req:Request, res:Response)=>
         return res.status(500).json({error:"server error"})
     }
 })
+
+router.get('/:id',async (req:Request, res:Response)=>{
+    const {id} = req.params;
+    try{
+
+      if(!id) return res.status(400).json({error: "the id field is empty"})
+
+      const user = await userDb.findById(Number(id));
+
+      if(!user) return res.status(404).json({error:""});
+
+
+      return res.status(200).json({
+                             message:"user retrived successfully",
+                             user: user 
+                            })
+   
+    }
+    catch(e){
+        console.log(e);
+        return res.status(500).json({ error: "user was not found"});
+    }
+});
+
+
 
 export default router;

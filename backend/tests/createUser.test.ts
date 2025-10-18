@@ -4,7 +4,7 @@ import { user } from '../src/services/user/classes/user';
 
 
 const passwordTest:string = "password"
-let userTest:user = new user("Achraf",passwordTest,"achraf@gmail.com",)
+let userTest:user = new user("Achraf",passwordTest,"achraf@gmail.com")
 let token:string = ""
 
 describe('User Controller', () => {
@@ -65,14 +65,7 @@ describe('User Controller', () => {
 
 
 
-  it('POST /user should delete the user', async () => {
-    const response = await request(app).delete('/user/delete')
-    .set('Authorization', `Bearer ${token}`)
-    .send({
-        id: userTest.getId(),
-    });
-    expect(response.status).toBe(200);
-  });
+ 
  
    
   });

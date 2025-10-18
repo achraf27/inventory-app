@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import type { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
+
 const factory = new DAODbFactory;
 const userDb = factory.createUserDAO();
 const router = Router();
