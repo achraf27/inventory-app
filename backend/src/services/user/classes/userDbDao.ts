@@ -4,7 +4,7 @@ import { Db } from "../../database/classes/dbSqlite.js";
 
 export class userDbDao implements userDao{
 
-    async insert(user: user):Promise<void>{
+    async insert(user: user):Promise<number>{
         const db = await Db.getConnection()
 
       const result = await db.run("INSERT INTO users (name, mail, password) VALUES (?, ?, ?)",
@@ -16,6 +16,7 @@ export class userDbDao implements userDao{
         throw new Error("Failed to get last inserted ID");
       }
       user.setId(result.lastID);
+    return result.lastID;
       
   }
 

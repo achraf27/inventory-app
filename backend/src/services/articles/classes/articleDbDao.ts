@@ -4,12 +4,14 @@ import { Db } from "../../database/classes/dbSqlite.js";
 
 export class articleDbDao implements articleDao{
 
-    async insert(article: article):Promise<void>{
+    async insert(article: article,user_id:string):Promise<void>{
         const db = await Db.getConnection()
 
-      const result = await db.run("INSERT INTO articles (name,quantity) VALUES (?,?)",
+      const result = await db.run("INSERT INTO articles (name,quantity,unit,user_id) VALUES (?,?,?,?)",
       article.getName(),
-      article.getQuantity()
+      article.getQuantity(),
+      article.getUnit(),
+      user_id
 
     );
     if (result.lastID === undefined) {
@@ -28,9 +30,9 @@ export class articleDbDao implements articleDao{
 
     }
 
-    async findAll(): Promise<article []> {
+    async findByUserId(id:number): Promise<article []> {
         const db = await Db.getConnection();
-        return db.all("SELECT * FROM articles");
+        return db.all("SELECT * FROM articles WHERE user_id = ?",id);
     }
 
     async findById(id:number): Promise<article | undefined> {
@@ -55,6 +57,28 @@ export class articleDbDao implements articleDao{
         const result = await db.run("UPDATE articles set quantity = ?  WHERE id = ?",
             quantity,
             id
+      );
+      return result.changes!;
+    }
+
+    async updateUnit(id:string, unit:number):Promise<number>{
+        const db = await Db.getConnection()
+
+        const result = await db.run("UPDATE articles set unit = ?  WHERE id = ?",
+            unit,
+            id
+      );
+      return result.changes!;
+    }
+
+    async updateArticle(id_article:number, name:string, quantity:number,unit:string):Promise<number>{
+        const db = await Db.getConnection()
+
+        const result = await db.run("UPDATE articles SET name = ?, quantity = ?, unit = ? WHERE id = ?",
+            name,
+            quantity,
+            unit,
+            id_article
       );
       return result.changes!;
     }

@@ -1,7 +1,7 @@
 import { user } from "../classes/user.js";
 
 export interface userDao{
-    insert(user:user):Promise<void>;
+    insert(user:user):Promise<number>;
     updatePassword(id:string,password:string):Promise<number>;
     updateMail(id:string,mail:string):Promise<number>;
     delete(id:number):Promise<void>;

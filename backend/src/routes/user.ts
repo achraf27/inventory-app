@@ -9,8 +9,8 @@ const factory = new DAODbFactory;
 const userDb = factory.createUserDAO();
 const router = Router();
 
-router.delete('/delete',authMiddleware, async (req:Request, res:Response) => {
-  const {id} = req.body;
+router.delete('/delete/:id',authMiddleware, async (req:Request, res:Response) => {
+  const {id} = req.params;
   console.log("delete attempt:", id);
 
   if (!id) {
@@ -18,12 +18,12 @@ router.delete('/delete',authMiddleware, async (req:Request, res:Response) => {
     }
 
   try{
-    const user = await userDb.findById(id)
+    const user = await userDb.findById(Number(id))
     if(!user) return res.status(401).json({ error: "account not deleted" });
 
 
     
-    await userDb.delete(id)
+    await userDb.delete(Number(id))
     return res.status(200).json({ message: "account deleted successfuly", user: { id } });
 
     
@@ -33,8 +33,9 @@ router.delete('/delete',authMiddleware, async (req:Request, res:Response) => {
   }
 });
 
-router.post('/updateMail',authMiddleware,async (req:Request, res:Response)=>{
-    const{id,newMail} = req.body;
+router.post('/updateMail/:id',authMiddleware,async (req:Request, res:Response)=>{
+    const{newMail} = req.body;
+    const{id} = req.params;
     if (!id || !newMail) {
       return res.status(400).json({ error: "Missing fields" });
     }
@@ -42,7 +43,7 @@ router.post('/updateMail',authMiddleware,async (req:Request, res:Response)=>{
 
     try{
 
-        const user = await userDb.findById(id)
+        const user = await userDb.findById(Number(id))
         if(!user) return res.status(401).json({error:"mail not changed"})
 
 
@@ -59,15 +60,16 @@ router.post('/updateMail',authMiddleware,async (req:Request, res:Response)=>{
 })
 
 
-router.post('/updatePassword',authMiddleware,async (req:Request, res:Response)=>{
-    const{id,newPassword} = req.body;
+router.post('/updatePassword/:id',authMiddleware,async (req:Request, res:Response)=>{
+    const{newPassword} = req.body;
+    const{id} = req.params
     if (!id || !newPassword) {
       return res.status(400).json({ error: "Missing fields" });
     }
 
     try{
         
-        const user = await userDb.findById(id)
+        const user = await userDb.findById(Number(id))
         
         if(!user) return res.status(401).json({error:"password not changed"})
         const hash = await bcrypt.hash(newPassword, parseInt(process.env.SALT_ROUNDS!));

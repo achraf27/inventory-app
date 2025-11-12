@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../src/app'; // Assuming app.ts initializes Express
+import app from '../src/app/app'; // Assuming app.ts initializes Express
 import { user } from '../src/services/user/classes/user';
 
 
@@ -19,7 +19,7 @@ describe('User Controller', () => {
         expect(response.status).toBe(401);
       });
 
-  it('POST /register should create a user', async () => {
+    it('POST /register should create a user', async () => {
     const response = await request(app).post('/auth/register')
     .send({
         username: userTest.getName(),
@@ -43,29 +43,31 @@ describe('User Controller', () => {
   });
 
 
+
+   it('POST /updateMail should not update the user mail', async () => {
+    const response = await request(app).post('/user/updateMail/'+userTest.getId())
+    .send({
+        newMail:"nouveaumail@gmail.com",
+    });
+    expect(response.status).toBe(401);
+  });
+
    it('POST /updateMail should update the user mail', async () => {
-    const response = await request(app).post('/user/updateMail')
+    const response = await request(app).post('/user/updateMail/'+userTest.getId())
     .set('Authorization', `Bearer ${token}`)
     .send({
-        id: userTest.getId(),
         newMail:"nouveaumail@gmail.com",
     });
     expect(response.status).toBe(201);
   });
 
   it('POST /updatePassword should update the user password', async () => {
-    const response = await request(app).post('/user/updatePassword')
+    const response = await request(app).post('/user/updatePassword/'+userTest.getId())
     .set('Authorization', `Bearer ${token}`)
     .send({
-        id: userTest.getId(),
         newPassword:"test123",
     });
     expect(response.status).toBe(201);
   });
-
-
-
- 
- 
    
   });

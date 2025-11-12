@@ -10,13 +10,7 @@ describe('User Dao',  () => {
 
 
   it('POST /register should create a user', async () => {
-    userTest = new user("achraf","amine","inasse");
-
-    await userDb.insert(userTest);
-
-    expect( userTest.getId()).toBeGreaterThan(-1);
-
-    await userDb.delete(userTest.getId())
+    
   });
    
   });

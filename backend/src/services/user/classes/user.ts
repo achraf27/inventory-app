@@ -1,5 +1,5 @@
 export class user{
-    idUser:number = -1;
+    id:number = -1;
     name:string;
     password:string;
     mail:string;
@@ -11,11 +11,11 @@ export class user{
     }
 
     getId():number{
-        return this.idUser;
+        return this.id;
     }
 
     setId(id:number):void{
-        this.idUser = id;
+        this.id = id;
     }
 
     getName():string{

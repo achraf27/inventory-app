@@ -1,10 +1,14 @@
 import { article } from "../classes/article.js";
 
 export interface articleDao{
-    insert(Aser:article):Promise<void>;
+    insert(Aser:article,user_id:string):Promise<void>;
     delete(id:number):Promise<void>;
-    findAll():Promise<article []>;
+    findByUserId(user_id:number):Promise<article []>;
     findById(id:number):Promise<article|undefined>;
-    updateName(id:string, name:string):Promise<number>;
-    updateQuantity(id:string, quantity:number):Promise<number>
+
+    updateArticle(id_article:number, name:string, quantity:number,unit:string):Promise<number>;
+
+    updateName(id:string, name:string, user_id:string):Promise<number>;
+    updateQuantity(id:string, quantity:number,user_id:string):Promise<number>
+    updateUnit(id:string, quantity:number,user_id:string):Promise<number>
 }

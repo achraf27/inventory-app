@@ -42,6 +42,6 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
   },
-  "include": ["src/**/*.ts", "tests/**/*.test.ts"],
+  "include": ["src", "tests/**/*.test.ts"],
   "exclude": ["tests","node_modules"]
 }

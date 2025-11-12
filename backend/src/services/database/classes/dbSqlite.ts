@@ -33,8 +33,12 @@ export class Db{
         await db.exec(`
           CREATE TABLE IF NOT EXISTS articles (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id INTEGER,
           name VARCHAR(200) NOT NULL,
-          quantity INTEGER
+          quantity INTEGER,
+          unit VARCHAR NOT NULL,
+          FOREIGN KEY (user_id) REFERENCES users(id)
+          
         )
         `);
 
