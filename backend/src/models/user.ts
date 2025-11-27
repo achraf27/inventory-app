@@ -5,11 +5,12 @@ export class user{
     password:string;
     mail:string;
 
-    constructor(role:string, name:string, password:string, mail:string){
+    constructor(role:string, name:string, password:string, mail:string,id?:number,){
         this.role = role;
         this.name = name;
         this.password = password;
         this.mail = mail;
+        if(id) this.id = id;
     }
 
     getRole():string{

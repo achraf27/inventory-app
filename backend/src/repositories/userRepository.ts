@@ -39,11 +39,11 @@ export class userRepository{
     async getAllUsers():Promise<user[] | undefined>{
         const rows = await this.UserDao.findAll();
         return  rows.map(row => new user(
-        row.id,
         row.role,
         row.name,
         row.mail,
-        row.password
+        row.password,
+        row.id
     ));
     }
 
