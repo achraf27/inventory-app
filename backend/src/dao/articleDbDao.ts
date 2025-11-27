@@ -1,8 +1,8 @@
-import type { articleDao } from "../interfaces/articleDao.js";
-import { article } from "./article.js";
-import { Db } from "../../database/classes/dbSqlite.js";
 
-export class articleDbDao implements articleDao{
+import { article } from "../models/article.js";
+import { Db } from "../database/dbSqlite.js";
+
+export class articleDbDao{
 
     async insert(article: article,user_id:string):Promise<void>{
         const db = await Db.getConnection()

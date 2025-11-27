@@ -24,6 +24,7 @@ export class Db{
         await db.exec(`
             CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            role TEXT NOT NULL,
             name VARCHAR(200) NOT NULL,
             mail TEXT NOT NULL,
             password TEXT NOT NULL

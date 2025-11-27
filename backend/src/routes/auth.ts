@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { user } from '../services/user/classes/user.js';
-import { DAODbFactory } from '../services/database/classes/DAODbFactory.js';
+import { user } from '../models/user.js';
+import { DAODbFactory } from '../database/DAODbFactory.js';
 import bcrypt from 'bcryptjs';
 import type { Request, Response } from "express";
 import jwt from "jsonwebtoken";
@@ -25,11 +25,12 @@ router.post('/login', async (req:Request, res:Response) => {
 
 
 
+    const role = user.getRole();
     const userId = user.id;
     const ok = await bcrypt.compare(password, user.password);
 
     const token = jwt.sign(
-      { id: userId, username },
+      { id: userId, role, username },
       process.env.JWT_SECRET!,
       { expiresIn: "20d" }
     );
@@ -45,7 +46,7 @@ router.post('/login', async (req:Request, res:Response) => {
 
 router.post('/register',async (req:Request, res:Response)=>{
     
-    const {username,password,mail} = req.body;
+    const {role,username,password,mail} = req.body;
     const hash = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS!));
     console.log("creation attempt username: "+username);
     try{
@@ -53,18 +54,19 @@ router.post('/register',async (req:Request, res:Response)=>{
     if(!username || !password || !mail) return res.status(400).json({error: "empty fields"});
 
 
-    const newUser = new user(username,hash,mail);
+    const newUser = new user(role,username,hash,mail);
     const userId = await userDb.insert(newUser);
 
     const token = jwt.sign(
-      { id: userId, username },
+      { id: userId, role, username },
       process.env.JWT_SECRET!,
       { expiresIn: "20d" }
     );
 
     return res.status(201).json({
       message: "user created",
-      token
+      token,
+      id:userId
     });
   }
     catch(e){

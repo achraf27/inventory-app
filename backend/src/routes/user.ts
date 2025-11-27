@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { DAODbFactory } from '../services/database/classes/DAODbFactory.js';
+import { DAODbFactory } from '../database/DAODbFactory.js';
 import bcrypt from 'bcryptjs';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import type { Request, Response } from "express";
+import isAdmin from '../middlewares/isAdminMiddleware.js';
 
 
 const factory = new DAODbFactory;
@@ -39,7 +40,6 @@ router.post('/updateMail/:id',authMiddleware,async (req:Request, res:Response)=>
     if (!id || !newMail) {
       return res.status(400).json({ error: "Missing fields" });
     }
-
 
     try{
 
@@ -85,7 +85,7 @@ router.post('/updatePassword/:id',authMiddleware,async (req:Request, res:Respons
     }
 })
 
-router.get('/:id',async (req:Request, res:Response)=>{
+router.get('/:id',authMiddleware,isAdmin,async (req:Request, res:Response)=>{
     const {id} = req.params;
     try{
 

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import type { Request, Response } from "express";
 import { DAODbFactory } from '../services/database/classes/DAODbFactory.js';
-import { article } from '../services/articles/classes/article.js';
+import { article } from '../models/article.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 
 

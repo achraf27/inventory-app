@@ -4,7 +4,7 @@ import { user } from '../src/services/user/classes/user';
 
 
 const passwordTest:string = "password"
-let userTest:user = new user("Achraf",passwordTest,"achraf@gmail.com")
+let userTest:user = new user("Admin","Achraf",passwordTest,"achraf@gmail.com")
 let token:string = ""
 
 describe('User Controller', () => {
@@ -22,6 +22,7 @@ describe('User Controller', () => {
     it('POST /register should create a user', async () => {
     const response = await request(app).post('/auth/register')
     .send({
+        role:userTest.getRole(),
         username: userTest.getName(),
         password: passwordTest,
         mail: userTest.getMail()

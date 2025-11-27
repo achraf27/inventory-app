@@ -16,13 +16,23 @@ export async function register(data: { username: string; mail: string; password:
   return res.data;
 }
 
-export function getToken():string{
-  return String(sessionStorage.getItem("token"));
+export function getToken(): string | null {
+  const token = sessionStorage.getItem("token");
+  if (!token || token === "null") return null;
+  return token;
 }
 
+
 export function getId(token: string) {
+
+  if (!token) return null;
+
+  try{
   const decoded = jwtDecode<{ id: number }>(token);
   return decoded.id;
+  }catch{
+    return null
+  }
 }
 
 
