@@ -21,7 +21,7 @@ export class userRepository{
         }
     }
 
-    async getUser(param:number|string):Promise<UserRow|undefined>{
+    public async getUser(param:number|string):Promise<UserRow|undefined>{
         
         if(typeof param === "number"){
             const row = await this.UserDao.findById(param);
@@ -36,7 +36,7 @@ export class userRepository{
         return row? this.mapTypeToObject(row):undefined;
     }
 
-    async getAllUsers():Promise<user[] | undefined>{
+    public async getAllUsers():Promise<user[] | undefined>{
         const rows = await this.UserDao.findAll();
         return  rows.map(row => new user(
         row.role,
@@ -47,7 +47,7 @@ export class userRepository{
     ));
     }
 
-    async createUser(_user:user):Promise<user>{
+    public async createUser(_user:user):Promise<user>{
 
         const row = this.mapObjectToType(_user)
         const id = await this.UserDao.insert(row);
@@ -55,12 +55,12 @@ export class userRepository{
         return _user;
     }
 
-    async deleteUser(id:number): Promise<boolean>{
+    public async deleteUser(id:number): Promise<boolean>{
         const changes = await this.UserDao.delete(id);
         return changes > 0;
     }
 
-    async updateMail(_id:number,_mail:string):Promise<boolean>{
+    public async updateMail(_id:number,_mail:string):Promise<boolean>{
         const changes = await this.UserDao.updateMail(_id,_mail);
         return changes > 0;
     }

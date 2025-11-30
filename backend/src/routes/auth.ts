@@ -1,13 +1,11 @@
 import { Router } from 'express';
 import { user } from '../models/user.js';
-import { DAODbFactory } from '../database/DAODbFactory.js';
 import bcrypt from 'bcryptjs';
 import type { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { userRepository } from '../repositories/userRepository.js';
 
-
-const factory = new DAODbFactory;
-const userDb = factory.createUserDAO();
+const userDb = new userRepository();
 const router = Router();
 
 
@@ -20,12 +18,12 @@ router.post('/login', async (req:Request, res:Response) => {
   try{
     if(!username || !password) return res.status(400).json({error: "empty fields"});
 
-    const user = await userDb.findByUsername(username)
+    const user = await userDb.getUser(username)
     if(!user) return res.status(401).json({ error: "Invalid User" });
 
 
 
-    const role = user.getRole();
+    const role = user.role;
     const userId = user.id;
     const ok = await bcrypt.compare(password, user.password);
 
@@ -55,7 +53,7 @@ router.post('/register',async (req:Request, res:Response)=>{
 
 
     const newUser = new user(role,username,hash,mail);
-    const userId = await userDb.insert(newUser);
+    const userId = await userDb.createUser(newUser);
 
     const token = jwt.sign(
       { id: userId, role, username },

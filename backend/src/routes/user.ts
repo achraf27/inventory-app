@@ -1,13 +1,12 @@
 import { Router } from 'express';
-import { DAODbFactory } from '../database/DAODbFactory.js';
 import bcrypt from 'bcryptjs';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import type { Request, Response } from "express";
 import isAdmin from '../middlewares/isAdminMiddleware.js';
+import { userRepository } from '../repositories/userRepository.js';
 
 
-const factory = new DAODbFactory;
-const userDb = factory.createUserDAO();
+const userDb = new userRepository();
 const router = Router();
 
 router.delete('/delete/:id',authMiddleware, async (req:Request, res:Response) => {
@@ -19,12 +18,12 @@ router.delete('/delete/:id',authMiddleware, async (req:Request, res:Response) =>
     }
 
   try{
-    const user = await userDb.findById(Number(id))
-    if(!user) return res.status(401).json({ error: "account not deleted" });
+    const user = await userDb.getUser(Number(id));
+    if(user === undefined) return res.status(401).json({ error: "account not deleted" });
 
 
     
-    await userDb.delete(Number(id))
+    await userDb.deleteUser(Number(id))
     return res.status(200).json({ message: "account deleted successfuly", user: { id } });
 
     
@@ -43,13 +42,13 @@ router.post('/updateMail/:id',authMiddleware,async (req:Request, res:Response)=>
 
     try{
 
-        const user = await userDb.findById(Number(id))
+        const user =  await userDb.getUser(Number(id));
         if(!user) return res.status(401).json({error:"mail not changed"})
 
 
-        const changes = await userDb.updateMail(id,newMail);
+        const changes = await userDb.updateMail(Number(id),newMail);
 
-        if(changes === 0 ) return res.status(404).json({message: "could not update the mail"})
+        if(!changes) return res.status(404).json({message: "could not update the mail"})
 
 
         return res.status(201).json({message:"mail changed successuly"})
@@ -69,14 +68,14 @@ router.post('/updatePassword/:id',authMiddleware,async (req:Request, res:Respons
 
     try{
         
-        const user = await userDb.findById(Number(id))
         
+        const user =  await userDb.getUser(Number(id)); 
         if(!user) return res.status(401).json({error:"password not changed"})
         const hash = await bcrypt.hash(newPassword, parseInt(process.env.SALT_ROUNDS!));
 
-        const changes = await userDb.updatePassword(id,hash);
+        const changes = await userDb.updatePassword(Number(id),hash);
 
-        if(changes === 0 ) return res.status(404).json({message: "could not update the password"})
+        if(!changes) return res.status(404).json({message: "could not update the password"})
 
         return res.status(201).json({message:"password changed successuly"})
     }catch(e){
@@ -91,9 +90,9 @@ router.get('/:id',authMiddleware,isAdmin,async (req:Request, res:Response)=>{
 
       if(!id) return res.status(400).json({error: "the id field is empty"})
 
-      const user = await userDb.findById(Number(id));
+      const user =  await userDb.getUser(Number(id));
 
-      if(!user) return res.status(404).json({error:""});
+      if(user === undefined) return res.status(404).json({error:""});
 
 
       return res.status(200).json({
