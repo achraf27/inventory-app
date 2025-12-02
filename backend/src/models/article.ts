@@ -1,14 +1,17 @@
 export class article{
-    idArticle:number = -1;
+    id:number = -1;
+    user_id:number;
     name:string;
     quantity:number = 0;
     unit:string;
 
 
-    constructor(name:string,quantity:number,unit:string){
+    constructor(idUser:number,name:string,quantity:number,unit:string,id?:number){
+        this.user_id = idUser;
         this.quantity = quantity;
         this.name = name;
         this.unit = unit;
+        if(id) this.id = id;
     }
 
     getName():string{
@@ -16,11 +19,15 @@ export class article{
     }
 
     getId():number{
-        return this.idArticle;
+        return this.id;
     }
 
     setId(id:number):void{
-        this.idArticle = id;
+        this.id = id;
+    }
+
+    getUserId():number{
+        return this.user_id;
     }
 
     setQuantity(quantity:number):void{
