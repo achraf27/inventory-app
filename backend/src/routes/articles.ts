@@ -55,24 +55,24 @@ router.get('/:id',authMiddleware,async (req:Request, res:Response)=>{
 
 
 
-// router.patch('/updateArticle/:id_article',authMiddleware,async (req:Request, res:Response)=>{
-//     const {id_article} = req.params;
-//     const {name,unit,quantity} = req.body;
-//     try{
+router.patch('/updateArticle/:id_article',authMiddleware,async (req:Request, res:Response)=>{
+    const {id_article} = req.params;
+    const {name,unit,quantity} = req.body;
+    try{
 
-//       if(!id_article || !unit  || !name || !quantity) return res.status(400).json({error: "the fields are empty"})
+      if(!id_article ||(!unit  && !name && !quantity)) return res.status(400).json({error: "the fields are empty"})
 
 
-//       await articleDb.(Number(id_article),name,quantity,unit)
+      await articleDb.updateArticle(Number(id_article),{name,quantity,unit})
 
-//       return res.status(200).json({message:"article unit changed successfully"})
+      return res.status(200).json({message:"article unit changed successfully"})
    
-//     }
-//     catch(e){
-//         console.log(e);
-//         return res.status(500).json({ error: "the article was not found"});
-//     }
-// });
+    }
+    catch(e){
+        console.log(e);
+        return res.status(500).json({ error: "the article was not found"});
+    }
+});
 
 // router.get('/user/:user_id',authMiddleware,async (req:Request, res:Response)=>{
 //    const {user_id} = req.params;  

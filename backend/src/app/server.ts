@@ -1,6 +1,6 @@
 
 import app from "./app.js";
-import { Db } from '../services/database/classes/dbSqlite.js';
+import { Db } from '../database/dbSqlite.js';
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
 

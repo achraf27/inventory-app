@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../src/app/app'; // Assuming app.ts initializes Express
-import { user } from '../src/services/user/classes/user';
+import { user } from '../src/models/user';
 
 
 const passwordTest:string = "password"

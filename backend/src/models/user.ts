@@ -17,7 +17,7 @@ export class user{
         return this.role;
     }
 
-    setRole(role:string):void{
+    setRole(role:string):void{ 
         this.role = role;
     }
 

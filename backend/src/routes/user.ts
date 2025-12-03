@@ -43,6 +43,7 @@ router.post('/updateMail/:id',authMiddleware,async (req:Request, res:Response)=>
     try{
 
         const user =  await userDb.getUser(Number(id));
+        console.log(req.params);
         if(!user) return res.status(401).json({error:"mail not changed"})
 
 

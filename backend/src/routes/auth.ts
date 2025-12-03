@@ -56,7 +56,7 @@ router.post('/register',async (req:Request, res:Response)=>{
     const userId = await userDb.createUser(newUser);
 
     const token = jwt.sign(
-      { id: userId, role, username },
+      { id: userId.getId(), role, username },
       process.env.JWT_SECRET!,
       { expiresIn: "20d" }
     );
@@ -64,7 +64,7 @@ router.post('/register',async (req:Request, res:Response)=>{
     return res.status(201).json({
       message: "user created",
       token,
-      id:userId
+      id:userId.getId()
     });
   }
     catch(e){

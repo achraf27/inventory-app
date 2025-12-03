@@ -58,8 +58,16 @@ export class articleRepository{
         //     return changes > 0;
         // }
 
-        public async updateArticle(){
-           
+        public async updateArticle(id:number,_article:Partial<ArticleRow>):Promise<boolean>{
+            let totalChanges = 0;
+
+            if(_article.name !== undefined) totalChanges += await this.articleDao.updateName(id,_article.name);
+
+            if(_article.quantity !== undefined) totalChanges += await this.articleDao.updateQuantity(id,_article.quantity);
+
+            if(_article.unit !== undefined) totalChanges += await this.articleDao.updateUnit(id,_article.unit);
+
+            return totalChanges > 0;
         }
     
     

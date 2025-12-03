@@ -9,7 +9,7 @@ export class userRepository{
 
 
     private mapTypeToObject(row:UserRow):user{
-        return new user(row.role,row.name,row.password,row.mail);
+        return new user(row.role,row.name,row.password,row.mail,row.id);
     }
 
     private mapObjectToType(_user:user):Omit<UserRow,"id">{
