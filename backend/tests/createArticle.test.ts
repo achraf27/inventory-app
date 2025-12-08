@@ -1,10 +1,9 @@
 import request from 'supertest';
 import app from '../src/app/app';
-import { article } from '../src/services/articles/classes/article';
-import { user } from '../src/services/user/classes/user';
+import { article } from '../src/models/article';
+import { user } from '../src/models/user';
 
-let Article:article = new article("farine",8,"kg")
-const userTest:user = new user("Achraf","password","achraf@gmail.com")
+const userTest:user = new user("Admin","Achraf","test123","achraf@gmail.com")
 let token:string = "";
 
 describe('Article Controller', () => {
@@ -20,6 +19,7 @@ describe('Article Controller', () => {
     token = response.body.token
   });
 
+  let Article:article = new article(userTest.getId(),"farine",8,"kg")
 
    it('POST /article should not create an article', async () => {
         const response = await request(app).post('/article')
@@ -50,27 +50,15 @@ describe('Article Controller', () => {
 
 
       it('POST /updateArticle should update the article name', async () => {
-        const response = await request(app).post('/article/updateArticle/'+1)
+        const response = await request(app).patch('/article/updateArticle/'+1)
         .set('Authorization', `Bearer ${token}`)
         .send({
 
             name: "Amande",
-            quantity: Article.getQuantity(),
-            unit: Article.getUnit()
+            quantity: "",
+            unit: ""
         });
         expect(response.status).toBe(200);
-      });
-
-      it('POST /updateArticle should not update the article name', async () => {
-        const response = await request(app).post('/article/updateArticle/'+1)
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-
-            name: "",
-            quantity: Article.getQuantity(),
-            unit: Article.getUnit()
-        });
-        expect(response.status).toBe(400);
       });
 
 

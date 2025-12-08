@@ -1,9 +1,9 @@
 import { article } from "../models/article.js";
-import { articleDbDao } from "../dao/articleDbDao.js";
+import { articleDao } from "../dao/articleDao.js";
 import type { ArticleRow } from "../types/articleRow.js";
 
 export class articleRepository{
-    private articleDao: articleDbDao = new articleDbDao();
+    private articleDao: articleDao = new articleDao();
     
     
     private mapTypeToObject(row:ArticleRow):article{

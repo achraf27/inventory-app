@@ -25,9 +25,11 @@ export class Db{
             CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             role TEXT NOT NULL,
-            name VARCHAR(200) NOT NULL,
-            mail TEXT NOT NULL,
-            password TEXT NOT NULL
+            name VARCHAR(200) NOT NULL UNIQUE,
+            mail TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
         `);
 
@@ -38,6 +40,8 @@ export class Db{
           name VARCHAR(200) NOT NULL,
           quantity INTEGER,
           unit VARCHAR NOT NULL,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
           FOREIGN KEY (user_id) REFERENCES users(id)
           
         )

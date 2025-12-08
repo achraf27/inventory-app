@@ -9,7 +9,7 @@ import { userRepository } from '../repositories/userRepository.js';
 const userDb = new userRepository();
 const router = Router();
 
-router.delete('/delete/:id',authMiddleware, async (req:Request, res:Response) => {
+router.delete('/delete/:id',authMiddleware,isAdmin, async (req:Request, res:Response) => {
   const {id} = req.params;
   console.log("delete attempt:", id);
 
@@ -92,6 +92,29 @@ router.get('/:id',authMiddleware,isAdmin,async (req:Request, res:Response)=>{
       if(!id) return res.status(400).json({error: "the id field is empty"})
 
       const user =  await userDb.getUser(Number(id));
+
+      if(user === undefined) return res.status(404).json({error:""});
+
+
+      return res.status(200).json({
+                             message:"user retrived successfully",
+                             user: user 
+                            })
+   
+    }
+    catch(e){
+        console.log(e);
+        return res.status(500).json({ error: "user was not found"});
+    }
+});
+
+router.get('/',authMiddleware,isAdmin,async (req:Request, res:Response)=>{
+
+    try{
+
+      
+
+      const user =  await userDb.getAllUsers();
 
       if(user === undefined) return res.status(404).json({error:""});
 

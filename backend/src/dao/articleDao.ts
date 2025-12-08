@@ -1,7 +1,7 @@
 import  type { ArticleRow } from "../types/articleRow.js";
 import { Db } from "../database/dbSqlite.js";
 
-export class articleDbDao{
+export class articleDao{
 
     async insert(article: Omit<ArticleRow,"id">):Promise<number>{
         const db = await Db.getConnection()

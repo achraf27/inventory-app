@@ -4,7 +4,7 @@ import { user } from '../src/models/user';
 
 
 const passwordTest:string = "password"
-let userTest:user = new user("Admin","Achraf",passwordTest,"achraf@gmail.com")
+let userTest:user = new user("User","Amine",passwordTest,"amine@gmail.com")
 let token:string = ""
 
 describe('User Controller', () => {
