@@ -1,13 +1,11 @@
 export class article{
     id:number = -1;
-    user_id:number;
     name:string;
     quantity:number = 0;
     unit:string;
 
 
-    constructor(idUser:number,name:string,quantity:number,unit:string,id?:number){
-        this.user_id = idUser;
+    constructor(name:string,quantity:number,unit:string,id?:number){
         this.quantity = quantity;
         this.name = name;
         this.unit = unit;
@@ -24,10 +22,6 @@ export class article{
 
     setId(id:number):void{
         this.id = id;
-    }
-
-    getUserId():number{
-        return this.user_id;
     }
 
     setQuantity(quantity:number):void{

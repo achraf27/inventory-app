@@ -6,12 +6,10 @@ export class articleDao{
     async insert(article: Omit<ArticleRow,"id">):Promise<number>{
         const db = await Db.getConnection()
 
-      const result = await db.run("INSERT INTO articles (name,quantity,unit,user_id) VALUES (?,?,?,?)",
+      const result = await db.run("INSERT INTO articles (name,quantity,unit) VALUES (?,?,?)",
       article.name,
       article.quantity,
-      article.unit,
-      article.user_id
-
+      article.unit
     );
     if (result.lastID === undefined) {
         throw new Error("Failed to get last inserted ID");

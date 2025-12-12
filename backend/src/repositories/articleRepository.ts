@@ -7,12 +7,11 @@ export class articleRepository{
     
     
     private mapTypeToObject(row:ArticleRow):article{
-            return new article(row.user_id,row.name,row.quantity,row.unit,row.id);
+            return new article(row.name,row.quantity,row.unit,row.id);
         }
     
         private mapObjectToType(_article:article):Omit<ArticleRow,"id">{
             return {
-                user_id: _article.getUserId(),
                 name: _article.getName(),
                 quantity: _article.getQuantity(),
                 unit: _article.getUnit(),
@@ -27,7 +26,6 @@ export class articleRepository{
         public async getAllArticles(id:number):Promise<article[] | undefined>{
             const rows = await this.articleDao.findByUserId(id);
             return  rows?.map(row => new article(
-            row.user_id,
             row.name,
             row.quantity,
             row.unit,
@@ -48,15 +46,6 @@ export class articleRepository{
             return changes > 0;
         }
     
-        // public async updateQuantity(_id:number,_quantity:number):Promise<boolean>{
-        //     const changes = await this.articleDao.updateQuantity(_id,_quantity);
-        //     return changes > 0;
-        // }
-    
-        // async updateUnit(_id:number,_unit:string):Promise<boolean>{
-        //     const changes = await this.articleDao.updateUnit(_id,_unit);
-        //     return changes > 0;
-        // }
 
         public async updateArticle(id:number,_article:Partial<ArticleRow>):Promise<boolean>{
             let totalChanges = 0;

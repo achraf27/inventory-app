@@ -74,25 +74,6 @@ router.patch('/updateArticle/:id_article',authMiddleware,async (req:Request, res
     }
 });
 
-// router.get('/user/:user_id',authMiddleware,async (req:Request, res:Response)=>{
-//    const {user_id} = req.params;  
-//   try{
-
-//       if(!user_id) return res.status(400).json({error: "the user_id field is empty"})
-
-      
-//       const articles = await articleDb.get(Number(user_id));
-//       return res.status(200).json({message:"the articles were successfully retrived",
-//                                     Articles:articles
-//       })  
-   
-//     }
-//     catch(e){
-//         console.log(e);
-//         return res.status(500).json({ error: "server error"});
-//     }
-// });
-
 
 router.delete('/:id_article',authMiddleware,async (req:Request, res:Response)=>{
   const {id_article}= req.params;
