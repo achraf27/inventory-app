@@ -6,9 +6,8 @@ export class articleDao{
     async insert(article: Omit<ArticleRow,"id">):Promise<number>{
         const db = await Db.getConnection()
 
-      const result = await db.run("INSERT INTO articles (name,quantity,unit) VALUES (?,?,?)",
+      const result = await db.run("INSERT INTO articles (name,unit) VALUES (?,?)",
       article.name,
-      article.quantity,
       article.unit
     );
     if (result.lastID === undefined) {
@@ -29,14 +28,10 @@ export class articleDao{
 
     }
 
-    async findByUserId(id:number): Promise<ArticleRow [] |  undefined> {
-        const db = await Db.getConnection();
-        return db.all("SELECT * FROM articles WHERE user_id = ?",id);
-    }
-
     async findById(id:number): Promise<ArticleRow | undefined> {
         const db = await Db.getConnection();
-        return db.get("SELECT * FROM articles WHERE id = ?", id);
+        const row = await db.get("SELECT * FROM articles WHERE id = ?", id);
+        return row as ArticleRow|undefined;
     }
 
     async updateName(id:number, name:string):Promise<number>{
@@ -49,16 +44,6 @@ export class articleDao{
       return result.changes!;
     }
 
-
-    async updateQuantity(id:number, quantity:number):Promise<number>{
-        const db = await Db.getConnection()
-
-        const result = await db.run("UPDATE articles set quantity = ?  WHERE id = ?",
-            quantity,
-            id
-      );
-      return result.changes!;
-    }
 
     async updateUnit(id:number, unit:string):Promise<number>{
         const db = await Db.getConnection()

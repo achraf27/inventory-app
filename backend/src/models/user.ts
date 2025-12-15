@@ -1,43 +1,40 @@
-export class user{
-    id:number = -1;
-    role:string;
-    name:string;
-    password:string;
-    mail:string;
+import bcrypt from 'bcryptjs';
 
-    constructor(role:string, name:string, password:string, mail:string,id?:number){
+type UserDto = {
+  id: number;
+  name: string;
+  mail: string;
+  role: string;
+};
+
+
+export class User{
+    id:number = -1;
+    readonly role:string;
+    readonly name:string;
+    readonly mail:string;
+    private readonly passwordHash:string;
+    
+
+    constructor(role:string, name:string, mail:string,password:string,id?:number){
         this.role = role;
         this.name = name;
-        this.password = password;
         this.mail = mail;
+        this.passwordHash = password;
         if(id) this.id = id;
     }
 
-    getRole():string{
-        return this.role;
+    verifiyPassword(plain:string):Promise<boolean>{
+        return bcrypt.compare(plain,this.passwordHash);
     }
 
-    setRole(role:string):void{ 
-        this.role = role;
-    }
 
-    getId():number{
-        return this.id;
-    }
-
-    setId(id:number):void{
-        this.id = id;
-    }
-
-    getName():string{
-        return this.name;
-    }
-
-    getMail():string{
-        return this.mail;
-    }
-
-    getPassword():string{
-        return this.password;
-    }
+    toDto(): UserDto {
+    return {
+      id: this.id,
+      name: this.name,
+      mail: this.mail,
+      role: this.role
+    };
+  }
 }

@@ -11,7 +11,7 @@ export class userDao{
       user.role,
       user.name,
       user.mail,
-      user.password
+      user.passwordHash
     );
     if (result.lastID === undefined) {
         throw new Error("Failed to get last inserted ID");
@@ -64,25 +64,60 @@ export class userDao{
 
     async findAll(): Promise<UserRow []> {
         const db = await Db.getConnection();
-        const rows = await db.all("SELECT * FROM users");
+         const rows = await db.get( `
+            SELECT
+              id,
+              role,
+              name,
+              mail,
+              password AS passwordHash
+            FROM users
+            `);
         return rows as UserRow[]
     }
 
     async findById(id:number): Promise<UserRow | undefined> {
         const db = await Db.getConnection();
-        const row = await db.get("SELECT * FROM users WHERE id = ?", id);
+         const row = await db.get( `
+            SELECT
+              id,
+              role,
+              name,
+              mail,
+              password AS passwordHash
+            FROM users
+            WHERE name = ?
+          `,id);
         return row as UserRow;
     }
 
     async findByEmail(mail:string): Promise<UserRow | undefined> {
         const db = await Db.getConnection();
-        const row =  await db.get("SELECT * FROM users WHERE mail = ?", mail);
+         const row = await db.get( `
+            SELECT
+              id,
+              role,
+              name,
+              mail,
+              password AS passwordHash
+            FROM users
+            WHERE name = ?
+          `,mail);
         return row as UserRow;
     }
 
     async findByUsername(name:string): Promise<UserRow | undefined> {
         const db = await Db.getConnection();
-        const row = await db.get("SELECT * FROM users WHERE name = ?", name);
+        const row = await db.get( `
+            SELECT
+              id,
+              role,
+              name,
+              mail,
+              password AS passwordHash
+            FROM users
+            WHERE name = ?
+          `,name);
         return row as UserRow;
     }
 }

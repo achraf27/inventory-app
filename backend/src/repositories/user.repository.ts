@@ -1,6 +1,14 @@
-import { userDao } from "../dao/userDao.js";
+import { userDao } from "../dao/user.dao.js";
 import type { UserRow } from "../types/userRow.js";
-import { user } from "../models/user.js";
+import { User } from "../models/user.js";
+
+type CreateUserInput = {
+  role: string;
+  name: string;
+  mail: string;
+  passwordHash: string;
+};
+
 
 export class userRepository{
 
@@ -8,51 +16,40 @@ export class userRepository{
 
 
 
-    private mapTypeToObject(row:UserRow):user{
-        return new user(row.role,row.name,row.password,row.mail,row.id);
+    private mapRowToUser(row:UserRow):User{
+        return new User(row.role,row.name,row.mail,row.passwordHash,row.id);
     }
 
-    private mapObjectToType(_user:user):Omit<UserRow,"id">{
-        return {
-            role: _user.getRole(),
-            name: _user.getName(),
-            mail: _user.getMail(),
-            password: _user.getPassword(),
-        }
-    }
-
-    public async getUser(param:number|string):Promise<UserRow|undefined>{
+    
+    public async getUser(param:number|string):Promise<User|undefined>{
         
         if(typeof param === "number"){
             const row = await this.UserDao.findById(param);
-            return row? this.mapTypeToObject(row) : undefined;
+            return row? this.mapRowToUser(row) : undefined;
         }
 
         if(param.includes("@")){
             const row = await this.UserDao.findByEmail(param);
-            return row? this.mapTypeToObject(row):undefined;
+            return row? this.mapRowToUser(row):undefined;
         }
+        
         const row = await this.UserDao.findByUsername(param);
-        return row? this.mapTypeToObject(row):undefined;
+        return row? this.mapRowToUser(row):undefined;
     }
 
-    public async getAllUsers():Promise<user[] | undefined>{
+    public async getAllUsers():Promise<User[] | undefined>{
         const rows = await this.UserDao.findAll();
-        return  rows.map(row => new user(
+        return  rows.map(row => new User(
         row.role,
         row.name,
         row.mail,
-        row.password,
-        row.id
+        row.passwordHash,
+        row.id 
     ));
     }
 
-    public async createUser(_user:user):Promise<user>{
-
-        const row = this.mapObjectToType(_user)
-        const id = await this.UserDao.insert(row);
-        _user.setId(id);
-        return _user;
+    public async createUser(_user:CreateUserInput):Promise<number>{
+        return await this.UserDao.insert({role:_user.role,name:_user.name,passwordHash:_user.passwordHash,mail:_user.mail});
     }
 
     public async deleteUser(id:number): Promise<boolean>{

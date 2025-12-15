@@ -9,7 +9,7 @@
     // See also https://aka.ms/tsconfig/module
     "module": "NodeNext",
     "target": "esnext",
-    "types": ["jest"],
+    "types": ["jest","mocha","node"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -42,6 +42,6 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
   },
-  "include": ["src", "tests/**/*.test.ts"],
+  "include": ["src"],
   "exclude": ["tests","node_modules"]
 }

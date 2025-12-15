@@ -1,42 +1,27 @@
-export class article{
+type ArticleDto = {
+  id: number;
+  name: string;
+  unit: string;
+};
+
+export class Article{
     id:number = -1;
-    name:string;
-    quantity:number = 0;
-    unit:string;
+    readonly name:string;
+    readonly unit:string;
+    
 
-
-    constructor(name:string,quantity:number,unit:string,id?:number){
-        this.quantity = quantity;
+    constructor(name:string,unit:string,id?:number){
         this.name = name;
         this.unit = unit;
         if(id) this.id = id;
     }
 
-    getName():string{
-        return this.name;
-    }
 
-    getId():number{
-        return this.id;
-    }
-
-    setId(id:number):void{
-        this.id = id;
-    }
-
-    setQuantity(quantity:number):void{
-        this.quantity = quantity;
-    }
-
-    getQuantity():number{
-        return this.quantity;
-    }
-
-    getUnit():string{
-        return this.unit
-    }
-
-    setUnit(unit:string):void{
-        this.unit = unit;
+   toDto(): ArticleDto {
+        return {
+            id: this.id,
+            name: this.name,
+            unit: this.unit
+        };
     }
 }

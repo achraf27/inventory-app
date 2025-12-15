@@ -13,7 +13,6 @@ export class inventoryDao{
     );
     
     return result.changes!;
-      
   }
 
     async delete(userId:number,articleId:number):Promise<number>{
@@ -28,7 +27,14 @@ export class inventoryDao{
 
     async findByUserId(id:number): Promise<InventoryRow [] |  undefined> {
         const db = await Db.getConnection();
-        return db.all("SELECT * FROM inventory WHERE user_id = ?",id);
+        const rows = await db.all("SELECT * FROM inventory WHERE user_id = ?",id);
+        return rows as InventoryRow[];
+    }
+
+    async findOneArticle(userId:number,articleId:number):Promise<InventoryRow | undefined>{
+        const db = await Db.getConnection();
+        const row = await db.get("SELECT * FROM inventory WHERE article_id = ? AND user_id = ?",articleId,userId);
+        return row as InventoryRow;
     }
 
     async updateQuantity(userId:number,articleId:number, quantity:number){

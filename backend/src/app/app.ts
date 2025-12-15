@@ -1,7 +1,9 @@
 import express from 'express';
-import authRoutes from '../routes/auth.js'
-import userRoutes from '../routes/user.js'
-import articleRoutes from '../routes/articles.js'
+import authRoutes from '../routes/auth.route.js'
+import userRoutes from '../routes/user.route.js'
+import articleRoutes from '../routes/article.route.js'
+import inventoryRoutes from '../routes/inventory.route.js'
+import supplierRoutes from '../routes/supplier.route.js'
 import dotenv from "dotenv";
 import cors from "cors";
 
@@ -14,6 +16,8 @@ app.get('/', (req, res) => {res.send('Hello Express!');});
 app.use('/auth', authRoutes);
 app.use('/user',userRoutes);
 app.use('/article',articleRoutes);
+app.use('/inventory',inventoryRoutes);
+app.use('/supplier',supplierRoutes);
 
 
 export default app;
