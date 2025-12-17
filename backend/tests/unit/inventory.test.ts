@@ -1,7 +1,7 @@
 import { describe, it, expect, jest,beforeEach,afterEach} from '@jest/globals';
 import { inventoryRepository } from '../../src/repositories/inventory.repository.js';
 import * as InventoryDaoModule  from '../../src/dao/inventory.dao.js';
-import { Inventory } from '../../src/models/inventory.js';
+import { InventoryArticle } from '../../src/models/inventoryArticle.js';
 
 
 
@@ -53,7 +53,7 @@ describe('inventoryRepository', () => {
       const article = await repo.getOneInventoryArticle(1,1);
   
       expect(mockFindById).toHaveBeenCalledWith(1,1);
-      expect(article).toBeInstanceOf(Inventory);
+      expect(article).toBeInstanceOf(InventoryArticle);
       expect(article?.quantity).toEqual(5);
   
   
@@ -72,7 +72,7 @@ describe('inventoryRepository', () => {
       const articles = await repo.getAllInventoryArticles(1);
       expect(Array.isArray(articles)).toBe(true)
       expect(articles).toHaveLength(2);
-      articles?.forEach(u=>expect(u).toBeInstanceOf(Inventory))
+      articles?.forEach(u=>expect(u).toBeInstanceOf(InventoryArticle))
   
    
   

@@ -6,7 +6,7 @@ export class SupplierDao{
     async insert(suppliers: Omit<SupplierRow,"id">):Promise<number>{
         const db = await Db.getConnection()
 
-      const result = await db.run("INSERT INTO suppliers (name,unit) VALUES (?,?)",
+      const result = await db.run("INSERT INTO suppliers (contact_name,mail,phone,address) VALUES (?,?,?,?)",
         suppliers.contact_name,
         suppliers.mail,
         suppliers.phone,

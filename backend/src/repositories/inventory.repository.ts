@@ -1,7 +1,7 @@
 import { InventoryDao } from "../dao/inventory.dao.js";
 import type { InventoryRow } from "../types/inventoryRow.js";
 import { Inventory } from "../models/inventory.js";
-import type { Article } from "../models/article.js";
+import { InventoryArticle } from "../models/inventoryArticle.js";
 
 type CreateInventoryInput = {
  userId:number,
@@ -9,7 +9,6 @@ type CreateInventoryInput = {
  quantity:number
 };
 
-type inventoryArticle = Article & {quantity:number}
 
 export class inventoryRepository{
 
@@ -19,8 +18,12 @@ export class inventoryRepository{
         this.inventoryDao = dao;
     }
 
-    private mapRowToInventory(row:InventoryRow):Inventory{
-            return new Inventory(row.user_id,row.article_id,row.quantity);
+    private mapRowToInventoryArticle(row:InventoryRow):InventoryArticle{
+            return new InventoryArticle(row.article_id,
+                                                 row.user_id,
+                                                 row.name ?? "Unknown",
+                                                 row.quantity,
+                                                 row.unit ?? "Unknown");
         }
 
     async addArticle(_inventory:CreateInventoryInput):Promise<Inventory>{
@@ -29,21 +32,25 @@ export class inventoryRepository{
         return newInventory;
     }
 
-    async getAllInventoryArticles(userId:number):Promise<inventoryArticle[]|undefined>{
+    async getAllInventoryArticles(userId:number):Promise<InventoryArticle[]>{
         const rows = await this.inventoryDao.findByUserId(userId);
         return rows!.map(row => {
-            const article = new Article(row.name,row.unit,row.article_id);
-            return {...article,quantity: row.quantity}});
+            const article = new InventoryArticle(row.article_id,
+                                                 row.user_id,
+                                                 row.name ?? "Unknown",
+                                                 row.quantity,
+                                                 row.unit ?? "Unknown");
+            return article});
     }
 
-    async getOneInventoryArticle(userId:number,articleId:number):Promise<InventoryRow|undefined>{
+    async getOneInventoryArticle(userId:number,articleId:number):Promise<InventoryArticle|undefined>{
         const row = await this.inventoryDao.findOneArticle(userId,articleId);
-        return row? this.mapRowToInventory(row):undefined;
+        return row? this.mapRowToInventoryArticle(row):undefined;
     }
 
-    async removeArticle(userId:number,articleId:number):Promise<number>{
-        const result = await this.inventoryDao.delete(userId,articleId)
-        return result;
+    async removeArticle(userId:number,articleId:number):Promise<boolean>{
+        return await this.inventoryDao.delete(userId,articleId) > 0
+        
     }
 
 

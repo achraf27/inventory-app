@@ -66,9 +66,9 @@ export class Db{
         `);
 
          await db.exec(`
-          CREATE TABLE IF NOT EXISTS article_suppliers (
-          article_id INTEGER NOT NULL,
+          CREATE TABLE IF NOT EXISTS suppliers_articles (
           supplier_id INTEGER NOT NULL,
+          article_id INTEGER NOT NULL,
           PRIMARY KEY(article_id, supplier_id),
           FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
           FOREIGN KEY (supplier_id) REFERENCES suppliers(id) ON DELETE CASCADE

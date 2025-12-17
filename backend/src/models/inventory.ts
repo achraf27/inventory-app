@@ -7,7 +7,7 @@ type InventoryDto = {
 export class Inventory{
     readonly user_id:number;
     readonly article_id:number;
-    readonly quantity:number = 0;
+    readonly quantity:number;
 
     constructor(userId:number,articleId:number,quantity:number){
         this.user_id = userId;
