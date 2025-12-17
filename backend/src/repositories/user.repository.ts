@@ -12,9 +12,11 @@ type CreateUserInput = {
 
 export class userRepository{
 
-    private UserDao: userDao = new userDao();
+    private UserDao: userDao;
 
-
+    constructor(dao = new userDao()) {
+        this.UserDao = dao;
+    }
 
     private mapRowToUser(row:UserRow):User{
         return new User(row.role,row.name,row.mail,row.passwordHash,row.id);
@@ -48,8 +50,12 @@ export class userRepository{
     ));
     }
 
-    public async createUser(_user:CreateUserInput):Promise<number>{
-        return await this.UserDao.insert({role:_user.role,name:_user.name,passwordHash:_user.passwordHash,mail:_user.mail});
+    public async createUser(_user:CreateUserInput):Promise<User>{
+
+         const newUser = new User(_user.role,_user.name,_user.mail,_user.passwordHash);
+         const id = await this.UserDao.insert(_user);
+         newUser.id = id;
+         return newUser;
     }
 
     public async deleteUser(id:number): Promise<boolean>{

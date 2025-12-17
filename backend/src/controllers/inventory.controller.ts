@@ -85,7 +85,7 @@ export class InventoryController{
             if(!article_id) return res.status(400).json({ error: "the id field is empty"});
         
         
-            await this.inventoryRepo.deleteArticle(Number(user_id), Number(article_id));
+            await this.inventoryRepo.removeArticle(Number(user_id), Number(article_id));
             
             return res.status(200).json({message : "the article was successfully deleted"})
           }

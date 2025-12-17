@@ -1,5 +1,5 @@
 import { Article } from "../models/article.js";
-import { articleDao } from "../dao/article.dao.js";
+import { ArticleDao } from "../dao/article.dao.js";
 import type { ArticleRow } from "../types/articleRow.js";
 
 type CreateArticleInput = {
@@ -8,7 +8,11 @@ type CreateArticleInput = {
 };
 
 export class articleRepository{
-    private articleDao: articleDao = new articleDao();
+    private articleDao: ArticleDao;
+
+    constructor(dao = new ArticleDao()) {
+        this.articleDao = dao;
+    }
     
     
     private mapRowToArticle(row:ArticleRow):Article{

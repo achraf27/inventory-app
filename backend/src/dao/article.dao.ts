@@ -1,7 +1,7 @@
 import  type { ArticleRow } from "../types/articleRow.js";
 import { Db } from "../database/dbSqlite.js";
 
-export class articleDao{
+export class ArticleDao{
 
     async insert(article: Omit<ArticleRow,"id">):Promise<number>{
         const db = await Db.getConnection()
@@ -33,6 +33,7 @@ export class articleDao{
         const row = await db.get("SELECT * FROM articles WHERE id = ?", id);
         return row as ArticleRow|undefined;
     }
+
 
     async updateName(id:number, name:string):Promise<number>{
         const db = await Db.getConnection()

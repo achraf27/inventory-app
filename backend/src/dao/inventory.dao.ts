@@ -1,7 +1,7 @@
 import type { InventoryRow } from "../types/inventoryRow.js";
 import { Db } from "../database/dbSqlite.js";
 
-export class inventoryDao{
+export class InventoryDao{
 
     async insert(inventory: InventoryRow):Promise<number>{
         const db = await Db.getConnection()
@@ -26,16 +26,27 @@ export class inventoryDao{
     }
 
     async findByUserId(id:number): Promise<InventoryRow [] |  undefined> {
-        const db = await Db.getConnection();
-        const rows = await db.all("SELECT * FROM inventory WHERE user_id = ?",id);
-        return rows as InventoryRow[];
+         const db = await Db.getConnection();
+         const row = await db.all(`
+              SELECT i.user_id, i.article_id, i.quantity, a.name, a.unit
+              FROM inventory i
+              JOIN articles a ON i.article_id = a.id
+              WHERE i.user_id = ?
+          `, [id]);
+          return row as InventoryRow[];
     }
 
-    async findOneArticle(userId:number,articleId:number):Promise<InventoryRow | undefined>{
-        const db = await Db.getConnection();
-        const row = await db.get("SELECT * FROM inventory WHERE article_id = ? AND user_id = ?",articleId,userId);
-        return row as InventoryRow;
-    }
+   async findOneArticle(userId: number, articleId: number): Promise<InventoryRow | undefined> {
+    const db = await Db.getConnection();
+    const row = await db.get(`
+        SELECT i.user_id, i.article_id, i.quantity, a.name, a.unit
+        FROM inventory i
+        JOIN articles a ON i.article_id = a.id
+        WHERE i.user_id = ? AND i.article_id = ?
+    `, [userId, articleId]);
+    return row as InventoryRow;
+}
+
 
     async updateQuantity(userId:number,articleId:number, quantity:number){
         const db = await Db.getConnection();

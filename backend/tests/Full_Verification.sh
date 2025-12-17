@@ -2,10 +2,13 @@
 
 npx tsc
 
-echo "Test création utilisateur"
+echo "Test unitaires des repository "
 
-npm run test createUser.test.ts
+npm run test user.test.ts
 
-echo "Test création article"
+npm run test article.test.ts
 
-npm run test createArticle.test.ts
+npm run test inventory.test.ts
+
+echo "Test d'acceptation des end points"
+

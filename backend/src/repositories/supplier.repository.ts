@@ -11,6 +11,11 @@ type CreateSupplierInput = {
 
 export class supplierRepository{
     private supplierDao: SupplierDao = new SupplierDao();
+
+    constructor(dao = new SupplierDao()) {
+        this.supplierDao = dao;
+    }
+
     
     
     private mapRowToArticle(row:SupplierRow):Supplier{
