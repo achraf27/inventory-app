@@ -1,5 +1,5 @@
 import { describe, it, expect, jest,beforeEach,afterEach} from '@jest/globals';
-import { inventoryRepository } from '../../src/repositories/inventory.repository.js';
+import { InventoryRepository } from '../../src/repositories/inventory.repository.js';
 import * as InventoryDaoModule  from '../../src/dao/inventory.dao.js';
 import { InventoryArticle } from '../../src/models/inventoryArticle.js';
 
@@ -10,10 +10,10 @@ import { InventoryArticle } from '../../src/models/inventoryArticle.js';
 jest.mock('../../src/dao/inventory.dao.js');
 
 describe('inventoryRepository', () => {
-  let repo: inventoryRepository;
+  let repo: InventoryRepository;
 
   beforeEach(() => {
-    repo = new inventoryRepository();
+    repo = new InventoryRepository();
   });
 
   it("Should add an article to the inventory",async ()=>{

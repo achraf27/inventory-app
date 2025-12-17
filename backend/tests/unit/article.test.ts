@@ -1,5 +1,5 @@
 import { describe, it, expect, jest,beforeEach,afterEach} from '@jest/globals';
-import { articleRepository } from '../../src/repositories/article.repository.js';
+import { ArticleRepository } from '../../src/repositories/article.repository.js';
 import { Article } from '../../src/models/article.js';
 import * as ArticleDaoModule  from '../../src/dao/article.dao.js';
 
@@ -9,10 +9,10 @@ import * as ArticleDaoModule  from '../../src/dao/article.dao.js';
 jest.mock('../../src/dao/article.dao.js');
 
 describe('articleRepository', () => {
-  let repo: articleRepository;
+  let repo: ArticleRepository;
 
   beforeEach(() => {
-    repo = new articleRepository();
+    repo = new ArticleRepository();
   });
 
   it("Should create a article",async ()=>{

@@ -1,5 +1,5 @@
 import { describe, it, expect, jest,beforeEach,afterEach} from '@jest/globals';
-import { userRepository } from '../../src/repositories/user.repository.js';
+import { UserRepository } from '../../src/repositories/user.repository.js';
 import { User } from '../../src/models/user.js';
 import * as userDaoModule  from '../../src/dao/user.dao.js';
 
@@ -9,10 +9,10 @@ import * as userDaoModule  from '../../src/dao/user.dao.js';
 jest.mock('../../src/dao/user.dao.js');
 
 describe('userRepository', () => {
-  let repo: userRepository;
+  let repo: UserRepository;
 
   beforeEach(() => {
-    repo = new userRepository();
+    repo = new UserRepository();
   });
 
   it("Should create a user",async ()=>{
@@ -20,7 +20,7 @@ describe('userRepository', () => {
     const fakeId = 123
     const fakeRow = {role: 'Admin', name: 'Alice', mail: 'alice@mail.com', passwordHash: 'hashed' };
 
-    const mockCreateUser = jest.spyOn(userDaoModule.userDao.prototype, 'insert')
+    const mockCreateUser = jest.spyOn(userDaoModule.UserDao.prototype, 'insert')
       .mockResolvedValue(fakeId as any);
 
     
@@ -37,7 +37,7 @@ describe('userRepository', () => {
 
     const fakeRow = { id: 1, role: 'Admin', name: 'Alice', mail: 'alice@mail.com', passwordHash: 'hashed' };
 
-    const mockFindById = jest.spyOn(userDaoModule.userDao.prototype, 'findById')
+    const mockFindById = jest.spyOn(userDaoModule.UserDao.prototype, 'findById')
       .mockResolvedValue(fakeRow as any);
 
     const user = await repo.getUser(1);
@@ -56,7 +56,7 @@ describe('userRepository', () => {
     const fakeRows = [{ id: 1, role: 'Admin', name: 'Alice', mail: 'alice@mail.com', passwordHash: 'hashed' },
                       { id: 2, role: 'User', name: 'Bob', mail: 'bob@mail.com', passwordHash: 'hashed' }];
 
-    const mockFindAll = jest.spyOn(userDaoModule.userDao.prototype, 'findAll')
+    const mockFindAll = jest.spyOn(userDaoModule.UserDao.prototype, 'findAll')
       .mockResolvedValue(fakeRows as any);
 
     const users = await repo.getAllUsers();
@@ -74,7 +74,7 @@ describe('userRepository', () => {
 
     const fakeResult = true
 
-    const mockUpdateUserPassword = jest.spyOn(userDaoModule.userDao.prototype, 'updatePassword')
+    const mockUpdateUserPassword = jest.spyOn(userDaoModule.UserDao.prototype, 'updatePassword')
       .mockResolvedValue(fakeResult as any);
 
 
@@ -90,7 +90,7 @@ describe('userRepository', () => {
 
     const fakeResult = true
 
-    const mockUpdateUserMail = jest.spyOn(userDaoModule.userDao.prototype, 'updateMail')
+    const mockUpdateUserMail = jest.spyOn(userDaoModule.UserDao.prototype, 'updateMail')
       .mockResolvedValue(fakeResult as any);
 
    
@@ -107,7 +107,7 @@ describe('userRepository', () => {
 
     const fakeResult = true
 
-    const mockUpdateUserRole = jest.spyOn(userDaoModule.userDao.prototype, 'updateRole')
+    const mockUpdateUserRole = jest.spyOn(userDaoModule.UserDao.prototype, 'updateRole')
       .mockResolvedValue(fakeResult as any);
 
     const user = await repo.updateRole(123,"Admin");
@@ -121,7 +121,7 @@ describe('userRepository', () => {
 
     const fakeResult = true
 
-    const mockDeleteUser = jest.spyOn(userDaoModule.userDao.prototype, 'delete')
+    const mockDeleteUser = jest.spyOn(userDaoModule.UserDao.prototype, 'delete')
       .mockResolvedValue(fakeResult as any);
 
 

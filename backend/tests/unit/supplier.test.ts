@@ -1,5 +1,5 @@
 import { describe, it, expect, jest,beforeEach,afterEach} from '@jest/globals';
-import { supplierRepository } from '../../src/repositories/supplier.repository.js';
+import { SupplierRepository } from '../../src/repositories/supplier.repository.js';
 import { Supplier } from '../../src/models/supplier.js';
 import * as SupplierDaoModule  from '../../src/dao/supplier.dao.js';
 
@@ -9,10 +9,10 @@ import * as SupplierDaoModule  from '../../src/dao/supplier.dao.js';
 jest.mock('../../src/dao/supplier.dao.js');
 
 describe('articleRepository', () => {
-  let repo: supplierRepository;
+  let repo: SupplierRepository;
 
   beforeEach(() => {
-    repo = new supplierRepository();
+    repo = new SupplierRepository();
   });
 
   it("Should create a Supplier",async ()=>{
