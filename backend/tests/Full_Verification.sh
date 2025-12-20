@@ -16,3 +16,5 @@ npm run test supplier_article.test.ts
 
 echo "Test d'acceptation des end points"
 
+npm run test inventory.acceptance.test.ts
+
