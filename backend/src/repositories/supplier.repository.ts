@@ -12,7 +12,7 @@ type CreateSupplierInput = {
   address:string;
 };
 
-export class supplierRepository{
+export class SupplierRepository{
     private supplierDao: SupplierDao;
     private supplierArticleDao:SupplierArticleDao;
 
@@ -32,8 +32,8 @@ export class supplierRepository{
             return new SupplierArticle(row.article_id,row.supplier_id,row.name ?? "Unknown",row.unit ?? "Unknown");
         }
     
-        public async getSupplier(article_id:number):Promise<Supplier|undefined>{
-            const row = await this.supplierDao.findById(article_id);
+        public async getSupplier(supplier_id:number):Promise<Supplier|undefined>{
+            const row = await this.supplierDao.findById(supplier_id);
             return row? this.mapRowToSupplier(row) : undefined;
         }
 
@@ -65,9 +65,9 @@ export class supplierRepository{
 
             if(_supplier.mail !== undefined) totalChanges += await this.supplierDao.updateMail(id,_supplier.mail);
 
-            if(_supplier.phone !== undefined) totalChanges += await this.supplierDao.updateMail(id,_supplier.phone);
+            if(_supplier.phone !== undefined) totalChanges += await this.supplierDao.updatePhone(id,_supplier.phone);
 
-            if(_supplier.address !== undefined) totalChanges += await this.supplierDao.updateMail(id,_supplier.address);
+            if(_supplier.address !== undefined) totalChanges += await this.supplierDao.updateAddress(id,_supplier.address);
 
             return totalChanges > 0;
         }
@@ -77,7 +77,7 @@ export class supplierRepository{
             return result>0;
         }
 
-        public async removeArticle(supplier_id:number,article_id:number):Promise<boolean>{
+        public async removeSupplierArticle(supplier_id:number,article_id:number):Promise<boolean>{
             const result = await this.supplierArticleDao.delete({supplier_id,article_id})
             return result >  0;
         }

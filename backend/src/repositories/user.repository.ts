@@ -1,4 +1,4 @@
-import { userDao } from "../dao/user.dao.js";
+import { UserDao } from "../dao/user.dao.js";
 import type { UserRow } from "../types/userRow.js";
 import { User } from "../models/user.js";
 
@@ -10,11 +10,11 @@ type CreateUserInput = {
 };
 
 
-export class userRepository{
+export class UserRepository{
 
-    private UserDao: userDao;
+    private UserDao: UserDao;
 
-    constructor(dao = new userDao()) {
+    constructor(dao = new UserDao()) {
         this.UserDao = dao;
     }
 

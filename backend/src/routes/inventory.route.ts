@@ -1,17 +1,19 @@
 import { Router } from 'express';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import { inventoryController } from '../controllers/inventory.controller.js';
+import { checkParams } from '../middlewares/chechkParams.js';
+import { checkBody } from '../middlewares/checkBody.js';
 
 const router = Router();
 
-router.post('/add/:user_id/:article_id',authMiddleware,inventoryController.add)
+router.post('/add/:user_id/:article_id',authMiddleware,checkParams,checkBody,inventoryController.add)
 
-router.delete('/delete/:user_id/:article_id',authMiddleware,inventoryController.delete);
+router.delete('/delete/:user_id/:article_id',authMiddleware,checkParams,inventoryController.delete);
 
-router.get('/:user_id/:article_id',authMiddleware,inventoryController.getOneArticle);
+router.get('/:user_id/:article_id',authMiddleware,checkParams,inventoryController.getOneArticle);
 
-router.get('/:user_id',authMiddleware,inventoryController.getAllArticles);
+router.get('/:user_id',authMiddleware,checkParams,inventoryController.getAllArticles);
 
-
+router.patch('/:user_id/:article_id',authMiddleware,checkParams,checkBody,inventoryController.updateQuantity);
 
 export default router;

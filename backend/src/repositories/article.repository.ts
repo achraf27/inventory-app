@@ -7,7 +7,7 @@ type CreateArticleInput = {
   unit: string;
 };
 
-export class articleRepository{
+export class ArticleRepository{
     private articleDao: ArticleDao;
 
     constructor(dao = new ArticleDao()) {
@@ -19,7 +19,7 @@ export class articleRepository{
             return new Article(row.name,row.unit,row.id);
         }
     
-        public async getArticle(article_id:number):Promise<ArticleRow|undefined>{
+        public async getArticle(article_id:number):Promise<Article|undefined>{
             const row = await this.articleDao.findById(article_id);
             return row? this.mapRowToArticle(row) : undefined;
         }

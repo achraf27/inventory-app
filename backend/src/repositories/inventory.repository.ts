@@ -1,5 +1,5 @@
 import { InventoryDao } from "../dao/inventory.dao.js";
-import type { InventoryRow } from "../types/inventoryRow.js";
+import type { InventoryArticleRow } from "../types/inventoryRow.js";
 import { Inventory } from "../models/inventory.js";
 import { InventoryArticle } from "../models/inventoryArticle.js";
 
@@ -10,7 +10,7 @@ type CreateInventoryInput = {
 };
 
 
-export class inventoryRepository{
+export class InventoryRepository{
 
     private inventoryDao: InventoryDao;
 
@@ -18,29 +18,23 @@ export class inventoryRepository{
         this.inventoryDao = dao;
     }
 
-    private mapRowToInventoryArticle(row:InventoryRow):InventoryArticle{
+    private mapRowToInventoryArticle(row:InventoryArticleRow):InventoryArticle{
             return new InventoryArticle(row.article_id,
                                                  row.user_id,
-                                                 row.name ?? "Unknown",
+                                                 row.name,
                                                  row.quantity,
-                                                 row.unit ?? "Unknown");
+                                                 row.unit);
         }
 
     async addArticle(_inventory:CreateInventoryInput):Promise<Inventory>{
         const newInventory = new Inventory(_inventory.articleId,_inventory.userId,_inventory.quantity);
-        await this.inventoryDao.insert(newInventory);
+        await this.inventoryDao.insert({user_id: _inventory.userId,article_id: _inventory.articleId,quantity: _inventory.quantity});
         return newInventory;
     }
 
     async getAllInventoryArticles(userId:number):Promise<InventoryArticle[]>{
         const rows = await this.inventoryDao.findByUserId(userId);
-        return rows!.map(row => {
-            const article = new InventoryArticle(row.article_id,
-                                                 row.user_id,
-                                                 row.name ?? "Unknown",
-                                                 row.quantity,
-                                                 row.unit ?? "Unknown");
-            return article});
+        return rows!.map(row => this.mapRowToInventoryArticle(row));
     }
 
     async getOneInventoryArticle(userId:number,articleId:number):Promise<InventoryArticle|undefined>{

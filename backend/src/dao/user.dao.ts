@@ -2,7 +2,7 @@ import type { UserRow } from "../types/userRow.js";
 import { Db } from "../database/dbSqlite.js";
 
 
-export class userDao{
+export class UserDao{
 
     async insert(user: Omit<UserRow,"id">):Promise<number>{
         const db = await Db.getConnection()
@@ -64,7 +64,7 @@ export class userDao{
 
     async findAll(): Promise<UserRow []> {
         const db = await Db.getConnection();
-         const rows = await db.get( `
+         const rows = await db.all( `
             SELECT
               id,
               role,
@@ -86,7 +86,7 @@ export class userDao{
               mail,
               password AS passwordHash
             FROM users
-            WHERE name = ?
+            WHERE id = ?
           `,id);
         return row as UserRow;
     }
@@ -101,7 +101,7 @@ export class userDao{
               mail,
               password AS passwordHash
             FROM users
-            WHERE name = ?
+            WHERE email = ?
           `,mail);
         return row as UserRow;
     }

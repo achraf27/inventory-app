@@ -38,7 +38,7 @@ export class SupplierDao{
 
     async findAll(): Promise<SupplierRow []> {
             const db = await Db.getConnection();
-             const rows = await db.get( `
+             const rows = await db.all( `
                 SELECT
                  *
                 FROM suppliers

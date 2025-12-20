@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
-import { userRepository } from "../repositories/user.repository.js";
+import { UserRepository } from "../repositories/user.repository.js";
 import bcrypt from 'bcryptjs';
 
 export class UserController{
 
-    private userRepo = new userRepository();
+    private userRepo = new UserRepository();
 
 
     delete = async (req:Request, res:Response) => {
@@ -60,9 +60,6 @@ export class UserController{
     updatePassword = async (req:Request, res:Response)=>{
         const{newPassword} = req.body;
         const{id} = req.params
-        if (!id || !newPassword) {
-        return res.status(400).json({ error: "Missing fields" });
-        }
 
         try{
             
@@ -87,7 +84,6 @@ export class UserController{
         const {id} = req.params;
         try{
     
-          if(!id) return res.status(400).json({error: "the id field is empty"})
     
           const user =  await this.userRepo.getUser(Number(id));
     

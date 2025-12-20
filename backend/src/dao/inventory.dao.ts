@@ -1,4 +1,4 @@
-import type { InventoryRow } from "../types/inventoryRow.js";
+import type { InventoryArticleRow, InventoryRow } from "../types/inventoryRow.js";
 import { Db } from "../database/dbSqlite.js";
 
 export class InventoryDao{
@@ -25,7 +25,7 @@ export class InventoryDao{
 
     }
 
-    async findByUserId(id:number): Promise<InventoryRow [] |  undefined> {
+    async findByUserId(id:number): Promise<InventoryArticleRow [] |  undefined> {
          const db = await Db.getConnection();
          const row = await db.all(`
               SELECT i.user_id, i.article_id, i.quantity, a.name, a.unit
@@ -33,10 +33,10 @@ export class InventoryDao{
               JOIN articles a ON i.article_id = a.id
               WHERE i.user_id = ?
           `, [id]);
-          return row as InventoryRow[];
+          return row as InventoryArticleRow[];
     }
 
-   async findOneArticle(userId: number, articleId: number): Promise<InventoryRow | undefined> {
+   async findOneArticle(userId: number, articleId: number): Promise<InventoryArticleRow | undefined> {
     const db = await Db.getConnection();
     const row = await db.get(`
         SELECT i.user_id, i.article_id, i.quantity, a.name, a.unit
@@ -44,7 +44,7 @@ export class InventoryDao{
         JOIN articles a ON i.article_id = a.id
         WHERE i.user_id = ? AND i.article_id = ?
     `, [userId, articleId]);
-    return row as InventoryRow;
+    return row as InventoryArticleRow;
 }
 
 

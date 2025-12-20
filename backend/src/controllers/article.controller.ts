@@ -1,20 +1,15 @@
 import type { Request, Response } from "express";
-import { articleRepository } from "../repositories/article.repository.js";
-
-
-
+import { ArticleRepository } from "../repositories/article.repository.js";
 
 export class ArticleController{
 
-    private articleRepo = new articleRepository();
+    private articleRepo = new ArticleRepository();
 
 
 
     create = async (req: Request, res: Response) =>{
         const { name, unit } = req.body;
         try{
-        if (!name || !unit) return res.status(400).json({ error: "missing fields" });
-
         const article = await this.articleRepo.createArticle({ name, unit });
         return res.status(200).json(article.toDto());
         }
@@ -28,7 +23,6 @@ export class ArticleController{
         const {id_article} = req.params;
             try{
         
-              if(!id_article) return res.status(400).json({error: "the id field is empty"})
         
               const article = await this.articleRepo.getArticle(Number(id_article));
 
@@ -51,10 +45,8 @@ export class ArticleController{
 
     update = async  (req:Request, res:Response)=>{
         const {id_article} = req.params;
-        const {name,unit,quantity} = req.body;
+        const {name,unit} = req.body;
         try{
-    
-          if(!id_article ||(!unit  && !name && !quantity)) return res.status(400).json({error: "the fields are empty"})
     
     
           await this.articleRepo.updateArticle(Number(id_article),{name,unit})
@@ -71,12 +63,7 @@ export class ArticleController{
        delete = async (req:Request, res:Response)=>{
           const {id_article}= req.params;
         
-          console.log("id: " + id_article)
-        
-          try{
-            if(!id_article) return res.status(400).json({ error: "the id field is empty"});
-        
-        
+          try{        
             await this.articleRepo.deleteArticle(Number(id_article));
             return res.status(200).json({message : "the article was successfully deleted"})
           }

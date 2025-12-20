@@ -1,23 +1,18 @@
 import type { Request, Response } from "express";
-import { userRepository } from "../repositories/user.repository.js";
+import { UserRepository } from "../repositories/user.repository.js";
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcryptjs';
 
 
 export class AuthController{
 
-    private authRepo = new userRepository();
+    private authRepo = new UserRepository();
 
 
 
     login = async (req:Request, res:Response) => {
-      const { name, password } = req.body;
-      console.log("Login attempt:", name, password);
-      
-    
+      const { name, password } = req.body;    
       try{
-        if(!name || !password) return res.status(400).json({error: "empty fields"});
-    
         const user = await this.authRepo.getUser(name)
         console.log(user);
         if(!user) return res.status(401).json({ error: "Invalid User" });

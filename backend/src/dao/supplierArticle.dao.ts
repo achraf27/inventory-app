@@ -1,4 +1,3 @@
-import type { SupplierArticleDto } from "../models/SupplierArticle.js";
 import type { SupplierArticleRow } from "../types/supplierArticleRow.js";
 import { Db } from "../database/dbSqlite.js";
 
@@ -8,10 +7,10 @@ export class SupplierArticleDao{
     async insert(suppliers: SupplierArticleRow):Promise<number>{
         const db = await Db.getConnection()
 
-      const result = await db.run("INSERT INTO suppliers_article (supplier_id,article_id) VALUES (?,?)",
+      const result = await db.run("INSERT INTO suppliers_articles (supplier_id,article_id) VALUES (?,?)",
         suppliers.supplier_id,
         suppliers.article_id,
-    );
+    );      
    
 
       return result.changes!;
@@ -28,26 +27,26 @@ export class SupplierArticleDao{
 
     }
 
-    async findBySupplierId(supplierId:number): Promise<SupplierArticleDto[] | undefined> {
+    async findBySupplierId(supplierId:number): Promise<SupplierArticleRow[] | undefined> {
         const db = await Db.getConnection();
         const rows = await db.all(`
                       SELECT s.supplier_id, s.article_id, a.name, a.unit
-                      FROM supplier_article s
-                      JOIN articles a ON i.article_id = a.id
+                      FROM suppliers_articles s
+                      JOIN articles a ON s.article_id = a.id
                       WHERE s.supplier_id = ?
                   `, [supplierId]);
-                return rows as SupplierArticleDto[];
+                return rows as SupplierArticleRow[];
     }
 
-    async findOneArticle(supplierId:number,articleId:number): Promise<SupplierArticleDto> {
+    async findOneArticle(supplierId:number,articleId:number): Promise<SupplierArticleRow> {
             const db = await Db.getConnection();
               const row = await db.get(`
                       SELECT s.supplier_id, s.article_id, a.name, a.unit
-                      FROM supplier_article s
-                      JOIN articles a ON i.article_id = a.id
+                      FROM suppliers_articles s
+                      JOIN articles a ON s.article_id = a.id
                       WHERE s.supplier_id = ? AND s.article_id = ?
                   `, [supplierId,articleId]);
-                return row as SupplierArticleDto;
+                return row as SupplierArticleRow;
         }
     
 }
