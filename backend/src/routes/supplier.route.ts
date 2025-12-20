@@ -2,7 +2,7 @@ import { Router } from 'express';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import { supplierController } from '../controllers/supplier.controller.js';
 import { checkBody } from '../middlewares/checkBody.js';
-import { checkParams } from '../middlewares/chechkParams.js';
+import { checkParams } from '../middlewares/checkParams.js';
 
 const router = Router();
 

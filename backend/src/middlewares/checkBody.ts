@@ -8,8 +8,16 @@ export const checkBody = (requiredFields: string[] = []) =>
                             .json({ error: `Invalid parameter` });
 
       for(const field of requiredFields){
-        if(req.body[field]===undefined || req.body[field] === "")
-          return res.status(400).json({error:`Missing or empty field: ${field}`})
+        const value = req.body[field]
+        if(value===undefined || value === null)
+          return res.status(400).json({error:`Missing field: ${field}`})
+          
+
+        if(typeof value === "string" && value.trim().length === 0)
+          return res.status(400).json({error:`empty field: ${field}`})
+          
+
+        
       }
     
     next();

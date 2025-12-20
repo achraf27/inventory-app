@@ -24,7 +24,7 @@ export class User{
         if(id) this.id = id;
     }
 
-    verifiyPassword(plain:string):Promise<boolean>{
+    verifyPassword(plain:string):Promise<boolean>{
         return bcrypt.compare(plain,this.passwordHash);
     }
 

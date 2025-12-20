@@ -17,7 +17,7 @@ export class AuthController{
         console.log(user);
         if(!user) return res.status(401).json({ error: "Invalid User" });
     
-        const ok = await user.verifiyPassword(password);
+        const ok = await user.verifyPassword(password);
     
         const token = jwt.sign(
           { id: user.id, role:user.role, name },
@@ -26,6 +26,8 @@ export class AuthController{
         );
     
         if(ok) return res.status(200).json({ message: "Login successful", token });
+
+        else return res.status(401).json({error:"login failed"});
     
         
       }catch(e){
@@ -40,13 +42,11 @@ export class AuthController{
         const hash = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS!));
         console.log("creation attempt name: "+name);
         try{
-    
-          if(!role ||!name || !password || !mail) return res.status(400).json({error: "empty fields"});
-      
-          const userId = await this.authRepo.createUser({role,name,mail,passwordHash:hash});
+          
+          const user = await this.authRepo.createUser({role,name,mail,passwordHash:hash});
       
           const token = jwt.sign(
-            { id: userId, role, name },
+            { id: user.id, role, name },
             process.env.JWT_SECRET!,
             { expiresIn: "20d" }
           );
@@ -54,7 +54,7 @@ export class AuthController{
           return res.status(201).json({
             message: "user created",
             token,
-            id:userId
+            id:user.id
           });
       }
         catch(e){

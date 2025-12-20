@@ -55,6 +55,18 @@ describe('Inventory – Acceptance test with auth', () => {
     expect(response.status).toBe(200);
   });
 
+  it('should not add an article on the inventory', async () => {
+    const response = await request(app)
+      .post('/inventory/add/abs/'+articleId)
+      .set('Authorization',`Bearer ${token}`)
+      .send({
+        quantity: 3
+      });
+
+    console.log("test")
+    expect(response.status).toBe(400);
+  });
+
   it('should update the article quantity', async () => {
     const response = await request(app)
       .patch('/inventory/update/'+userId+"/"+articleId)
@@ -65,6 +77,18 @@ describe('Inventory – Acceptance test with auth', () => {
 
     expect(response.status).toBe(200);
   });
+
+  it('should not update the article quantity', async () => {
+    const response = await request(app)
+      .patch('/inventory/update/'+userId+"/"+articleId)
+      .set('Authorization',`Bearer ${token}`)
+      .send({
+        quantity: ""
+      });
+
+    expect(response.status).toBe(400);
+  });
+
 
   it('should get the article', async () => {
     const response = await request(app)

@@ -5,8 +5,8 @@ import { checkBody } from '../middlewares/checkBody.js';
 
 const router = Router();
 
-router.post('/login', checkBody, authController.login);
-router.post('/register',checkBody,authController.register)
+router.post('/login', checkBody(["name","password"]), authController.login);
+router.post('/register',checkBody(["role","name","password","mail"]), authController.register)
 
 
 

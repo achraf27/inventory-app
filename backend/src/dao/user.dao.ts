@@ -101,7 +101,7 @@ export class UserDao{
               mail,
               password AS passwordHash
             FROM users
-            WHERE email = ?
+            WHERE mail = ?
           `,mail);
         return row as UserRow;
     }
