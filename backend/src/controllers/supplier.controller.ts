@@ -20,18 +20,18 @@ export class SupplierController{
     }
 
     delete = async (req:Request, res:Response) => {
-      const {id} = req.params;
-      console.log("delete attempt:", id);
+      const {supplier_id} = req.params;
+      console.log("delete attempt:", supplier_id);
     
     
       try{
-        const supplier = await this.supplierRepo.getSupplier(Number(id));
+        const supplier = await this.supplierRepo.getSupplier(Number(supplier_id));
         if(supplier === undefined) return res.status(404).json({ error: "supplier not found" });
     
     
         
-        await this.supplierRepo.deleteSupplier(Number(id))
-        return res.status(200).json({ message: "account deleted successfuly", supplier: { id } });
+        await this.supplierRepo.deleteSupplier(Number(supplier_id))
+        return res.status(200).json({ message: "account deleted successfuly", supplier: { supplier_id } });
     
         
       }catch(e){
@@ -41,13 +41,11 @@ export class SupplierController{
     }
     
     update = async  (req:Request, res:Response)=>{
-        const {id} = req.params;
+        const {supplier_id} = req.params;
         const {contact_name,mail,phone,address} = req.body;
         try{
-    
-          if(!id ||(!contact_name && !mail && !phone && !address)) return res.status(400).json({error: "the fields are empty"})
-   
-          await this.supplierRepo.updateSupplier(Number(id),{contact_name,mail,phone,address})
+        
+          await this.supplierRepo.updateSupplier(Number(supplier_id),{contact_name,mail,phone,address})
     
           return res.status(200).json({message:"supplier changed successfully"})
        
@@ -59,11 +57,11 @@ export class SupplierController{
     }
 
     getSupplier = async (req:Request, res:Response)=>{
-        const {id} = req.params;
+        const {supplier_id} = req.params;
         try{
     
     
-          const supplier =  await this.supplierRepo.getSupplier(Number(id));
+          const supplier =  await this.supplierRepo.getSupplier(Number(supplier_id));
     
           if(supplier === undefined) return res.status(404).json({error:"supplier not found"});
     

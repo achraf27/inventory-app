@@ -11,9 +11,6 @@ export class UserController{
       const {id} = req.params;
       console.log("delete attempt:", id);
     
-      if (!id) {
-          return res.status(400).json({ error: "Missing field" });
-        }
     
       try{
         const user = await this.userRepo.getUser(Number(id));
@@ -34,9 +31,6 @@ export class UserController{
     updateMail = async (req:Request, res:Response)=>{
         const{newMail} = req.body;
         const{id} = req.params;
-        if (!id || !newMail) {
-          return res.status(400).json({ error: "Missing fields" });
-        }
     
         try{
     

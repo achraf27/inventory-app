@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authController } from '../controllers/auth.controller.js';
-import { checkBody } from '../middlewares/checkBody.js';
+import { checkBody } from '../middlewares/checkBody.middleware.js';
 
 
 const router = Router();

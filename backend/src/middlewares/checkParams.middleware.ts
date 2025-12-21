@@ -8,7 +8,6 @@ export const checkParams = (requiredFields: string[] = []) =>
                             .json({ error: `Invalid parameter` });
 
       for(const field of requiredFields){
-        console.log(req.params);
 
         const value = req.params[field];
         if(value === undefined || value === null)
