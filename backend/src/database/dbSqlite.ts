@@ -43,7 +43,7 @@ export class Db{
           quantity INTEGER NOT NULL,
           UNIQUE (user_id, article_id),
           FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
-          FOREIGN KEY (user_id) REFERENCES users(id)
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )
         `);
 

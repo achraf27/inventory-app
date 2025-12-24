@@ -11,20 +11,20 @@ export class ArticleController{
         const { name, unit } = req.body;
         try{
         const article = await this.articleRepo.createArticle({ name, unit });
-        return res.status(200).json(article.toDto());
+        return res.status(200).json({message: "article successfully created"});
         }
         catch(e){
-            return res.status(500).json({ error: "server error"});
+            return res.status(500).json({ message: "server error"});
         }
     }
 
     
     getArticle = async (req:Request, res:Response) => {
-        const {id_article} = req.params;
+        const {article_id} = req.params;
             try{
         
         
-              const article = await this.articleRepo.getArticle(Number(id_article));
+              const article = await this.articleRepo.getArticle(Number(article_id));
 
               console.log(article);
         
@@ -39,37 +39,37 @@ export class ArticleController{
             }
             catch(e){
                 console.log(e);
-                return res.status(500).json({ error: "the article was not found"});
+                return res.status(500).json({ message: "server error"});
             }
     }
 
     update = async  (req:Request, res:Response)=>{
-        const {id_article} = req.params;
+        const {article_id} = req.params;
         const {name,unit} = req.body;
         try{
     
     
-          await this.articleRepo.updateArticle(Number(id_article),{name,unit})
+          await this.articleRepo.updateArticle(Number(article_id),{name,unit})
     
           return res.status(200).json({message:"article unit changed successfully"})
        
         }
         catch(e){
             console.log(e);
-            return res.status(500).json({ error: "the article was not found"});
+            return res.status(500).json({ message: "server error"});
         }
     }
 
        delete = async (req:Request, res:Response)=>{
-          const {id_article}= req.params;
+          const {article_id}= req.params;
         
           try{        
-            await this.articleRepo.deleteArticle(Number(id_article));
+            await this.articleRepo.deleteArticle(Number(article_id));
             return res.status(200).json({message : "the article was successfully deleted"})
           }
           catch(e){
               console.log(e);
-              return res.status(500).json({ error: "server error"});
+              return res.status(500).json({ message: "server error"});
           }
         }
 }

@@ -11,21 +11,24 @@ export class InventoryController{
 
 
     add = async (req: Request, res: Response) =>{
-        const {user_id,article_id} = req.params;
+        const user_id = (req as any).user.id;
+        const {article_id} = req.params;
         const { quantity } = req.body;
         try{
 
         const article = await this.inventoryRepo.addArticle({articleId :Number(article_id), userId: Number(user_id), quantity:Number(quantity)});
-        return res.status(200).json(article);
+        return res.status(200).json({
+                                message: "article successfully added",
+                                article: article});
         }
         catch(e){
-            return res.status(500).json({ error: "server error"});
+            return res.status(500).json({ message: "server error"});
         }
     }
 
 
      getAllArticles = async (req:Request, res:Response) => {
-        const {user_id} = req.params;
+        const user_id = (req as any).user.id;
             try{
         
         
@@ -37,19 +40,20 @@ export class InventoryController{
         
         
               return res.status(200).json({
-                                     message:"article retrived successfully",
+                                     message:"articles retrived successfully",
                                      article: article 
                                     })
            
             }
             catch(e){
                 console.log(e);
-                return res.status(500).json({ error: "the article was not found"});
+                return res.status(500).json({ message: "server error"});
             }
     }
     
     getOneArticle = async (req:Request, res:Response) => {
-        const {user_id,article_id} = req.params;
+      const user_id = (req as any).user.id;
+        const {article_id} = req.params;
             try{
         
         
@@ -68,13 +72,14 @@ export class InventoryController{
             }
             catch(e){
                 console.log(e);
-                return res.status(500).json({ error: "the article was not found"});
+                return res.status(500).json({ message: "server error"});
             }
     }
 
 
        delete = async (req:Request, res:Response)=>{
-          const {user_id,article_id} = req.params;
+          const user_id = (req as any).user.id;
+          const {article_id} = req.params;
         
         
           try{
@@ -86,13 +91,14 @@ export class InventoryController{
           }
           catch(e){
               console.log(e);
-              return res.status(500).json({ error: "server error"});
+              return res.status(500).json({ message: "server error"});
           }
         }
 
 
        updateQuantity = async (req:Request, res:Response)=>{
-          const {user_id,article_id} = req.params;
+          const user_id = (req as any).user.id;
+          const {article_id} = req.params;
           const {quantity} = req.body;
           try{
         
@@ -103,7 +109,7 @@ export class InventoryController{
           }
           catch(e){
               console.log(e);
-              return res.status(500).json({ error: "server error"});
+              return res.status(500).json({ message: "server error"});
           }
         }
 

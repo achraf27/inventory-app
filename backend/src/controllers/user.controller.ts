@@ -8,23 +8,23 @@ export class UserController{
 
 
     delete = async (req:Request, res:Response) => {
-      const {id} = req.params;
-      console.log("delete attempt:", id);
+      const {user_id} = req.params;
+      console.log("delete attempt:", user_id);
     
     
       try{
-        const user = await this.userRepo.getUser(Number(id));
+        const user = await this.userRepo.getUser(Number(user_id));
         if(user === undefined) return res.status(404).json({ error: "user not found" });
     
     
         
-        await this.userRepo.deleteUser(Number(id))
-        return res.status(200).json({ message: "account deleted successfuly", user: { id } });
+        await this.userRepo.deleteUser(Number(user_id))
+        return res.status(200).json({ message: "account deleted successfuly", user: { user_id } });
     
         
       }catch(e){
         console.log(e)
-        return res.status(500).json({ error: "server error"});
+        return res.status(500).json({ message: "server error"});
       }
     }
 
@@ -47,7 +47,7 @@ export class UserController{
             return res.status(200).json({message:"mail changed successuly"})
         }catch(e){
             console.log(e)
-            return res.status(500).json({error:"server error"})
+            return res.status(500).json({message:"server error"})
         }
     }
 
@@ -69,7 +69,7 @@ export class UserController{
             return res.status(200).json({message:"password changed successuly"})
         }catch(e){
             console.log(e)
-            return res.status(500).json({error:"server error"})
+            return res.status(500).json({message:"server error"})
         }
         
     }
@@ -92,7 +92,7 @@ export class UserController{
         }
         catch(e){
             console.log(e);
-            return res.status(500).json({ error: "user was not found"});
+            return res.status(500).json({ message: "user was not found"});
         }
     }
 
@@ -102,20 +102,20 @@ export class UserController{
     
           
     
-          const user =  await this.userRepo.getAllUsers();
+          const users =  await this.userRepo.getAllUsers();
     
-          if(user === undefined) return res.status(404).json({error:"users not found"});
+          if(users === undefined) return res.status(404).json({error:"users not found"});
     
     
           return res.status(200).json({
                                  message:"user retrived successfully",
-                                 user: user 
+                                 user: users 
                                 })
        
         }
         catch(e){
             console.log(e);
-            return res.status(500).json({ error: "user was not found"});
+            return res.status(500).json({ message: "user was not found"});
         }
     }
 

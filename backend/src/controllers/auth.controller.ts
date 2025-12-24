@@ -27,12 +27,12 @@ export class AuthController{
     
         if(ok) return res.status(200).json({ message: "Login successful", token });
 
-        else return res.status(401).json({error:"login failed"});
+        else return res.status(401).json({message:"Login failed"});
     
         
       }catch(e){
         console.log(e)
-        return res.status(500).json({ error: "server error"});
+        return res.status(500).json({ message: "Server error."});
       }
     }
 
@@ -54,7 +54,6 @@ export class AuthController{
           return res.status(201).json({
             message: "user created",
             token,
-            id:user.id
           });
       }
         catch(e){

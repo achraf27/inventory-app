@@ -1,9 +1,9 @@
 import Sidebar from "../components/sidebar";
-import { createArticle, deleteArticle, loadStocks } from "../services/stockService";
+import { createArticle, deleteArticle } from "../services/article.service";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getId, getToken } from "../services/authService";
-import type { Stocks } from "../utils/types";
+import type { InventoryArticleDTO } from "../utils/types";
+import { getAllArticles } from "../services/inventory.service";
 
 
 export default function Stocks() {
@@ -11,9 +11,7 @@ export default function Stocks() {
   
 
   const navigate = useNavigate();
-  const token:string = getToken();
-  const user_id:number =  getId(token);
-  const [stocks, setStocks] = useState<Stocks[]>([]);
+  const [inventory, setInventory] = useState<InventoryArticleDTO[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState<string>("");
   const [quantity, setQuantity] = useState<number>(0);
@@ -21,9 +19,9 @@ export default function Stocks() {
 
 
   async function loadStocksTab(){
-    const data = await loadStocks(user_id);
-        if (Array.isArray(data.Articles)) {
-          setStocks(data.Articles);
+    const data = await getAllArticles();
+        if (Array.isArray(data.articles)) {
+          setInventory(data.articles);
         }
           else {
           setError("Données invalides reçues du serveur");
@@ -33,7 +31,7 @@ export default function Stocks() {
     async function handleSubmit(e: React.FormEvent):Promise<void> {
       e.preventDefault();
       try {
-        const res = await createArticle({name,quantity ,unit,user_id});
+        const res = await createArticle({name,unit});
         await loadStocksTab();
         console.log("opération réussie :", res);
         
@@ -111,14 +109,14 @@ useEffect((): void => {
         </tr>
       </thead>
     <tbody>
-      {stocks.map((item:any) => (
+      {inventory.map((item:any) => (
         <tr key={item.id}>
           <td>{item.name}</td>
           <td>{item.quantity}</td>
           <td>{item.unit}</td>
           <td>
             <button onClick={async ()=> await handleDelete(item.id)}>delete</button>
-            <button onClick={async ()=> await navigate(`/stocks/${item.id}/edit`)}>modify</button>
+            <button onClick={async ()=> await navigate(`/inventory/${item.id}/edit`)}>modify</button>
           </td>
         </tr>
       ))}

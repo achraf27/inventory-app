@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { register } from "../services/authService";// pour le typage si besoin
+import { register } from "../services/auth.service";// pour le typage si besoin
 import { Link } from "react-router-dom";
 
 export default function Register() {
@@ -12,11 +12,11 @@ export default function Register() {
     e.preventDefault();
     try {
       const res = await register({username,mail,password});
-      console.log("Création réussie :", res);
-      alert("Création réussie !");
+      console.log(res);
+      alert(res);
     } catch (err) {
       console.error(err);
-      alert("Erreur de création de compte");
+      alert(err);
     }
   }
 

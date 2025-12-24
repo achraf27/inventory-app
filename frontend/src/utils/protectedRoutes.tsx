@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { getToken } from "../services/authService"; 
+import { getToken } from "../services/auth.service"; 
 
 export default function ProtectedRoutes(){
     const token = getToken();

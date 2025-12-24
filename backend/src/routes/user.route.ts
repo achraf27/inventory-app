@@ -7,15 +7,15 @@ import { checkBody } from '../middlewares/checkBody.middleware.js';
 
 const router = Router();
 
-router.delete('/delete/:user_id' ,authMiddleware,isAdmin,checkParams(["user_id"]),    userController.delete);
+router.delete('/admin/delete/:user_id' ,authMiddleware,isAdmin,checkParams(["user_id"]),    userController.delete);
 
-router.post('/updateMail/:user_id', authMiddleware,checkParams(["user_id"]),checkBody,    userController.updateMail)
+router.post('/updateMail', authMiddleware,checkParams(["user_id"]),checkBody(["newMail"]),    userController.updateMail)
 
-router.post('/updatePassword/:user_id', authMiddleware, checkParams(["user_id"]), checkBody,   userController.updatePassword)
+router.post('/updatePassword', authMiddleware, checkParams(["user_id"]), checkBody(["newPassword"]),   userController.updatePassword)
 
-router.get('/:user_id', authMiddleware,isAdmin,checkParams(["user_id"]),   userController.getUser);
+router.get('/admin/:user_id', authMiddleware,isAdmin,checkParams(["user_id"]),   userController.getUser);
 
-router.get('/', authMiddleware,isAdmin,  userController.getAllUsers);
+router.get('/admin', authMiddleware,isAdmin,  userController.getAllUsers);
 
 
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { login } from "../services/authService";// pour le typage si besoin
+import { login } from "../services/auth.service";// pour le typage si besoin
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {

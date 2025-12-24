@@ -7,9 +7,9 @@ import { checkParams } from '../middlewares/checkParams.middleware.js';
 const router = Router();
 
 router.post('/add',authMiddleware,checkBody(["name","unit"]), articleController.create);
-router.get('/:id',authMiddleware,checkParams, articleController.getArticle);
-router.patch('/update/:id_article',checkParams,checkBody,authMiddleware,articleController.update);
-router.delete('/delete/:id_article',authMiddleware,checkParams(["id_article"]),articleController.delete);
+router.get('/:id',authMiddleware,checkParams(["article_id"]), articleController.getArticle);
+router.patch('/update/:article_id',checkParams(["article_id"]),checkBody(["name","unit"]),authMiddleware,articleController.update);
+router.delete('/delete/:article_id',authMiddleware,checkParams(["article_id"]),articleController.delete);
 
 
 export default router;

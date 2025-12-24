@@ -9,15 +9,16 @@ describe('Inventory – Acceptance test with auth', () => {
   let articleId:string;
 
   beforeAll(async () => {
-    const loginResponse = await request(app)
-      .post('/auth/register')
-      .send({
-        role:"Admin",
-        name:"Achraf",
-        mail: 'admin@mail.com',
-        password: 'password123'
-      });
+  const uniqueId = Date.now();
 
+  const loginResponse = await request(app)
+    .post('/auth/register')
+    .send({
+      role: "Admin",
+      name: `Admin_${uniqueId}`,
+      mail: `admin_${uniqueId}@mail.com`,
+      password: 'password123'
+    });
       
 
     expect(loginResponse.status).toBe(201);
@@ -46,30 +47,31 @@ describe('Inventory – Acceptance test with auth', () => {
 
   it('should add an article on the inventory', async () => {
     const response = await request(app)
-      .post('/inventory/add/'+userId+"/"+articleId)
+      .post(`/inventory/add/${articleId}`)
       .set('Authorization',`Bearer ${token}`)
       .send({
         quantity: 3
       });
 
+    console.log(response.body)
     expect(response.status).toBe(200);
   });
 
   it('should not add an article on the inventory', async () => {
     const response = await request(app)
-      .post('/inventory/add/abs/'+articleId)
+      .post(`/inventory/add/qsdqsd/${articleId}`)
       .set('Authorization',`Bearer ${token}`)
       .send({
         quantity: 3
       });
 
     console.log("test")
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(404);
   });
 
   it('should update the article quantity', async () => {
     const response = await request(app)
-      .patch('/inventory/update/'+userId+"/"+articleId)
+      .patch(`/inventory/update/${articleId}`)
       .set('Authorization',`Bearer ${token}`)
       .send({
         quantity: 5
@@ -80,7 +82,7 @@ describe('Inventory – Acceptance test with auth', () => {
 
   it('should not update the article quantity', async () => {
     const response = await request(app)
-      .patch('/inventory/update/'+userId+"/"+articleId)
+      .patch(`/inventory/update/${articleId}`)
       .set('Authorization',`Bearer ${token}`)
       .send({
         quantity: ""
@@ -92,7 +94,7 @@ describe('Inventory – Acceptance test with auth', () => {
 
   it('should get the article', async () => {
     const response = await request(app)
-      .get('/inventory/'+userId+"/"+articleId)
+      .get(`/inventory/${articleId}`)
       .set('Authorization',`Bearer ${token}`)
 
     expect(response.status).toBe(200);
@@ -101,7 +103,7 @@ describe('Inventory – Acceptance test with auth', () => {
 
    it('should get all the articles', async () => {
     const response = await request(app)
-      .get('/inventory/'+userId)
+      .get('/inventory/')
       .set('Authorization',`Bearer ${token}`)
 
     expect(response.status).toBe(200);
@@ -110,7 +112,7 @@ describe('Inventory – Acceptance test with auth', () => {
 
   it('should remove the article from the inventory', async () => {
     const response = await request(app)
-      .delete('/inventory/delete/'+userId+"/"+articleId)
+      .delete('/inventory/delete/'+articleId)
       .set('Authorization',`Bearer ${token}`)
 
     expect(response.status).toBe(200);
@@ -118,7 +120,7 @@ describe('Inventory – Acceptance test with auth', () => {
 
   afterAll(async ()=>{
     const deleteUser = await request(app)
-      .delete('/user/delete/'+userId)
+      .delete('/user/admin/delete/'+userId)
       .set('Authorization',`Bearer ${token}`);
 
      const deleteArticle = await request(app)

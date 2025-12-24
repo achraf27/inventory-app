@@ -10,14 +10,16 @@ describe('Supplier – Acceptance test with auth', () => {
   let articleId:string;
 
   beforeAll(async () => {
-    const loginResponse = await request(app)
-      .post('/auth/register')
-      .send({
-        role:"Admin",
-        name:"Achraf",
-        mail: 'admin@mail.com',
-        password: 'password123'
-      });
+  const uniqueId = Date.now();
+
+  const loginResponse = await request(app)
+    .post('/auth/register')
+    .send({
+      role: "Admin",
+      name: `Admin_${uniqueId}`,
+      mail: `admin_${uniqueId}@mail.com`,
+      password: 'password123'
+    });
 
       
 
@@ -48,7 +50,7 @@ describe('Supplier – Acceptance test with auth', () => {
 
   it('should create a supplier', async () => {
     const response = await request(app)
-      .post('/supplier/create/')
+      .post('/supplier/admin/create/')
       .set('Authorization',`Bearer ${token}`)
       .send({
         contact_name:"supplier",
@@ -73,7 +75,7 @@ describe('Supplier – Acceptance test with auth', () => {
 
   it('should not update a specific supplier', async () => {
     const response = await request(app)
-      .patch('/supplier/update/'+supplierId)
+      .patch('/supplier/admin/update/'+supplierId)
       .set('Authorization',`Bearer ${token}`)
       .send({
         contact_name:null,
@@ -90,7 +92,7 @@ describe('Supplier – Acceptance test with auth', () => {
 
    it('should add an article to a specific supplier', async () => {
     const response = await request(app)
-      .post(`/supplier/${supplierId}/add/article/${articleId}`)
+      .post(`/supplier/${supplierId}/admin/add/article/${articleId}`)
       .set('Authorization',`Bearer ${token}`)
 
     expect(response.status).toBe(200);
@@ -107,7 +109,7 @@ describe('Supplier – Acceptance test with auth', () => {
 
   it('should delete an article from a specific supplier', async () => {
     const response = await request(app)
-      .delete(`/supplier/${supplierId}/article/delete/${articleId}`)
+      .delete(`/supplier/${supplierId}/admin/article/delete/${articleId}`)
       .set('Authorization',`Bearer ${token}`)
 
     expect(response.status).toBe(200);
@@ -115,7 +117,7 @@ describe('Supplier – Acceptance test with auth', () => {
 
     it('should delete a specific supplier', async () => {
     const response = await request(app)
-      .delete('/supplier/delete/'+supplierId)
+      .delete('/supplier/admin/delete/'+supplierId)
       .set('Authorization',`Bearer ${token}`)
 
     expect(response.status).toBe(200);
@@ -126,7 +128,7 @@ describe('Supplier – Acceptance test with auth', () => {
 
    afterAll(async ()=>{
     const deleteUser = await request(app)
-      .delete('/user/delete/'+userId)
+      .delete('/user/admin/delete/'+userId)
       .set('Authorization',`Bearer ${token}`);
 
 

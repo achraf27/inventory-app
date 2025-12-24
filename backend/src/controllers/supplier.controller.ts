@@ -15,7 +15,7 @@ export class SupplierController{
         return res.status(200).json(supplier.toDto());
         }
         catch(e){
-            return res.status(500).json({ error: "server error"});
+            return res.status(500).json({ message: "server error"});
         }
     }
 
@@ -26,7 +26,7 @@ export class SupplierController{
     
       try{
         const supplier = await this.supplierRepo.getSupplier(Number(supplier_id));
-        if(supplier === undefined) return res.status(404).json({ error: "supplier not found" });
+        if(supplier === undefined) return res.status(404).json({ message: "supplier could not be deleted" });
     
     
         
@@ -36,7 +36,7 @@ export class SupplierController{
         
       }catch(e){
         console.log(e)
-        return res.status(500).json({ error: "server error"});
+        return res.status(500).json({ message: "server error"});
       }
     }
     
@@ -47,12 +47,12 @@ export class SupplierController{
         
           await this.supplierRepo.updateSupplier(Number(supplier_id),{contact_name,mail,phone,address})
     
-          return res.status(200).json({message:"supplier changed successfully"})
+          return res.status(200).json({message:"supplier updated successfully"})
        
         }
         catch(e){
             console.log(e);
-            return res.status(500).json({ error: "the supplier was not found"});
+            return res.status(500).json({ message: "server error"});
         }
     }
 
@@ -63,7 +63,7 @@ export class SupplierController{
     
           const supplier =  await this.supplierRepo.getSupplier(Number(supplier_id));
     
-          if(supplier === undefined) return res.status(404).json({error:"supplier not found"});
+          if(supplier === undefined) return res.status(404).json({message:"supplier not found"});
     
     
           return res.status(200).json({
@@ -74,7 +74,7 @@ export class SupplierController{
         }
         catch(e){
             console.log(e);
-            return res.status(500).json({ error: "supplier was not found"});
+            return res.status(500).json({ message: "server error"});
         }
     }
 
@@ -86,18 +86,18 @@ export class SupplierController{
     
           const supplier =  await this.supplierRepo.getAllSuppliers();
     
-          if(supplier === undefined) return res.status(404).json({error:"users not found"});
+          if(supplier === undefined) return res.status(404).json({message:"suppliers not found"});
     
     
           return res.status(200).json({
-                                 message:"supplier retrived successfully",
+                                 message:"suppliers retrived successfully",
                                  supplier: supplier 
                                 })
        
         }
         catch(e){
             console.log(e);
-            return res.status(500).json({ error: "supplier was not found"});
+            return res.status(500).json({ message: "server error"});
         }
     }
 
@@ -107,7 +107,7 @@ export class SupplierController{
         try{
           const result =  await this.supplierRepo.addArticle(Number(supplier_id),Number(article_id));
     
-          if(!result) return res.status(404).json({error:"article could not be added"});
+          if(!result) return res.status(404).json({message:"article could not be added"});
     
     
           return res.status(200).json({
@@ -117,7 +117,7 @@ export class SupplierController{
         }
         catch(e){
             console.log(e);
-            return res.status(500).json({ error: "server error"});
+            return res.status(500).json({ message: "server error"});
         }
     }
 
@@ -127,7 +127,7 @@ export class SupplierController{
     
           const result =  await this.supplierRepo.removeSupplierArticle(Number(supplier_id),Number(article_id));
     
-          if(!result) return res.status(404).json({error:"article could not be removed"});
+          if(!result) return res.status(404).json({message:"article could not be removed"});
     
     
           return res.status(200).json({
@@ -137,7 +137,7 @@ export class SupplierController{
         }
         catch(e){
             console.log(e);
-            return res.status(500).json({ error: "server error"});
+            return res.status(500).json({ message: "server error"});
         }
     }
 
@@ -146,20 +146,20 @@ export class SupplierController{
         try{
 
 
-          const supplier =  await this.supplierRepo.getAllSupplierArticles(Number(supplier_id));
+          const articles =  await this.supplierRepo.getAllSupplierArticles(Number(supplier_id));
     
-          if(supplier === undefined) return res.status(404).json({error:"articles not found"});
+          if(articles === undefined) return res.status(404).json({message:"articles not found"});
     
     
           return res.status(200).json({
                                  message:"supplier retrived successfully",
-                                 supplier: supplier 
+                                 articles: articles 
                                 })
        
         }
         catch(e){
             console.log(e);
-            return res.status(500).json({ error: "server error: supplier's articles were not found"});
+            return res.status(500).json({ message: "server error: supplier's articles were not found"});
         }
     }
 
@@ -168,11 +168,11 @@ export class SupplierController{
       const {supplier_id,article_id} = req.params;
         try{
 
-          if(isNaN(Number(supplier_id)) || isNaN(Number(article_id))) return res.status(400).json({error:"the given fields are not numbers"})
+          if(isNaN(Number(supplier_id)) || isNaN(Number(article_id))) return res.status(400).json({message:"the given fields are not numbers"})
 
           const supplier =  await this.supplierRepo.getOneSupplierArticle(Number(supplier_id),Number(article_id));
     
-          if(supplier === undefined) return res.status(404).json({error:"article not found"});
+          if(supplier === undefined) return res.status(404).json({message:"article not found"});
     
     
           return res.status(200).json({
@@ -183,7 +183,7 @@ export class SupplierController{
         }
         catch(e){
             console.log(e);
-            return res.status(500).json({ error: "server error: the article was not found"});
+            return res.status(500).json({ message: "server error: the article was not found"});
         }
     }
 
