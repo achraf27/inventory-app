@@ -3,6 +3,9 @@ import { UserRepository } from "../repositories/user.repository.js";
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcryptjs';
 
+const DEFAULT_ROLE = "User";
+
+
 
 export class AuthController{
 
@@ -15,7 +18,7 @@ export class AuthController{
       try{
         const user = await this.authRepo.getUser(name)
         console.log(user);
-        if(!user) return res.status(401).json({ error: "Invalid User" });
+        if(!user) return res.status(401).json({ message: "Invalid User" });
     
         const ok = await user.verifyPassword(password);
     
@@ -38,15 +41,15 @@ export class AuthController{
 
     register = async (req:Request, res:Response)=>{
         
-        const {role,name,password,mail} = req.body;
+        const {name,password,mail} = req.body;
         const hash = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS!));
         console.log("creation attempt name: "+name);
         try{
           
-          const user = await this.authRepo.createUser({role,name,mail,passwordHash:hash});
+          const user = await this.authRepo.createUser({role:DEFAULT_ROLE,name,mail,passwordHash:hash});
       
           const token = jwt.sign(
-            { id: user.id, role, name },
+            { id: user.id, role:user.role, name },
             process.env.JWT_SECRET!,
             { expiresIn: "20d" }
           );

@@ -2,9 +2,31 @@ import type { Request, Response } from "express";
 import { UserRepository } from "../repositories/user.repository.js";
 import bcrypt from 'bcryptjs';
 
+
+
 export class UserController{
 
     private userRepo = new UserRepository();
+
+
+    createUser = async (req:Request, res:Response)=>{
+            
+            const {role,name,password,mail} = req.body;
+            const hash = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS!));
+            try{
+              
+              const user = await this.authRepo.createUser({role,name,mail,passwordHash:hash});
+          
+              return res.status(201).json({
+                message: "user created",
+                user
+              });
+          }
+            catch(e){
+                console.log(e);
+                return res.status(500).json({message: "server error"})
+            }
+        }
 
 
     delete = async (req:Request, res:Response) => {
@@ -30,16 +52,16 @@ export class UserController{
 
     updateMail = async (req:Request, res:Response)=>{
         const{newMail} = req.body;
-        const{id} = req.params;
+        const user_id = (req as any).user.id;
     
         try{
     
-            const user =  await this.userRepo.getUser(Number(id));
+            const user =  await this.userRepo.getUser(Number(user_id));
             console.log(req.params);
             if(!user) return res.status(404).json({error:"user not found"})
     
     
-            const changes = await this.userRepo.updateMail(Number(id),newMail);
+            const changes = await this.userRepo.updateMail(Number(user_id),newMail);
     
             if(!changes) return res.status(404).json({message: "could not update the mail"})
     
@@ -53,16 +75,16 @@ export class UserController{
 
     updatePassword = async (req:Request, res:Response)=>{
         const{newPassword} = req.body;
-        const{id} = req.params
+        const user_id = (req as any).user.id;
 
         try{
             
             
-            const user =  await this.userRepo.getUser(Number(id)); 
+            const user =  await this.userRepo.getUser(Number(user_id)); 
             if(!user) return res.status(404).json({error:"user not found"})
             const hash = await bcrypt.hash(newPassword, parseInt(process.env.SALT_ROUNDS!));
 
-            const changes = await this.userRepo.updatePassword(Number(id),hash);
+            const changes = await this.userRepo.updatePassword(Number(user_id),hash);
 
             if(!changes) return res.status(404).json({message: "could not update the password"})
 
@@ -75,11 +97,11 @@ export class UserController{
     }
 
     getUser = async (req:Request, res:Response)=>{
-        const {id} = req.params;
+        const {user_id} = req.params;
         try{
     
     
-          const user =  await this.userRepo.getUser(Number(id));
+          const user =  await this.userRepo.getUser(Number(user_id));
     
           if(user === undefined) return res.status(404).json({error:"user not found"});
     
@@ -118,7 +140,53 @@ export class UserController{
             return res.status(500).json({ message: "user was not found"});
         }
     }
+    authRepo: any;
 
+     adminUpdateMail = async (req:Request, res:Response)=>{
+        const{newMail} = req.body;
+        const{user_id} = req.params;
+    
+        try{
+    
+            const user =  await this.userRepo.getUser(Number(user_id));
+            console.log(req.params);
+            if(!user) return res.status(404).json({error:"user not found"})
+    
+    
+            const changes = await this.userRepo.updateMail(Number(user_id),newMail);
+    
+            if(!changes) return res.status(404).json({message: "could not update the mail"})
+    
+    
+            return res.status(200).json({message:"mail changed successuly"})
+        }catch(e){
+            console.log(e)
+            return res.status(500).json({message:"server error"})
+        }
+    }
+
+    adminUpdatePassword = async (req:Request, res:Response)=>{
+        const{newPassword} = req.body;
+        const{user_id} = req.params
+
+        try{
+            
+            
+            const user =  await this.userRepo.getUser(Number(user_id)); 
+            if(!user) return res.status(404).json({error:"user not found"})
+            const hash = await bcrypt.hash(newPassword, parseInt(process.env.SALT_ROUNDS!));
+
+            const changes = await this.userRepo.updatePassword(Number(user_id),hash);
+
+            if(!changes) return res.status(404).json({message: "could not update the password"})
+
+            return res.status(200).json({message:"password changed successuly"})
+        }catch(e){
+            console.log(e)
+            return res.status(500).json({message:"server error"})
+        }
+        
+    }
     
 }
 
