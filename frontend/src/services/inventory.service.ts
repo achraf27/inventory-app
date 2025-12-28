@@ -40,7 +40,7 @@ export async function getAllInventoryArticles():Promise<GetAllInventoryArticlesR
 }
 
 export async function updateInventoryArticleQuantity(article_id:string,data:{quantity:string}):Promise<MessageDTO> {
-  const res = await apiClient.patch(`/inventory/${article_id}`,data,{
+  const res = await apiClient.patch(`/inventory/update/${article_id}`,data,{
     headers:{
       Authorization: `Bearer ${getToken()}`
     }

@@ -1,7 +1,7 @@
 import Sidebar from "../components/sidebar";
 import { useEffect, useState } from "react";
 import type { InventoryArticleDTO } from "../utils/types";
-import { getAllInventoryArticles } from "../services/inventory.service";
+import { getAllInventoryArticles, removeArticleFromInventory, updateInventoryArticleQuantity } from "../services/inventory.service";
 import InventoryTable from "../components/inventoryTable";
 
 export default function Inventory() {
@@ -32,6 +32,39 @@ export default function Inventory() {
     }
   }
 
+
+  async function handleDelete(articleId: number) {
+  try {
+    await removeArticleFromInventory(String(articleId));
+
+    setInventory(prev => prev.filter(a => a.article_id !== articleId));
+  } catch (err) {
+    console.error(err);
+    setError("Erreur lors de la suppression");
+  }
+}
+
+async function handleUpdateQuantity(articleId: number,quantity:string):Promise<void> {
+  try {
+    await updateInventoryArticleQuantity(String(articleId),{quantity})
+
+   setInventory((prevInventory) =>
+      prevInventory.map((article) =>
+        article.article_id === articleId
+          ? { ...article, quantity: Number(quantity) }
+          : article
+      )
+    );
+  } catch (err) {
+    console.error(err);
+    setError("Erreur lors de la modification");
+  }
+}
+
+
+
+
+
   useEffect(() => {
     loadInventory();
   }, []);
@@ -48,7 +81,7 @@ export default function Inventory() {
       {inventory.length === 0 ? (
         <p>L’inventaire est vide.</p>
       ) :(
-          <InventoryTable articles={inventory}/>
+          <InventoryTable articles={inventory} onDelete={handleDelete} onUpdateQuantity={handleUpdateQuantity}/>
           )}
     </>
   );

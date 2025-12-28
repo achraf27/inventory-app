@@ -1,34 +1,48 @@
-import { use, useState } from "react";
-import type { InventoryArticleDTO } from "../utils/types"
-import { removeArticleFromInventory } from "../services/inventory.service";
+import { useState } from "react";
+import type { InventoryArticleDTO } from "../utils/types";
+
 type Props = {
-    article: InventoryArticleDTO
+  article: InventoryArticleDTO;
+  onDelete: (id: number) => void;
+  onUpdateQuantity: (id: number, newQuantity: string) => Promise<void>;
 };
 
-export default function InventoryRow({article}:Props){
-    const [message,setMessage]=useState<String|null>("")
+export default function InventoryRow({ article, onDelete, onUpdateQuantity }: Props) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [quantity, setQuantity] = useState(article.quantity);
 
+  const handleSave = async () => {
+    await onUpdateQuantity(article.article_id, String(quantity));
+    setIsEditing(false);
+  };
 
-    const handleDelete = async () => {
-        setMessage(null);
-        const result = await removeArticleFromInventory(String(article.article_id))
-        setMessage(result.message);
-
-
-    }
-
-    return(
-        <>
-        {message && <p style={{color:"green"}}>{message}</p>}
-     <tr key={article.article_id}>
-                <td>{article.name}</td>
-                <td>{article.quantity}</td>
-                <td>{article.unit}</td>
-                <td>
-                  <button onClick={async () => await handleDelete()}>Delete</button>
-                  {/* <button onClick={() => navigate(`/inventory/${item.articleId}/edit`)}>Modify</button> */}
-                </td>
+  return (
+    <tr key={`${article.user_id}-${article.article_id}`}>
+      <td>{article.name}</td>
+      <td>
+        {isEditing ? (
+          <input
+            type="number"
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+            style={{ width: "60px" }}
+          />
+        ) : (
+          article.quantity
+        )}
+      </td>
+      <td>{article.unit}</td>
+      <td>
+        <button onClick={async () => onDelete(article.article_id)}>Supprimer</button>
+        {isEditing ? (
+          <>
+            <button onClick={handleSave}>Enregistrer</button>
+            <button onClick={() => setIsEditing(false)}>Annuler</button>
+          </>
+        ) : (
+          <button onClick={() => setIsEditing(true)}>Modifier la quantité</button>
+        )}
+      </td>
     </tr>
-    </>
-    )
+  );
 }
