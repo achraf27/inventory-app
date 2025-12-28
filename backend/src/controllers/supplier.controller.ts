@@ -141,12 +141,33 @@ export class SupplierController{
         }
     }
 
-    getAllSupplierArticles = async (req:Request, res:Response)=>{
+    getAllSuppliersArticles = async (req:Request, res:Response)=>{
+        try{
+
+
+          const articles =  await this.supplierRepo.getAllSupplierArticles();
+    
+          if(articles === undefined) return res.status(404).json({message:"articles not found"});
+    
+    
+          return res.status(200).json({
+                                 message:"supplier retrived successfully",
+                                 articles: articles 
+                                })
+       
+        }
+        catch(e){
+            console.log(e);
+            return res.status(500).json({ message: "server error: supplier's articles were not found"});
+        }
+    }
+
+    getAllArticlesBySupplier = async (req:Request, res:Response)=>{
       const {supplier_id} = req.params;
         try{
 
 
-          const articles =  await this.supplierRepo.getAllSupplierArticles(Number(supplier_id));
+          const articles =  await this.supplierRepo.getAllArticlesBySupplierId(Number(supplier_id));
     
           if(articles === undefined) return res.status(404).json({message:"articles not found"});
     

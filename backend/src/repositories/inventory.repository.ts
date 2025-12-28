@@ -19,8 +19,9 @@ export class InventoryRepository{
     }
 
     private mapRowToInventoryArticle(row:InventoryArticleRow):InventoryArticle{
-            return new InventoryArticle(row.article_id,
+            return new InventoryArticle(
                                                  row.user_id,
+                                                 row.article_id,
                                                  row.name,
                                                  row.quantity,
                                                  row.unit);

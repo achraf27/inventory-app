@@ -6,13 +6,13 @@ import { checkBody } from '../middlewares/checkBody.middleware.js';
 
 const router = Router();
 
+router.get('/',authMiddleware,inventoryController.getAllArticles);
+
 router.post('/add/:article_id',authMiddleware,checkParams(["article_id"]),checkBody(["quantity"]),inventoryController.add)
 
 router.delete('/delete/:article_id',authMiddleware,checkParams(["article_id"]),inventoryController.delete);
 
 router.get('/:article_id',authMiddleware,checkParams(["article_id"]),inventoryController.getOneArticle);
-
-router.get('/',authMiddleware,inventoryController.getAllArticles);
 
 router.patch('/update/:article_id',authMiddleware,checkParams(["article_id"]),checkBody(["quantity"]),inventoryController.updateQuantity);
 

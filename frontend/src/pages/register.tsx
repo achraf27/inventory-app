@@ -1,22 +1,32 @@
 import { useState } from "react";
-import { register } from "../services/auth.service";// pour le typage si besoin
+import { register } from "../services/auth.service";
 import { Link } from "react-router-dom";
 
 export default function Register() {
-  const [username, setUsername] = useState("");
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] =  useState<string | null>(null);
+  
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [mail, setMail] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     console.log("SUBMIT FIRED");
     e.preventDefault();
+    setMessage(null);
+    setError(null);
     try {
-      const res = await register({username,mail,password});
+      const res = await register({name,mail,password});
       console.log(res);
-      alert(res);
+       setMessage(
+     res.message
+    );
     } catch (err) {
-      console.error(err);
-      alert(err);
+      console.log(err.response.data)
+       setError(
+     err.response.data.error
+     || err.response.data.message
+    );
     }
   }
 
@@ -31,8 +41,8 @@ export default function Register() {
           type="text"
         />
         <input
-          onChange={(e) => setUsername(e.target.value)}
-          value={username}
+          onChange={(e) => setName(e.target.value)}
+          value={name}
           placeholder="username"
           type="text"
         />
@@ -44,6 +54,21 @@ export default function Register() {
         />
         <input type="submit" value="Submit" />
       </form>
+            {error && (
+        <p style={{ color: "red" }}>
+          {error}
+        </p>
+
+        
+      )}
+
+       {message && (
+        <p style={{ color: "green" }}>
+          {message}
+        </p>
+        
+      )}
+
        <Link to ="/">
         <button>retourner dans la page principale</button>
         </Link>

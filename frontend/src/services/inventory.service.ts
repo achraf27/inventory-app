@@ -2,7 +2,7 @@ import type { GetAllInventoryArticlesResponse, GetOneInventoryArticleResponse, M
 import { apiClient } from './apiClient';
 import { getToken } from './auth.service';
 
-export async function addArticle(article_id:number,data:{quantity:number}):Promise<GetOneInventoryArticleResponse> {
+export async function addArticleToInventory(article_id:string,data:{quantity:string}):Promise<GetOneInventoryArticleResponse> {
   const res = await apiClient.post(`/inventory/add/${article_id}`,data,{
     headers:{
       Authorization: `Bearer ${getToken()}`
@@ -11,7 +11,7 @@ export async function addArticle(article_id:number,data:{quantity:number}):Promi
   return res.data;
 }
 
-export async function deleteArticle(article_id:number):Promise<MessageDTO>{
+export async function removeArticleFromInventory(article_id:string):Promise<MessageDTO>{
   const res = await apiClient.delete(`/inventory/delete/${article_id}`,{
     headers:{
       Authorization: `Bearer ${getToken()}`
@@ -21,7 +21,7 @@ export async function deleteArticle(article_id:number):Promise<MessageDTO>{
 }
 
 
-export async function getOneArticle(article_id:number):Promise<GetOneInventoryArticleResponse> {
+export async function getOneArticleFromInventory(article_id:string):Promise<GetOneInventoryArticleResponse> {
   const res = await apiClient.get(`/inventory/${article_id}`,{
     headers:{
       Authorization: `Bearer ${getToken()}`
@@ -30,8 +30,8 @@ export async function getOneArticle(article_id:number):Promise<GetOneInventoryAr
   return res.data;
 }
 
-export async function getAllArticles():Promise<GetAllInventoryArticlesResponse> {
-  const res = await apiClient.get(`/inventory}`,{
+export async function getAllInventoryArticles():Promise<GetAllInventoryArticlesResponse> {
+  const res = await apiClient.get(`/inventory/`,{
     headers:{
       Authorization: `Bearer ${getToken()}`
     }
@@ -39,8 +39,8 @@ export async function getAllArticles():Promise<GetAllInventoryArticlesResponse> 
   return res.data;
 }
 
-export async function updateArticleQuantity(article_id:number,data:{quantity:number}):Promise<MessageDTO> {
-  const res = await apiClient.patch(`/inventory${article_id}`,data,{
+export async function updateInventoryArticleQuantity(article_id:string,data:{quantity:string}):Promise<MessageDTO> {
+  const res = await apiClient.patch(`/inventory/${article_id}`,data,{
     headers:{
       Authorization: `Bearer ${getToken()}`
     }

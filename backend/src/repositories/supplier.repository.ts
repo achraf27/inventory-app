@@ -33,12 +33,12 @@ export class SupplierRepository{
         }
     
         public async getSupplier(supplier_id:number):Promise<Supplier|undefined>{
-            const row = await this.supplierDao.findById(supplier_id);
+            const row = await this.supplierDao.findBySupplierId(supplier_id);
             return row? this.mapRowToSupplier(row) : undefined;
         }
 
          public async getAllSuppliers():Promise<Supplier[] | undefined>{
-                const rows = await this.supplierDao.findAll();
+                const rows = await this.supplierDao.findAllSuppliers();
                 return  rows.map(row => this.mapRowToSupplier(row));
             }
         
@@ -82,7 +82,12 @@ export class SupplierRepository{
             return result >  0;
         }
 
-        public async getAllSupplierArticles(supplierId:number):Promise<SupplierArticle[]|undefined>{
+          public async getAllSupplierArticles():Promise<SupplierArticle[]|undefined>{
+            const rows = await this.supplierArticleDao.findAllSuppliersArticles();
+            return  rows ? rows.map(row => this.mapRowToSupplierArticle(row)):undefined;
+        }
+
+        public async getAllArticlesBySupplierId(supplierId:number):Promise<SupplierArticle[]|undefined>{
             const rows = await this.supplierArticleDao.findBySupplierId(supplierId);
             return  rows ? rows.map(row => this.mapRowToSupplierArticle(row)):undefined;
         }

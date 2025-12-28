@@ -1,6 +1,6 @@
   export type AuthResponseDto = {
     message: string;
-    token: string;
+    token?: string;
 };
 
   
@@ -26,8 +26,8 @@
 // };
 
 export type InventoryArticleDTO = {
-  userId: number;
-  articleId: number;
+  user_id: number;
+  article_id: number;
   name:string;
   quantity: number;
   unit:string;
@@ -52,7 +52,7 @@ export type SupplierDTO = {
   address:string;
 };
 
-type SupplierArticleDTO = {
+export type SupplierArticleDTO = {
   article_id: number;
   supplier_id:number;
   name:string;

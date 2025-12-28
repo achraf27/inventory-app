@@ -18,11 +18,11 @@ export class InventoryController{
 
         const article = await this.inventoryRepo.addArticle({articleId :Number(article_id), userId: Number(user_id), quantity:Number(quantity)});
         return res.status(200).json({
-                                message: "article successfully added",
+                                message: "Article successfully added",
                                 article: article});
         }
         catch(e){
-            return res.status(500).json({ message: "server error"});
+            return res.status(500).json({ message: "Server error."});
         }
     }
 
@@ -40,14 +40,14 @@ export class InventoryController{
         
         
               return res.status(200).json({
-                                     message:"articles retrived successfully",
-                                     article: article 
+                                     message:"Articles retrived successfully",
+                                     articles: article 
                                     })
            
             }
             catch(e){
                 console.log(e);
-                return res.status(500).json({ message: "server error"});
+                return res.status(500).json({ message: "Server error."});
             }
     }
     
@@ -65,14 +65,14 @@ export class InventoryController{
         
         
               return res.status(200).json({
-                                     message:"article retrived successfully",
+                                     message:"Article retrived successfully",
                                      article: article 
                                     })
            
             }
             catch(e){
                 console.log(e);
-                return res.status(500).json({ message: "server error"});
+                return res.status(500).json({ message: "Server error."});
             }
     }
 
@@ -83,15 +83,21 @@ export class InventoryController{
         
         
           try{
-        
-        
-            await this.inventoryRepo.removeArticle(Number(user_id), Number(article_id));
+
+            console.log("DELETE inventory", {
+              user_id,
+              article_id
+            });
+
+            const result = await this.inventoryRepo.removeArticle(Number(user_id), Number(article_id));
             
-            return res.status(200).json({message : "the article was successfully deleted"})
+            if(result) return res.status(200).json({message : "The article was successfully deleted."})
+
+            return res.status(404).json({message : "Article not found in inventory."})
           }
           catch(e){
               console.log(e);
-              return res.status(500).json({ message: "server error"});
+              return res.status(500).json({ message: "Server error."});
           }
         }
 
@@ -105,11 +111,11 @@ export class InventoryController{
         
             await this.inventoryRepo.updateQuantity(Number(user_id), Number(article_id),Number(quantity));
             
-            return res.status(200).json({message : "the article was successfully updated"})
+            return res.status(200).json({message : "The article was successfully updated."})
           }
           catch(e){
               console.log(e);
-              return res.status(500).json({ message: "server error"});
+              return res.status(500).json({ message: "Server error."});
           }
         }
 

@@ -48,5 +48,15 @@ export class SupplierArticleDao{
                   `, [supplierId,articleId]);
                 return row as SupplierArticleRow;
         }
+
+    async findAllSuppliersArticles(): Promise<SupplierArticleRow[] | undefined> {
+            const db = await Db.getConnection();
+            const rows = await db.all(`
+                          SELECT s.supplier_id, s.article_id, a.name, a.unit
+                          FROM suppliers_articles s
+                          JOIN articles a ON s.article_id = a.id
+                      `)
+                return rows as SupplierArticleRow[];
+    }
     
 }

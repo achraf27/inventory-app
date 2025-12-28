@@ -3,8 +3,10 @@ import { login } from "../services/auth.service";// pour le typage si besoin
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+   const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] =  useState<string | null>(null);
 
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
@@ -12,14 +14,18 @@ export default function Login() {
   async function handleSubmit(e: React.FormEvent) {
     console.log("SUBMIT FIRED");
     e.preventDefault();
+    setMessage(null);
+    setError(null);
     try {
-      const res = await login({username,password});
+      const res = await login({name,password});
       console.log("Connexion réussie :", res);
-      alert("Connexion réussie !");
+      setMessage(res.message);
       navigate("/dashboard")
     } catch (err) {
-      console.error(err);
-      alert("Erreur de connexion");
+      console.error(err.response);
+      setError(
+         err.response.data.message
+      )
     }
   }
 
@@ -28,8 +34,8 @@ export default function Login() {
       <h1>Login page</h1>
       <form onSubmit={handleSubmit}>
         <input
-          onChange={(e) => setUsername(e.target.value)}
-          value={username}
+          onChange={(e) => setName(e.target.value)}
+          value={name}
           placeholder="username"
           type="text"
         />
@@ -41,6 +47,21 @@ export default function Login() {
         />
         <input type="submit" value="Submit" />
       </form>
+
+       {error && (
+        <p style={{ color: "red" }}>
+          {error}
+        </p>
+
+        
+      )}
+
+       {message && (
+        <p style={{ color: "green" }}>
+          {message}
+        </p>
+        
+      )}
 
     </>
   );

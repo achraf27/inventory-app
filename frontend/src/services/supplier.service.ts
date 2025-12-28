@@ -1,4 +1,4 @@
-import type { SupplierDTO, MessageDTO, GetAllSuppliersResponse, GetOneSupplierArticleResponse } from '../utils/types';
+import type { SupplierDTO, MessageDTO, GetAllSuppliersResponse, GetOneSupplierArticleResponse, GetAllSupplierArticlesResponse } from '../utils/types';
 import { apiClient } from './apiClient';
 import { getToken } from './auth.service';
 
@@ -67,7 +67,7 @@ export async function removeSupplierArticle(supplier_id:number,article_id:number
   return res.data;
 }
 
-export async function getAllSupplierArticles(supplier_id:number):Promise<GetAllSuppliersResponse> {
+export async function getAllArticlesBySupplier(supplier_id:number):Promise<GetAllSuppliersResponse> {
   const res = await apiClient.get(`/supplier/${supplier_id}/article`,{
     headers:{
       Authorization: `Bearer ${getToken()}`
@@ -78,6 +78,15 @@ export async function getAllSupplierArticles(supplier_id:number):Promise<GetAllS
 
 export async function getOneSupplierArticles(supplier_id:number,article_id:number):Promise<GetOneSupplierArticleResponse> {
   const res = await apiClient.get(`/supplier/${supplier_id}/article/${article_id}`,{
+    headers:{
+      Authorization: `Bearer ${getToken()}`
+    }
+    });
+  return res.data;
+}
+
+export async function getAllSuppliersArticles():Promise<GetAllSupplierArticlesResponse> {
+  const res = await apiClient.get(`/supplier/articles`,{
     headers:{
       Authorization: `Bearer ${getToken()}`
     }

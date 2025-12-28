@@ -7,9 +7,10 @@ export default function Sidebar(){
     return(
         <>
         <div className="flex">
-            <a onClick={()=>{navigate("/Dashboard")}}> Dashboard </a>
-            <a onClick={()=>{navigate("/stocks")}}> Products </a>
-            <a href=""> LogOut</a>
+            <a onClick={()=>{navigate("/dashboard")}}> Dashboard </a>
+            <a onClick={()=>{navigate("/inventory")}}> Inventaire </a>
+            <a onClick={()=>{navigate("/catalog")}}> Catalogue </a>
+            <a href=""> Deconnexion</a>
         </div>
         </>
     )

@@ -30,13 +30,13 @@ export class SupplierDao{
 
     }
 
-    async findById(id:number): Promise<SupplierRow | undefined> {
+    async findBySupplierId(id:number): Promise<SupplierRow | undefined> {
         const db = await Db.getConnection();
         const row = await db.get("SELECT * FROM suppliers WHERE id = ?", id);
         return row as SupplierRow|undefined;
     }
 
-    async findAll(): Promise<SupplierRow []> {
+    async findAllSuppliers(): Promise<SupplierRow []> {
             const db = await Db.getConnection();
              const rows = await db.all( `
                 SELECT
