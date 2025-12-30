@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { logOut } from "../services/auth.service";
 
 export default function Sidebar(){
 
@@ -10,7 +11,7 @@ export default function Sidebar(){
             <a onClick={()=>{navigate("/dashboard")}}> Dashboard </a>
             <a onClick={()=>{navigate("/inventory")}}> Inventaire </a>
             <a onClick={()=>{navigate("/catalog")}}> Catalogue </a>
-            <a href=""> Deconnexion</a>
+            <a onClick={()=>{logOut(); navigate("/");}}> Deconnexion</a>
         </div>
         </>
     )

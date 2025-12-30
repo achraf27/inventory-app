@@ -16,6 +16,7 @@ export default function CatalogRow({article}:Props){
 
     return(
     <tr>
+        <td>{article.contact_name}</td>
         <td>{article.name}</td>
         
         <td>

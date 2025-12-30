@@ -10,6 +10,7 @@ export default function CatalogTable({articles}:Props){
         <table>
             <thead>
                 <tr>
+                    <th>Fournisseur</th>
                     <th>Nom</th>
                     <th>Unite</th>
                     <th>Quantité</th>

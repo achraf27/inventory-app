@@ -29,7 +29,7 @@ export class SupplierRepository{
         }
 
         private mapRowToSupplierArticle(row:SupplierArticleRow):SupplierArticle{
-            return new SupplierArticle(row.article_id,row.supplier_id,row.name ?? "Unknown",row.unit ?? "Unknown");
+            return new SupplierArticle(row.article_id,row.supplier_id,row.contact_name??"Unknown",row.name ?? "Unknown",row.unit ?? "Unknown");
         }
     
         public async getSupplier(supplier_id:number):Promise<Supplier|undefined>{

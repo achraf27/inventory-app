@@ -52,9 +52,15 @@ export class SupplierArticleDao{
     async findAllSuppliersArticles(): Promise<SupplierArticleRow[] | undefined> {
             const db = await Db.getConnection();
             const rows = await db.all(`
-                          SELECT s.supplier_id, s.article_id, a.name, a.unit
-                          FROM suppliers_articles s
-                          JOIN articles a ON s.article_id = a.id
+                           SELECT
+                            sa.supplier_id,
+                            sa.article_id,
+                            s.contact_name,
+                            a.name,
+                            a.unit
+                          FROM suppliers_articles sa
+                          JOIN suppliers s ON sa.supplier_id = s.id
+                          JOIN articles a ON sa.article_id = a.id
                       `)
                 return rows as SupplierArticleRow[];
     }
