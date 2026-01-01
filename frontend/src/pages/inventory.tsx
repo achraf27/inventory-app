@@ -2,7 +2,7 @@ import Sidebar from "../components/sidebar";
 import { useEffect, useState } from "react";
 import type { InventoryArticleDTO } from "../utils/types";
 import { getAllInventoryArticles, removeArticleFromInventory, updateInventoryArticleQuantity } from "../services/inventory.service";
-import InventoryTable from "../components/inventoryTable";
+import InventoryTable from "../components/inventory/inventory.table";
 
 export default function Inventory() {
   const [inventory, setInventory] = useState<InventoryArticleDTO[]>([]);

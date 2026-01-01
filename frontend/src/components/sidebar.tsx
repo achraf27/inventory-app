@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { logOut } from "../services/auth.service";
+import { getRole, logOut } from "../services/auth.service";
 
 export default function Sidebar(){
+
+    const role = getRole();
 
     const navigate = useNavigate();
 
@@ -9,8 +11,20 @@ export default function Sidebar(){
         <>
         <div className="flex">
             <a onClick={()=>{navigate("/dashboard")}}> Dashboard </a>
-            <a onClick={()=>{navigate("/inventory")}}> Inventaire </a>
-            <a onClick={()=>{navigate("/catalog")}}> Catalogue </a>
+
+            {role === "User" && (
+        <>
+          <a onClick={() => navigate("/inventory")}>Inventaire</a>
+          <a onClick={() => navigate("/catalog")}>Catalogue</a>
+        </>
+      )}
+
+      {role === "Admin" && (
+        <>
+          <a onClick={() => navigate("/admin/users")}>Utilisateurs</a>
+          <a onClick={() => navigate("/admin/suppliers")}>Fournisseurs</a>
+        </>
+      )}
             <a onClick={()=>{logOut(); navigate("/");}}> Deconnexion</a>
         </div>
         </>

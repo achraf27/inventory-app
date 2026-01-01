@@ -3,8 +3,8 @@ import { apiClient } from './apiClient';
 import { getToken } from './auth.service';
 
 
-export async function createUser():Promise<MessageDTO>{
-  const res = await apiClient.delete(`/user/admin/user`,{
+export async function createUser(data:{role:string,name:string,password:string,mail:string}):Promise<MessageDTO>{
+  const res = await apiClient.post(`/user/admin/user`,data,{
     headers:{
       Authorization: `Bearer ${getToken()}`
     }
@@ -32,6 +32,23 @@ export async function updateMail(newMail:string):Promise<MessageDTO> {
 
 export async function updatePassword(newPassword:string):Promise<MessageDTO> {
   const res = await apiClient.patch(`/user/update/password`,{newPassword},{
+    headers:{
+      Authorization: `Bearer ${getToken()}`
+    }
+  });
+  return res.data;
+}
+export async function adminUpdateRole(user_id:number,newRole:string):Promise<MessageDTO> {
+  const res = await apiClient.patch(`/user/admin/update/${user_id}/role`,{newRole},{
+    headers:{
+      Authorization: `Bearer ${getToken()}`
+    }
+  });
+  return res.data;
+}
+
+export async function adminUpdateName(user_id:number,newName:string):Promise<MessageDTO> {
+  const res = await apiClient.patch(`/user/admin/update/${user_id}/name`,{newName},{
     headers:{
       Authorization: `Bearer ${getToken()}`
     }

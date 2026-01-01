@@ -1,6 +1,6 @@
 import { useState } from "react"
-import type { SupplierArticleDTO } from "../utils/types"
-import { addArticleToInventory } from "../services/inventory.service"
+import type { SupplierArticleDTO } from "../../utils/types"
+import { addArticleToInventory } from "../../services/inventory.service"
 
 type Props = {
     article: SupplierArticleDTO

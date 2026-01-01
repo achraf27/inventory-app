@@ -1,5 +1,5 @@
-import type { InventoryArticleDTO } from "../utils/types";
-import InventoryRow from "./inventoryRow";
+import type { InventoryArticleDTO } from "../../utils/types";
+import InventoryRow from "./inventory.row";
 
 type Props = {
     articles: InventoryArticleDTO[];

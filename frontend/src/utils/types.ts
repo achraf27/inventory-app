@@ -83,3 +83,6 @@ export type UserDTO = {
   mail: string;
   role: string;
 };
+
+export type UserRole = "Admin" | "User";
+

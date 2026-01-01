@@ -63,6 +63,11 @@ export class UserRepository{
         return changes > 0;
     }
 
+    public async updateName(_id:number,_name:string):Promise<boolean>{
+        const changes = await this.UserDao.updateName(_id,_name);
+        return changes > 0;
+    }
+
     public async updateMail(_id:number,_mail:string):Promise<boolean>{
         const changes = await this.UserDao.updateMail(_id,_mail);
         return changes > 0;

@@ -15,7 +15,7 @@ export class UserController{
             const hash = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS!));
             try{
               
-              const user = await this.authRepo.createUser({role,name,mail,passwordHash:hash});
+              const user = await this.userRepo.createUser({role,name,mail,passwordHash:hash});
           
               return res.status(201).json({
                 message: "user created",
@@ -36,7 +36,7 @@ export class UserController{
     
       try{
         const user = await this.userRepo.getUser(Number(user_id));
-        if(user === undefined) return res.status(404).json({ error: "user not found" });
+        if(user === undefined) return res.status(404).json({ message: "user not found" });
     
     
         
@@ -58,7 +58,7 @@ export class UserController{
     
             const user =  await this.userRepo.getUser(Number(user_id));
             console.log(req.params);
-            if(!user) return res.status(404).json({error:"user not found"})
+            if(!user) return res.status(404).json({message:"user not found"})
     
     
             const changes = await this.userRepo.updateMail(Number(user_id),newMail);
@@ -81,7 +81,7 @@ export class UserController{
             
             
             const user =  await this.userRepo.getUser(Number(user_id)); 
-            if(!user) return res.status(404).json({error:"user not found"})
+            if(!user) return res.status(404).json({message:"user not found"})
             const hash = await bcrypt.hash(newPassword, parseInt(process.env.SALT_ROUNDS!));
 
             const changes = await this.userRepo.updatePassword(Number(user_id),hash);
@@ -103,7 +103,7 @@ export class UserController{
     
           const user =  await this.userRepo.getUser(Number(user_id));
     
-          if(user === undefined) return res.status(404).json({error:"user not found"});
+          if(user === undefined) return res.status(404).json({message:"user not found"});
     
     
           return res.status(200).json({
@@ -126,12 +126,12 @@ export class UserController{
     
           const users =  await this.userRepo.getAllUsers();
     
-          if(users === undefined) return res.status(404).json({error:"users not found"});
+          if(users === undefined) return res.status(404).json({message:"users not found"});
     
     
           return res.status(200).json({
                                  message:"user retrived successfully",
-                                 user: users 
+                                 users: users 
                                 })
        
         }
@@ -140,7 +140,52 @@ export class UserController{
             return res.status(500).json({ message: "user was not found"});
         }
     }
-    authRepo: any;
+    
+     adminUpdateRole = async (req:Request, res:Response)=>{
+        const{newRole} = req.body;
+        const{user_id} = req.params;
+    
+        try{
+    
+            const user =  await this.userRepo.getUser(Number(user_id));
+            console.log(req.params);
+            if(!user) return res.status(404).json({message:"user not found"})
+    
+    
+            const changes = await this.userRepo.updateRole(Number(user_id),newRole);
+    
+            if(!changes) return res.status(404).json({message: "could not update the role"})
+    
+    
+            return res.status(200).json({message:"mail changed successuly"})
+        }catch(e){
+            console.log(e)
+            return res.status(500).json({message:"server error"})
+        }
+    }
+
+         adminUpdateName = async (req:Request, res:Response)=>{
+        const{newName} = req.body;
+        const{user_id} = req.params;
+    
+        try{
+    
+            const user =  await this.userRepo.getUser(Number(user_id));
+            console.log(req.params);
+            if(!user) return res.status(404).json({message:"user not found"})
+    
+    
+            const changes = await this.userRepo.updateMail(Number(user_id),newName);
+    
+            if(!changes) return res.status(404).json({message: "could not update the name"})
+    
+    
+            return res.status(200).json({message:"name changed successuly"})
+        }catch(e){
+            console.log(e)
+            return res.status(500).json({message:"server error"})
+        }
+    }
 
      adminUpdateMail = async (req:Request, res:Response)=>{
         const{newMail} = req.body;

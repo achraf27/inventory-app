@@ -32,6 +32,17 @@ export class UserDao{
       return result.changes!;
     }
 
+    async updateName(id:number, mail:string):Promise<number>{
+        const db = await Db.getConnection()
+
+        const result = await db.run("UPDATE users set name = ?  WHERE id = ?",
+            mail,
+            id
+      );
+      return result.changes!;
+    }
+
+
     async updateMail(id:number, mail:string):Promise<number>{
         const db = await Db.getConnection()
 

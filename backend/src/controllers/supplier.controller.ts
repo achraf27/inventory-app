@@ -91,7 +91,7 @@ export class SupplierController{
     
           return res.status(200).json({
                                  message:"suppliers retrived successfully",
-                                 supplier: supplier 
+                                 suppliers: supplier 
                                 })
        
         }

@@ -2,7 +2,7 @@ import Sidebar from "../components/sidebar";
 import { useEffect, useState } from "react";
 import type { SupplierArticleDTO } from "../utils/types";
 import { getAllSuppliersArticles } from "../services/supplier.service";
-import CatalogTable from "../components/catalogTable";
+import CatalogTable from "../components/catalog/catalog.table";
 
 export default function Catalog() {
   const [articles, setArticles] = useState<SupplierArticleDTO[]>([]);

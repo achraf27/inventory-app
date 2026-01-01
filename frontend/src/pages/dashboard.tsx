@@ -2,9 +2,11 @@ import { useState,useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import  Sidebar  from "../components/sidebar"
 import { getAllInventoryArticles } from "../services/inventory.service";
+import { getRole } from "../services/auth.service";
 
 
 export default function Dashboard() {
+   const role = getRole();
 
   const [totalStock,setTotalStock] = useState<number|null>(null)
 
@@ -29,8 +31,13 @@ export default function Dashboard() {
             <div className = 'flex-1 ml-16 md:ml-64 bg-gray-100 min-h-screen'>
                 <Outlet/>
                 <h1>Bienvenue</h1>
+
+
+      {role === "User" && (
                 <h2>Stock total: {totalStock}</h2>
+                )}
             </div>
+            
 
         </div>
       </>
