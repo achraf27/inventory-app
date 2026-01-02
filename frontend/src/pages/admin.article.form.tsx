@@ -73,12 +73,15 @@ export default function AdminArticleForm(){
           placeholder="Nom"
           type="text"
         />
-        <input
-        onChange={(e) => setUnit(e.target.value)}
-        value={unit}
-          placeholder="Unité"
-          type="text"
-        />
+         <select id="choix" name="choix" value={unit} aria-placeholder="Rôle"
+        onChange={(e)=>setUnit(e.target.value)}>
+            <option value="" disabled>
+            -- Sélectionnez une unité --
+            </option>
+            <option value="litres">litres</option>
+            <option value="kg">kg</option>
+            <option value="grammes">grammes</option>
+            </select>
       
         
         

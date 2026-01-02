@@ -68,37 +68,41 @@ export default function AdminSupplierForm(){
      {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
      {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
 
+
+        <h3>Informations fournisseur : </h3>
     <form onSubmit={async (e)=> {e.preventDefault() 
                            await handleSubmit()
                             }}>
+        <label>Nom de contact </label>
         <input
         onChange={(e) => setContactName(e.target.value)}
         value={contactName}
-          placeholder="Nom de contact"
           type="text"
         />
+        <label>Mail </label>
         <input
         onChange={(e) => setMail(e.target.value)}
         value={mail}
-          placeholder="Mail"
           type="email"
         />
-      
+        <label>Numero de telephone </label>
         <input
             onChange={(e) => setPhone(e.target.value)}
             value={phone}
-            placeholder="Numéro de telephone"
             type="tel"
         />
 
+        <label>Addresse </label>
          <input
             onChange={(e) => setAddress(e.target.value)}
             value={address}
             placeholder="Addresse"
             type="text"
         />
-        
-        
+
+        <h3>Articles associées : </h3>
+
+
         <input type="submit" value={isEditMode ? "Mettre à jour" : "Créer"} />
       </form>
 
