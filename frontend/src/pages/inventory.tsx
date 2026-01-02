@@ -1,4 +1,3 @@
-import Sidebar from "../components/sidebar";
 import { useEffect, useState } from "react";
 import type { InventoryArticleDTO } from "../utils/types";
 import { getAllInventoryArticles, removeArticleFromInventory, updateInventoryArticleQuantity } from "../services/inventory.service";
@@ -71,7 +70,6 @@ async function handleUpdateQuantity(articleId: number,quantity:string):Promise<v
 
   return (
     <>
-      <Sidebar />
 
       <h1>Inventaire</h1>
 

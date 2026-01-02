@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/sidebar";
 import { useEffect, useState } from "react";
 import type {  UserDTO } from "../utils/types";
-import { getAllUsers } from "../services/user.service";
+import { deleteUser, getAllUsers } from "../services/user.service";
 import UserTable from "../components/admin.user/user.table";
 
 
 export default function AdminUsers() {
   const [users, setUsers] = useState<UserDTO[]>([]);
+  const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -33,13 +33,24 @@ export default function AdminUsers() {
     }
   }
 
+
+    async function onDelete(userId: number) {
+      try {
+        const res = await deleteUser(Number(userId));
+        setMessage(res.message)
+        setUsers(prev => prev.filter(a => a.id !== userId));
+      } catch (err) {
+        console.error(err);
+        setError("Erreur lors de la suppression");
+      }
+    }
+
   useEffect(() => {
     loadUsers();
   }, []);
 
   return (
     <>
-      <Sidebar />
 
       <h1>Utilisateurs</h1>
 
@@ -49,11 +60,13 @@ export default function AdminUsers() {
 
       {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
 
+      {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
+
 
       {users.length === 0 ? (
         <p>La liste d'utilisateurs est vide.</p>
       ) :(
-          <UserTable users={users}/>
+          <UserTable users={users} onDelete ={onDelete}/>
           )}
     </>
   );

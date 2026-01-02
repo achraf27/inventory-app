@@ -6,8 +6,9 @@ import { checkParams } from '../middlewares/checkParams.middleware.js';
 
 const router = Router();
 
+router.get('',authMiddleware, articleController.getAllArticles);
 router.post('/add',authMiddleware,checkBody(["name","unit"]), articleController.create);
-router.get('/:id',authMiddleware,checkParams(["article_id"]), articleController.getArticle);
+router.get('/:article_id',authMiddleware,checkParams(["article_id"]), articleController.getArticle);
 router.patch('/update/:article_id',checkParams(["article_id"]),checkBody(["name","unit"]),authMiddleware,articleController.update);
 router.delete('/delete/:article_id',authMiddleware,checkParams(["article_id"]),articleController.delete);
 

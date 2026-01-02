@@ -4,9 +4,10 @@ import SupplierRow from "./supplier.row";
 
 type Props = {
     suppliers: SupplierDTO[];
+    onDelete:(id:number)=>void;
 }
 
-export default function SupplierTable({suppliers}:Props){
+export default function SupplierTable({suppliers, onDelete}:Props){
     return(
         <table>
             <thead>
@@ -19,7 +20,7 @@ export default function SupplierTable({suppliers}:Props){
             </thead>
             <tbody>
                 {suppliers.map((supplier)=>(
-                    <SupplierRow key={supplier.id} supplier={supplier}/>
+                    <SupplierRow key={supplier.id} supplier={supplier} onDelete={onDelete}/>
                 ))}
             </tbody>
         </table>

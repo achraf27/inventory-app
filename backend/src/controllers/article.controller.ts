@@ -28,12 +28,35 @@ export class ArticleController{
 
               console.log(article);
         
-              if(!article) return res.status(404).json({error:"Article not found"});
+              if(!article) return res.status(404).json({message:"article not found"});
         
         
               return res.status(200).json({
                                      message:"article retrived successfully",
                                      article: article 
+                                    })
+           
+            }
+            catch(e){
+                console.log(e);
+                return res.status(500).json({ message: "server error"});
+            }
+    }
+
+     getAllArticles = async (req:Request, res:Response) => {
+            try{
+        
+        
+              const articles = await this.articleRepo.getAllArticles();
+
+              console.log(articles);
+        
+              if(!articles) return res.status(404).json({message:"articles not found"});
+        
+        
+              return res.status(200).json({
+                                     message:"article retrived successfully",
+                                     articles: articles 
                                     })
            
             }
@@ -51,7 +74,7 @@ export class ArticleController{
     
           await this.articleRepo.updateArticle(Number(article_id),{name,unit})
     
-          return res.status(200).json({message:"article unit changed successfully"})
+          return res.status(200).json({message:"article updated successfully"})
        
         }
         catch(e){
@@ -65,7 +88,7 @@ export class ArticleController{
         
           try{        
             await this.articleRepo.deleteArticle(Number(article_id));
-            return res.status(200).json({message : "the article was successfully deleted"})
+            return res.status(200).json({message : "article successfully deleted"})
           }
           catch(e){
               console.log(e);

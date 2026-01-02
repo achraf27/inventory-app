@@ -12,7 +12,8 @@ export class SupplierController{
         try{
 
         const supplier = await this.supplierRepo.createSupplier({contact_name, mail,phone, address });
-        return res.status(200).json(supplier.toDto());
+        return res.status(200).json({message:"supplier created successfully",
+                                     supplier :supplier.toDto()});
         }
         catch(e){
             return res.status(500).json({ message: "server error"});
@@ -31,7 +32,7 @@ export class SupplierController{
     
         
         await this.supplierRepo.deleteSupplier(Number(supplier_id))
-        return res.status(200).json({ message: "account deleted successfuly", supplier: { supplier_id } });
+        return res.status(200).json({ message: "supplier deleted successfuly", supplier: { supplier_id } });
     
         
       }catch(e){

@@ -1,15 +1,14 @@
 import type {  SupplierDTO } from "../../utils/types"
+import { useNavigate } from "react-router-dom";
 
 type Props = {
     supplier: SupplierDTO
+    onDelete:(id:number)=>void;
 };
 
-export default function SupplierRow({supplier}:Props){
+export default function SupplierRow({supplier,onDelete}:Props){
 
-    // const handleAdd = async () => {
-    //     await addArticleToInventory(String(user.id),{quantity})
-
-    // }
+    const navigate = useNavigate();
 
     return(
     <tr>
@@ -18,8 +17,9 @@ export default function SupplierRow({supplier}:Props){
         <td>{supplier.phone}</td>
         <td>{supplier.address}</td>
         
-            <button>Modifier</button>
-            <button>Supprimer</button>
+            <td><button>Attribuer des articles</button></td>
+            <td><button onClick={()=> navigate("/admin/suppliers/"+supplier.id+"/edit")} >Modifier</button></td>
+            <td><button onClick={()=> onDelete(Number(supplier.id))}>Supprimer</button></td>
         
     </tr>
     )

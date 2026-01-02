@@ -1,11 +1,12 @@
 import type {UserDTO } from "../../utils/types";
-import CatalogRow from "./user.row";
+import UserRow from "./user.row";
 
 type Props = {
     users: UserDTO[];
+    onDelete:(id:number)=>void;
 }
 
-export default function UserTable({users}:Props){
+export default function UserTable({users,onDelete}:Props){
     return(
         <table>
             <thead>
@@ -17,7 +18,7 @@ export default function UserTable({users}:Props){
             </thead>
             <tbody>
                 {users.map((user)=>(
-                    <CatalogRow key={user.id} user={user}/>
+                    <UserRow key={user.id} user={user} onDelete ={onDelete}/>
                 ))}
             </tbody>
         </table>

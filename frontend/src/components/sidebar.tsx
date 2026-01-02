@@ -21,10 +21,12 @@ export default function Sidebar(){
 
       {role === "Admin" && (
         <>
-          <a onClick={() => navigate("/admin/users")}>Utilisateurs</a>
-          <a onClick={() => navigate("/admin/suppliers")}>Fournisseurs</a>
+          <a onClick={() => navigate("/admin/users")}> Utilisateurs</a>
+          <a onClick={() => navigate("/admin/suppliers")}> Fournisseurs</a>
+          <a onClick={() => navigate("/admin/articles")}> Articles</a>
         </>
       )}
+            <a onClick={()=>{navigate("/settings");}}> Paramètres</a>
             <a onClick={()=>{logOut(); navigate("/");}}> Deconnexion</a>
         </div>
         </>

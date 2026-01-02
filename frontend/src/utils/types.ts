@@ -9,7 +9,7 @@
   }
   
   export interface ArticleDTO {
-    id:number;
+    id?:number;
     name:string;
     unit:string;
   }
@@ -59,6 +59,12 @@ export type SupplierArticleDTO = {
   name:string;
   unit:string;
 };
+
+export type GetOneSupplierResponse = {
+  message: string;
+  supplier: SupplierDTO;
+};
+
 
 export type GetAllSuppliersResponse = {
   message: string;

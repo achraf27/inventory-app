@@ -1,6 +1,5 @@
 import { useState,useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import  Sidebar  from "../components/sidebar"
 import { getAllInventoryArticles } from "../services/inventory.service";
 import { getRole } from "../services/auth.service";
 
@@ -24,7 +23,6 @@ export default function Dashboard() {
       
       < >
       
-      <Sidebar/>
       <div className = 'flex'>
         
 

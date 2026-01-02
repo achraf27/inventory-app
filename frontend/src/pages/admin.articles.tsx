@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import type {  SupplierDTO } from "../utils/types";
-import SupplierTable from "../components/admin.supplier/supplier.table";
-import { deleteSupplier, getAllSuppliers } from "../services/supplier.service";
+import { deleteArticle } from "../services/article.service";
+import { getAllArticles } from "../services/article.service";
+import type { ArticleDTO } from "../utils/types";
+import ArticleTable from "../components/admin.article/article.table";
 
-export default function AdminSuppliers() {
-  const [suppliers, setSuppliers] = useState<SupplierDTO[]>([]);
+
+export default function AdminArticles() {
+  const [articles, setArticles] = useState<ArticleDTO[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -13,10 +15,10 @@ export default function AdminSuppliers() {
 
   async function loadSuppliers() {
     try {
-      const data = await getAllSuppliers();
+      const data = await getAllArticles();
       console.log("getAllUsers response:", data);
-      if (Array.isArray(data.suppliers)) {
-        setSuppliers(data.suppliers);
+      if (Array.isArray(data.articles)) {
+        setArticles(data.articles);
         setError(null);
       } else {
         console.error("Données invalides reçues:", data);
@@ -32,16 +34,17 @@ export default function AdminSuppliers() {
     }
   }
 
-    async function onDelete(supplierId: number) {
-    try {
-      const res = await deleteSupplier(Number(supplierId));
-      setMessage(res.message)
-      setSuppliers(prev => prev.filter(a => a.id !== supplierId));
-    } catch (err) {
-      console.error(err);
-      setError("Erreur lors de la suppression");
+
+    async function onDelete(articleId: number) {
+      try {
+        const res = await deleteArticle(Number(articleId));
+        setMessage(res.message)
+        setArticles(prev => prev.filter(a => a.id !== articleId));
+      } catch (err) {
+        console.error(err);
+        setError("Erreur lors de la suppression");
+      }
     }
-  }
 
   useEffect(() => {
     loadSuppliers();
@@ -50,20 +53,21 @@ export default function AdminSuppliers() {
   return (
     <>
 
-      <h1>Fournisseurs</h1>
+      <h1>Articles</h1>
 
-       <button onClick={() => navigate("/admin/suppliers/create")}>
-        Ajouter un fournisseur
+      <button onClick={() => navigate("/admin/articles/create")}>
+        Créer un article
       </button>
 
       {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
+
       {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
 
 
-      {suppliers.length === 0 ? (
-        <p>La liste de fournisseurs est vide.</p>
+      {articles.length === 0 ? (
+        <p>La liste d'articles est vide.</p>
       ) :(
-          <SupplierTable suppliers={suppliers} onDelete={onDelete}/>
+          <ArticleTable articles={articles} onDelete ={onDelete}/>
           )}
     </>
   );

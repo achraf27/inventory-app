@@ -175,7 +175,7 @@ export class UserController{
             if(!user) return res.status(404).json({message:"user not found"})
     
     
-            const changes = await this.userRepo.updateMail(Number(user_id),newName);
+            const changes = await this.userRepo.updateName(Number(user_id),newName);
     
             if(!changes) return res.status(404).json({message: "could not update the name"})
     

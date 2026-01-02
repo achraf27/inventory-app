@@ -1,31 +1,23 @@
 import type {  UserDTO } from "../../utils/types"
 import { useNavigate } from "react-router-dom";
-import { deleteUser } from "../../services/user.service";
 
 type Props = {
     user: UserDTO
+    onDelete:(id:number)=>void;
 };
 
-export default function UserRow({user}:Props){
+export default function UserRow({user,onDelete}:Props){
 
     const navigate = useNavigate();
-
-    async function handleDelete(){
-        // try{
-        //     await deleteUser(user.id)
-        // }
-        // catch(err:any){
-        //     console.log(err)
-        // }
-    }
 
     return(
     <tr>
         <td>{user.role}</td>
         <td>{user.name}</td>
         <td>{user.mail}</td>
-            <button onClick={()=> navigate("/admin/users/"+user.id+"/edit")}>Modifier</button>
-            <button onClick={async ()=> await handleDelete()}>Supprimer</button>
+
+            <td><button onClick={()=> navigate("/admin/users/"+user.id+"/edit")}>Modifier</button></td>
+            <td><button onClick={()=> onDelete(Number(user.id))}>Supprimer</button></td>
         
     </tr>
     )

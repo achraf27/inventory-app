@@ -1,8 +1,8 @@
-import type { SupplierDTO, MessageDTO, GetAllSuppliersResponse, GetOneSupplierArticleResponse, GetAllSupplierArticlesResponse } from '../utils/types';
+import type { SupplierDTO, MessageDTO, GetAllSuppliersResponse, GetOneSupplierArticleResponse, GetAllSupplierArticlesResponse, GetOneSupplierResponse } from '../utils/types';
 import { apiClient } from './apiClient';
 import { getToken } from './auth.service';
 
-export async function createSupplier(data: {contact_name:string,mail:string,phone:string,address:string}):Promise<SupplierDTO> {
+export async function createSupplier(data: {contact_name:string,mail:string,phone:string,address:string}):Promise<GetOneSupplierResponse> {
   const res = await apiClient.post(`/supplier/admin/create/`,data,{
     headers:{
       Authorization: `Bearer ${getToken()}`
@@ -12,7 +12,7 @@ export async function createSupplier(data: {contact_name:string,mail:string,phon
 }
 
 
-export async function getOneSupplier(supplier_id:number):Promise<SupplierDTO> {
+export async function getOneSupplier(supplier_id:number):Promise<GetOneSupplierResponse> {
   const res = await apiClient.get(`/supplier/${supplier_id}`,{
     headers:{
       Authorization: `Bearer ${getToken()}`

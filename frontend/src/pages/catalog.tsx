@@ -1,4 +1,3 @@
-import Sidebar from "../components/sidebar";
 import { useEffect, useState } from "react";
 import type { SupplierArticleDTO } from "../utils/types";
 import { getAllSuppliersArticles } from "../services/supplier.service";
@@ -39,7 +38,6 @@ export default function Catalog() {
 
   return (
     <>
-      <Sidebar />
 
       <h1>Catalogue</h1>
 

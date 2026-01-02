@@ -20,6 +20,14 @@ export async function deleteArticle(article_id:number):Promise<MessageDTO>{
   return res.data
 }
 
+export async function getAllArticles(){
+ const res = await apiClient.get('/article',{
+    headers:{
+      Authorization: `Bearer ${getToken()}`
+    }
+  });
+  return res.data;
+}
 
 export async function getArticle(article_id:number):Promise<GetOneArticleResponse> {
   const res = await apiClient.get('/article/' + article_id,{

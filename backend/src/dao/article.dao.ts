@@ -34,6 +34,12 @@ export class ArticleDao{
         return row as ArticleRow|undefined;
     }
 
+     async findAll(): Promise<ArticleRow[] | undefined> {
+        const db = await Db.getConnection();
+        const row = await db.all("SELECT * FROM articles");
+        return row as ArticleRow[]|undefined;
+    }
+
 
     async updateName(id:number, name:string):Promise<number>{
         const db = await Db.getConnection()

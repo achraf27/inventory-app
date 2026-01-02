@@ -23,6 +23,11 @@ export class ArticleRepository{
             const row = await this.articleDao.findById(article_id);
             return row? this.mapRowToArticle(row) : undefined;
         }
+
+        public async getAllArticles():Promise<Article[]|undefined>{
+            const rows = await this.articleDao.findAll();
+            return rows?.map(row => this.mapRowToArticle(row));
+        }
     
     
         public async createArticle(_article:CreateArticleInput):Promise<Article>{

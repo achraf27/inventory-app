@@ -1,4 +1,3 @@
-import Sidebar from "../components/sidebar";
 import { useState } from "react";
 import { adminUpdateMail, adminUpdateName, adminUpdateRole, createUser, getOneUser } from "../services/user.service";
 import { useParams } from "react-router-dom"
@@ -18,10 +17,12 @@ export default function AdminUserForm(){
 
     async function handleSubmit(){
         try{
+            console.log({ role, username, mail, password });
+
             if (!role || !username || !mail || (!isEditMode && !password)) {
                 setError("Tous les champs obligatoires doivent être remplis");
                 return;
-                }
+                } 
 
             if(isEditMode && user_id){
                await Promise.all([
@@ -62,8 +63,6 @@ export default function AdminUserForm(){
     },[user_id]);
 
     return(<>
-    <Sidebar/>
-
     <h1>{isEditMode? "Modifier l'utilisateur":"Ajouter un utilisateur"}</h1>
 
      {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
@@ -73,6 +72,9 @@ export default function AdminUserForm(){
                             }}>
         <select id="choix" name="choix" value={role} aria-placeholder="Rôle"
         onChange={(e)=>setRole(e.target.value)}>
+            <option value="" disabled>
+            -- Sélectionner un rôle --
+            </option>
             <option value="Admin">Admin</option>
             <option value="User">User</option>
             </select>
