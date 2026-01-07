@@ -33,7 +33,7 @@ export default function InventoryRow({ article, onDelete, onUpdateQuantity }: Pr
       </td>
       <td>{article.unit}</td>
       <td>
-        <button onClick={async () => onDelete(article.article_id)}>Supprimer</button></td>
+       
         {isEditing ? (
           <>
             <td><button onClick={handleSave}>Enregistrer</button></td>
@@ -42,6 +42,7 @@ export default function InventoryRow({ article, onDelete, onUpdateQuantity }: Pr
         ) : (
           <td><button onClick={() => setIsEditing(true)}>Modifier la quantité</button></td>
         )}
+         <button onClick={async () => onDelete(article.article_id)}>Supprimer</button></td>
       
     </tr>
   );

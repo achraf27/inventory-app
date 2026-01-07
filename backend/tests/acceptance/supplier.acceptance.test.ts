@@ -5,9 +5,9 @@ import app from '../../src/app/app.js'
 
 describe('Supplier – Acceptance test with auth', () => {
   let token: string;
-  let userId:string;
-  let supplierId:string;
-  let articleId:string;
+  let user_id:string;
+  let supplier_id:string;
+  let article_id:string;
 
   beforeAll(async () => {
   const uniqueId = Date.now();
@@ -29,7 +29,7 @@ describe('Supplier – Acceptance test with auth', () => {
 
 
     token = loginResponse.body.token;
-    userId = loginResponse.body.id
+    user_id = loginResponse.body.user.id
 
      const createArticle = await request(app)
         .post('/article/add')
@@ -42,7 +42,7 @@ describe('Supplier – Acceptance test with auth', () => {
 
     expect(createArticle.status).toBe(200);
 
-    articleId = createArticle.body.id
+    article_id = createArticle.body.article.id
 
   });
 
@@ -50,7 +50,7 @@ describe('Supplier – Acceptance test with auth', () => {
 
   it('should create a supplier', async () => {
     const response = await request(app)
-      .post('/supplier/admin/create/')
+      .post('/supplier/admin/create')
       .set('Authorization',`Bearer ${token}`)
       .send({
         contact_name:"supplier",
@@ -61,12 +61,15 @@ describe('Supplier – Acceptance test with auth', () => {
 
     expect(response.status).toBe(200);
 
-    supplierId = response.body.id;
+    expect(response.body.supplier.id).toBeDefined();
+    supplier_id = response.body.supplier.id;
+    expect(Number.isInteger(supplier_id)).toBe(true);
+
   });
 
   it('should get a specific supplier', async () => {
     const response = await request(app)
-      .get('/supplier/'+supplierId)
+      .get(`/supplier/${supplier_id}`)
       .set('Authorization',`Bearer ${token}`)
 
     expect(response.status).toBe(200);
@@ -75,7 +78,7 @@ describe('Supplier – Acceptance test with auth', () => {
 
   it('should not update a specific supplier', async () => {
     const response = await request(app)
-      .patch('/supplier/admin/update/'+supplierId)
+      .patch('/supplier/admin/update/'+supplier_id)
       .set('Authorization',`Bearer ${token}`)
       .send({
         contact_name:null,
@@ -92,15 +95,15 @@ describe('Supplier – Acceptance test with auth', () => {
 
    it('should add an article to a specific supplier', async () => {
     const response = await request(app)
-      .post(`/supplier/${supplierId}/admin/add/article/${articleId}`)
+      .post(`/supplier/${supplier_id}/admin/add/article/${article_id}`)
       .set('Authorization',`Bearer ${token}`)
 
     expect(response.status).toBe(200);
   });
 
-    it('should get an article from a specific supplier', async () => {
+    it('should get all articles from a specific supplier', async () => {
     const response = await request(app)
-      .get(`/supplier/${supplierId}/article`)
+      .get(`/supplier/${supplier_id}/articles`)
       .set('Authorization',`Bearer ${token}`)
 
     expect(response.status).toBe(200);
@@ -109,7 +112,7 @@ describe('Supplier – Acceptance test with auth', () => {
 
   it('should delete an article from a specific supplier', async () => {
     const response = await request(app)
-      .delete(`/supplier/${supplierId}/admin/article/delete/${articleId}`)
+      .delete(`/supplier/${supplier_id}/admin/delete/article/${article_id}`)
       .set('Authorization',`Bearer ${token}`)
 
     expect(response.status).toBe(200);
@@ -117,7 +120,7 @@ describe('Supplier – Acceptance test with auth', () => {
 
     it('should delete a specific supplier', async () => {
     const response = await request(app)
-      .delete('/supplier/admin/delete/'+supplierId)
+      .delete('/supplier/admin/delete/'+supplier_id)
       .set('Authorization',`Bearer ${token}`)
 
     expect(response.status).toBe(200);
@@ -128,7 +131,7 @@ describe('Supplier – Acceptance test with auth', () => {
 
    afterAll(async ()=>{
     const deleteUser = await request(app)
-      .delete('/user/admin/delete/'+userId)
+      .delete(`/user/admin/delete/${user_id}`)
       .set('Authorization',`Bearer ${token}`);
 
 

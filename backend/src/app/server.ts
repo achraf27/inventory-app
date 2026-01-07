@@ -10,7 +10,7 @@ app.listen(PORT, async () => {
     
     try{
       await Db.createTables();
-      console.log("Base SQLite initialisée !");
+      console.log("Base SQLite initialisée");
       }
       catch(e){
         console.log(e);

@@ -5,8 +5,8 @@ import app from '../../src/app/app.js'
 
 describe('Inventory – Acceptance test with auth', () => {
   let token: string;
-  let userId:string;
-  let articleId:string;
+  let user_id:string;
+  let article_id:string;
 
   beforeAll(async () => {
   const uniqueId = Date.now();
@@ -27,7 +27,7 @@ describe('Inventory – Acceptance test with auth', () => {
 
 
     token = loginResponse.body.token;
-    userId = loginResponse.body.id
+    user_id = loginResponse.body.user.id
 
     const createArticle = await request(app)
         .post('/article/add')
@@ -40,14 +40,14 @@ describe('Inventory – Acceptance test with auth', () => {
 
     expect(createArticle.status).toBe(200);
 
-    articleId = createArticle.body.id
+    article_id = createArticle.body.article.id
   });
 
 
 
   it('should add an article on the inventory', async () => {
     const response = await request(app)
-      .post(`/inventory/add/${articleId}`)
+      .post(`/inventory/add/${article_id}`)
       .set('Authorization',`Bearer ${token}`)
       .send({
         quantity: 3
@@ -59,7 +59,7 @@ describe('Inventory – Acceptance test with auth', () => {
 
   it('should not add an article on the inventory', async () => {
     const response = await request(app)
-      .post(`/inventory/add/qsdqsd/${articleId}`)
+      .post(`/inventory/add/qsdqsd/${article_id}`)
       .set('Authorization',`Bearer ${token}`)
       .send({
         quantity: 3
@@ -71,7 +71,7 @@ describe('Inventory – Acceptance test with auth', () => {
 
   it('should update the article quantity', async () => {
     const response = await request(app)
-      .patch(`/inventory/update/${articleId}`)
+      .patch(`/inventory/update/${article_id}`)
       .set('Authorization',`Bearer ${token}`)
       .send({
         quantity: 5
@@ -82,7 +82,7 @@ describe('Inventory – Acceptance test with auth', () => {
 
   it('should not update the article quantity', async () => {
     const response = await request(app)
-      .patch(`/inventory/update/${articleId}`)
+      .patch(`/inventory/update/${article_id}`)
       .set('Authorization',`Bearer ${token}`)
       .send({
         quantity: ""
@@ -94,7 +94,7 @@ describe('Inventory – Acceptance test with auth', () => {
 
   it('should get the article', async () => {
     const response = await request(app)
-      .get(`/inventory/${articleId}`)
+      .get(`/inventory/${article_id}`)
       .set('Authorization',`Bearer ${token}`)
 
     expect(response.status).toBe(200);
@@ -112,7 +112,7 @@ describe('Inventory – Acceptance test with auth', () => {
 
   it('should remove the article from the inventory', async () => {
     const response = await request(app)
-      .delete('/inventory/delete/'+articleId)
+      .delete('/inventory/delete/'+article_id)
       .set('Authorization',`Bearer ${token}`)
 
     expect(response.status).toBe(200);
@@ -120,11 +120,11 @@ describe('Inventory – Acceptance test with auth', () => {
 
   afterAll(async ()=>{
     const deleteUser = await request(app)
-      .delete('/user/admin/delete/'+userId)
+      .delete('/user/admin/delete/'+user_id)
       .set('Authorization',`Bearer ${token}`);
 
      const deleteArticle = await request(app)
-      .delete('/article/delete/'+articleId)
+      .delete('/article/delete/'+article_id)
       .set('Authorization',`Bearer ${token}`);
 
 

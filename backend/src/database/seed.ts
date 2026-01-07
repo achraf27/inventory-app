@@ -54,9 +54,9 @@ async function seed() {
       (3, 2, 7)   -- Bob : 7kg pommes
   `);
 
-  console.log("✅ Database seeded successfully");
+  console.log("Database seeded successfully");
 }
 
 seed().catch((err) => {
-  console.error("❌ Seeding failed:", err);
+  console.error("Seeding failed:", err);
 });

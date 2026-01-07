@@ -35,7 +35,7 @@ describe('articleRepository', () => {
 
     const fakeRow = {contact_name: 'Supplier', mail: 'supplier@mail.com' ,phone:"0699298796",address:"adress"};
 
-    const mockFindById = jest.spyOn(SupplierDaoModule.SupplierDao.prototype, 'findById')
+    const mockFindById = jest.spyOn(SupplierDaoModule.SupplierDao.prototype, 'findBySupplierId')
       .mockResolvedValue(fakeRow as any);
 
     const supplier = await repo.getSupplier(1);

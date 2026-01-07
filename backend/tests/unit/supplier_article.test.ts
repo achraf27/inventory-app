@@ -18,7 +18,7 @@ describe('articleRepository', () => {
     const fakeResult = true
     const fakeRow = {supplier_id: 1, article_id:1};
 
-    const mockCreateUser = jest.spyOn(SupplierDaoModule.SupplierArticleDao.prototype, 'insert')
+    const mockCreateUser = jest.spyOn(SupplierDaoModule.SupplierArticleDao.prototype, 'insertOneArticle')
       .mockResolvedValue(fakeResult as any);
 
     
@@ -29,23 +29,24 @@ describe('articleRepository', () => {
   })
 
 
-  it("Should return a Supplier",async ()=>{
+  it("Should return all supplier articles",async ()=>{
 
-    const fakeRow = [{supplier_id: 1, article_id:1 ,name:"Farine",unit:"kg"},
-                      {supplier_id: 1, article_id:2 ,name:"blé",unit:"kg"}];
+    const fakeRow = [{supplier_id: 1, article_id:1,contact_name:"supplier" ,name:"Farine",unit:"kg"},
+                      {supplier_id: 1, article_id:2,contact_name:"supplier"  ,name:"blé",unit:"kg"}];
 
     const mockFindById = jest.spyOn(SupplierDaoModule.SupplierArticleDao.prototype, 'findBySupplierId')
       .mockResolvedValue(fakeRow as any);
 
-    const supplier = await repo.getAllSupplierArticles(1);
+    const supplierArticles = await repo.getAllArticlesBySupplierId(1);
 
+    expect(supplierArticles).toEqual(fakeRow);
     expect(mockFindById).toHaveBeenCalledWith(1);
   })
 
 
-  it("Should update the Supplier contact_name",async ()=>{
+  it("Should get a specific supplier article",async ()=>{
 
-    const fakeRow = {supplier_id: 1, article_id:1 ,name:"Farine",unit:"kg"};
+    const fakeRow = {supplier_id: 1, article_id:1,contact_name:"supplier" ,name:"Farine",unit:"kg"};
 
     const mockUpdateArticleName = jest.spyOn(SupplierDaoModule.SupplierArticleDao.prototype, 'findOneArticle')
       .mockResolvedValue(fakeRow as any);
@@ -57,7 +58,7 @@ describe('articleRepository', () => {
   })
 
 
-   it("Should delete an Supplier",async ()=>{
+   it("Should remove a supplier article",async ()=>{
 
     const fakeResult = true
 
