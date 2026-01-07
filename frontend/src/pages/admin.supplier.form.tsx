@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom"
 import { useEffect } from "react";
-import { createSupplier, getOneSupplier, updateSupplier } from "../services/supplier.service";
+import { createSupplier, getAllArticlesBySupplier, getOneSupplier, updateSupplier, updateSupplierArticles } from "../services/supplier.service";
+import type { ArticleDTO, SupplierArticleDTO } from "../utils/types";
+import { getAllArticles } from "../services/article.service";
 
 export default function AdminSupplierForm(){
     const {supplier_id} = useParams<{supplier_id:string}>();
@@ -15,6 +17,12 @@ export default function AdminSupplierForm(){
     const [message, setMessage] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
+    const [supplierArticles,setSupplierArticles]= useState<SupplierArticleDTO[]>([]);
+    const [articles,setArticles]= useState<ArticleDTO[]>([]);
+
+    const [selectedArticleIds, setSelectedArticleIds] = useState<number[]>([]);
+
+
     async function handleSubmit(){
         try{
             console.log({ contactName, mail, phone, address });
@@ -26,6 +34,7 @@ export default function AdminSupplierForm(){
 
             if(isEditMode && supplier_id){
                const res = await updateSupplier(Number(supplier_id),{contact_name:contactName,mail,phone,address})
+               await updateSupplierArticles(Number(supplier_id),selectedArticleIds)
                setMessage(res.message);
             
             }else{
@@ -45,10 +54,20 @@ export default function AdminSupplierForm(){
         }
     }
 
+function handleArticleToggle(articleId: number) {
+    setSelectedArticleIds((prev) =>
+        prev.includes(articleId)
+            ? prev.filter(id => id !== articleId)
+            : [...prev, articleId]
+    );
+}
+
+
+
     useEffect(()=>{
         if(!supplier_id) return;
 
-        async function loadUser(){
+        async function loadSupplier(){
             try{
                 const supplierDto = await getOneSupplier(Number(supplier_id))
                 setContactName(supplierDto.supplier.contact_name);
@@ -59,7 +78,24 @@ export default function AdminSupplierForm(){
                 setError("Impossible de charger le fournisseur en mode edition.")
             }
         }
-        loadUser();
+        async function loadSupplierArticles(){
+            try{
+                const supplierArticlesDto = await getAllArticlesBySupplier(Number(supplier_id))
+                const articlesDto = await getAllArticles();
+
+                console.log(articlesDto);
+
+                setArticles(articlesDto.articles);
+                setSupplierArticles(supplierArticlesDto.articles)
+                setSelectedArticleIds(
+                supplierArticlesDto.articles.map(a => a.article_id)
+                );
+            }catch(err:any){
+                setError(" Impossible de charger les articles du fournisseur.")
+            }
+        }
+        loadSupplier();
+        loadSupplierArticles();
     },[supplier_id]);
 
     return(<>
@@ -101,6 +137,17 @@ export default function AdminSupplierForm(){
         />
 
         <h3>Articles associées : </h3>
+
+        {articles.map((article) => (
+        <label key={article.id}>
+            <input
+            type="checkbox"
+            checked={selectedArticleIds.includes(article.id)}
+            onChange={() => handleArticleToggle(article.id)}
+            />
+            {article.name}
+        </label>
+        ))}
 
 
         <input type="submit" value={isEditMode ? "Mettre à jour" : "Créer"} />

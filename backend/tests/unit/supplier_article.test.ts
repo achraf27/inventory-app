@@ -4,7 +4,6 @@ import * as SupplierDaoModule  from '../../src/dao/supplierArticle.dao.js';
 
 
 
-// Mock du DAO
 jest.mock('../../src/dao/supplier.dao.js');
 
 describe('articleRepository', () => {

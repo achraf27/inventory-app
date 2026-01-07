@@ -50,6 +50,29 @@ export class UserController{
       }
     }
 
+     updateName = async (req:Request, res:Response)=>{
+        const{newName} = req.body;
+        const user_id = (req as any).user.id;
+    
+        try{
+    
+            const user =  await this.userRepo.getUser(Number(user_id));
+            console.log(req.params);
+            if(!user) return res.status(404).json({message:"user not found"})
+    
+    
+            const changes = await this.userRepo.updateName(Number(user_id),newName);
+    
+            if(!changes) return res.status(404).json({message: "could not update the name"})
+    
+    
+            return res.status(200).json({message:"name changed successuly"})
+        }catch(e){
+            console.log(e)
+            return res.status(500).json({message:"server error"})
+        }
+    }
+
     updateMail = async (req:Request, res:Response)=>{
         const{newMail} = req.body;
         const user_id = (req as any).user.id;

@@ -1,4 +1,4 @@
-import type { MessageDTO, UserDTO } from '../utils/types';
+import type { getAllUsersResponseDTO, getUserResponseDTO, MessageDTO, UserDTO } from '../utils/types';
 import { apiClient } from './apiClient';
 import { getToken } from './auth.service';
 
@@ -19,6 +19,15 @@ export async function deleteUser(user_id:number):Promise<MessageDTO>{
     }
     });
   return res.data
+}
+
+export async function updateName(newName:string):Promise<MessageDTO> {
+  const res = await apiClient.patch(`/user/update/name`,{newName},{
+    headers:{
+      Authorization: `Bearer ${getToken()}`
+    }
+  });
+  return res.data;
 }
 
 export async function updateMail(newMail:string):Promise<MessageDTO> {
@@ -75,7 +84,7 @@ export async function adminUpdatePassword(user_id:number,newPassword:string):Pro
 }
 
 
-export async function getOneUser(user_id:number):Promise<UserDTO> {
+export async function getOneUser(user_id:number):Promise<getUserResponseDTO> {
   const res = await apiClient.get(`/user/admin/${user_id}`,{
     headers:{
       Authorization: `Bearer ${getToken()}`
@@ -84,7 +93,7 @@ export async function getOneUser(user_id:number):Promise<UserDTO> {
   return res.data;
 }
 
-export async function getAllUsers():Promise<UserDTO[]> {
+export async function getAllUsers():Promise<getAllUsersResponseDTO> {
   const res = await apiClient.get(`/user/admin`,{
     headers:{
       Authorization: `Bearer ${getToken()}`

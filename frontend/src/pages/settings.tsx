@@ -1,10 +1,77 @@
+import { useAuth } from "../context/authContext";
+import { useState } from "react";
+import { updateMail, updateName, updatePassword } from "../services/user.service";
+
 export default function Settings(){
+    const [message, setMessage] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
     
+
+
+    const {user,setUser} = useAuth();
+
+    const [username,setUsername] = useState<string>(user?.name ?? "")
+    const [mail,setMail] = useState<string>(user?.mail ?? "")
+    const [password,setPassword] = useState<string>("");
+
+
+     async function handleNameUpdate(){
+        try{
+            const res = await updateName(mail);
+            setUser(prev => ({ ...prev!, name: username }));
+            setMessage(res.message)
+        }catch(err:any){
+            setError(err)
+        }
+    }
+
+    async function handleMailUpdate(){
+        try{
+            const res = await updateMail(mail);
+            setUser(prev => ({ ...prev!, mail }));
+            setMessage(res.message)
+        }catch(err:any){
+            setError(err);
+        }
+    }
+
+    async function handlePasswordUpdate(){
+        try{
+            const res = await updatePassword(password);
+            setMessage(res.message)
+        }catch(err:any){
+            setError(err);
+        }
+    }
+   
     
     return(<>
     <h1>Paramètres utilisateur</h1>
-    <button>Modifier son nom</button>
-    <button>Modifier son mot de passe</button>
-    <button>Modifier son email</button> 
+
+     {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
+     {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
+
+
+    <input
+        onChange={(e) => setUsername(e.target.value)}
+        value={username}
+          type="text"
+        />
+    <button onClick={()=>{handleNameUpdate()}}>Modifier son nom</button>
+
+     <input
+        onChange={(e) => setMail(e.target.value)}
+        value={mail}
+          type="text"
+        />
+    <button onClick={()=>{handleMailUpdate()}}>Modifier son email</button> 
+
+     <input
+        onChange={(e) => setPassword(e.target.value)}
+        value={password}
+          type="password"
+        />
+
+     <button onClick={handlePasswordUpdate}>Modifier son mot de passe</button>
     </>)
 }

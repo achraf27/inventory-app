@@ -51,10 +51,10 @@ export default function AdminUserForm(){
 
         async function loadUser(){
             try{
-                const userObj = await getOneUser(Number(user_id))
-                setRole(userObj.user.role);
-                setUsername(userObj.user.name);
-                setMail(userObj.user.mail);
+                const res = await getOneUser(Number(user_id))
+                setRole(res.user.role);
+                setUsername(res.user.name);
+                setMail(res.user.mail);
             }catch(err:any){
                 setError("Impossible de charger l'utilisateur en mode edition.")
             }

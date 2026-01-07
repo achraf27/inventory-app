@@ -28,7 +28,7 @@ export class AuthController{
           { expiresIn: "20d" }
         );
     
-        if(ok) return res.status(200).json({ message: "Login successful", token });
+        if(ok) return res.status(200).json({ message: "Login successful", token,user: user.toDto() });
 
         else return res.status(401).json({message:"Login failed"});
     
@@ -57,6 +57,7 @@ export class AuthController{
           return res.status(201).json({
             message: "user created",
             token,
+            user: user.toDto()
           });
       }
         catch(e){

@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { register } from "../services/auth.service";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/authContext";
 
 export default function Register() {
+  const {setUser}=useAuth();
+
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] =  useState<string | null>(null);
   
@@ -18,10 +21,11 @@ export default function Register() {
     try {
       const res = await register({name,mail,password});
       console.log(res);
+      setUser(res.user!)
        setMessage(
      res.message
     );
-    } catch (err) {
+    } catch (err:any) {
       console.log(err.response.data)
        setError(
      err.response.data.error

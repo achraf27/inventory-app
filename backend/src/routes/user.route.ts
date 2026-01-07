@@ -14,17 +14,13 @@ router.post('/admin/user', authMiddleware,isAdmin,checkBody(["role","name","pass
 
 router.delete('/admin/delete/:user_id' ,authMiddleware,isAdmin,checkParams(["user_id"]),    userController.delete);
 
+router.patch('/update/name', authMiddleware,checkBody(["newName"]),    userController.updateName)
 router.patch('/update/mail', authMiddleware,checkBody(["newMail"]),    userController.updateMail)
-
-
 router.patch('/update/password', authMiddleware, checkBody(["newPassword"]),   userController.updatePassword)
 
 router.patch('/admin/update/:user_id/role', authMiddleware,isAdmin,checkParams(["user_id"]),checkBody(["newRole"]),    userController.adminUpdateRole)
-
 router.patch('/admin/update/:user_id/name', authMiddleware,isAdmin,checkParams(["user_id"]),checkBody(["newName"]),    userController.adminUpdateName)
-
 router.patch('/admin/update/:user_id/mail', authMiddleware,isAdmin,checkParams(["user_id"]),checkBody(["newMail"]),    userController.adminUpdateMail)
-
 router.patch('/admin/update/:user_id/password', authMiddleware,isAdmin,checkParams(["user_id"]), checkBody(["newPassword"]),   userController.adminUpdatePassword)
 
 router.get('/admin/:user_id', authMiddleware,isAdmin,checkParams(["user_id"]),   userController.getUser);

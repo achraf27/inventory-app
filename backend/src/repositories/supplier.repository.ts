@@ -32,8 +32,8 @@ export class SupplierRepository{
             return new SupplierArticle(row.article_id,row.supplier_id,row.contact_name??"Unknown",row.name ?? "Unknown",row.unit ?? "Unknown");
         }
     
-        public async getSupplier(supplier_id:number):Promise<Supplier|undefined>{
-            const row = await this.supplierDao.findBySupplierId(supplier_id);
+        public async getSupplier(supplierId:number):Promise<Supplier|undefined>{
+            const row = await this.supplierDao.findBySupplierId(supplierId);
             return row? this.mapRowToSupplier(row) : undefined;
         }
 
@@ -52,8 +52,8 @@ export class SupplierRepository{
             return newSupplier;
         }
     
-        public async deleteSupplier(id:number): Promise<boolean>{
-            const result = await this.supplierDao.delete(id);
+        public async deleteSupplier(supplierId:number): Promise<boolean>{
+            const result = await this.supplierDao.delete(supplierId);
             return result > 0;
         }
     
@@ -72,15 +72,27 @@ export class SupplierRepository{
             return totalChanges > 0;
         }
 
-        public async addArticle(supplier_id:number,article_id:number):Promise<boolean>{
-            const result = await this.supplierArticleDao.insert({supplier_id,article_id});
+         public async updateSupplierArticles(supplierId:number,articleIds:number[]):Promise<void>{
+
+            await this.supplierArticleDao.insertArticles(supplierId,articleIds);
+        }
+
+        public async addArticle(supplierId:number,article_id:number):Promise<boolean>{
+            const result = await this.supplierArticleDao.insertOneArticle({supplier_id:supplierId,article_id});
             return result>0;
         }
 
-        public async removeSupplierArticle(supplier_id:number,article_id:number):Promise<boolean>{
-            const result = await this.supplierArticleDao.delete({supplier_id,article_id})
+        public async removeAllSupplierArticles(supplierId:number):Promise<boolean>{
+            const result = await this.supplierArticleDao.deleteAllArticlesBySupplier(supplierId)
+            return result>0;
+        }
+
+        public async removeSupplierArticle(supplierId:number,article_id:number):Promise<boolean>{
+            const result = await this.supplierArticleDao.delete({supplier_id:supplierId,article_id})
             return result >  0;
         }
+
+
 
           public async getAllSupplierArticles():Promise<SupplierArticle[]|undefined>{
             const rows = await this.supplierArticleDao.findAllSuppliersArticles();

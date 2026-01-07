@@ -15,7 +15,7 @@ router.get('/',authMiddleware,supplierController.getAllSuppliers);
 
 //Params routes
 
-router.get('/:supplier_id/article',authMiddleware,checkParams(["supplier_id"]),supplierController.getAllArticlesBySupplier)
+router.get('/:supplier_id/articles',authMiddleware,checkParams(["supplier_id"]),supplierController.getAllArticlesBySupplier)
 router.get('/:supplier_id/article/:article_id',authMiddleware,checkParams(["supplier_id","article_id"]),supplierController.getOneSupplierArticle)
 router.get('/:supplier_id',authMiddleware,checkParams(["supplier_id"]), supplierController.getSupplier);
 
@@ -25,7 +25,8 @@ router.post('/admin/create',authMiddleware,isAdmin, checkBody(["contact_name","m
 router.patch('/admin/update/:supplier_id',authMiddleware,isAdmin,checkParams(["supplier_id"]),checkSupplier,supplierController.update);
 router.delete('/admin/delete/:supplier_id',authMiddleware,isAdmin,checkParams(["supplier_id"]),supplierController.delete);
 router.post('/:supplier_id/admin/add/article/:article_id',authMiddleware,isAdmin,checkParams(["supplier_id","article_id"]),supplierController.addSupplierArticle)
-router.delete('/:supplier_id/admin/article/delete/:article_id',authMiddleware,isAdmin,checkParams(["supplier_id","article_id"]),supplierController.removeSupplierArticle)
+router.put('/:supplier_id/admin/update/articles',authMiddleware,isAdmin,checkParams(["supplier_id"]),supplierController.updateSupplierArticles)
+router.delete('/:supplier_id/admin/delete/article/:article_id',authMiddleware,isAdmin,checkParams(["supplier_id","article_id"]),supplierController.removeSupplierArticle)
 
 
 export default router;

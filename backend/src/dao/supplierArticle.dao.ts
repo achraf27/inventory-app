@@ -4,7 +4,7 @@ import { Db } from "../database/dbSqlite.js";
 
 export class SupplierArticleDao{
 
-    async insert(suppliers: SupplierArticleRow):Promise<number>{
+    async insertOneArticle(suppliers: SupplierArticleRow):Promise<number>{
         const db = await Db.getConnection()
 
       const result = await db.run("INSERT INTO suppliers_articles (supplier_id,article_id) VALUES (?,?)",
@@ -17,6 +17,18 @@ export class SupplierArticleDao{
       
   }
 
+  async insertArticles(supplierId:number,articleIds:number[]):Promise<void>{
+    const db = await Db.getConnection();
+      for (const articleId of articleIds) {
+          await db.run( 
+            "INSERT INTO suppliers_articles (supplier_id, article_id) VALUES (?, ?)",
+      supplierId,
+      articleId
+    );
+}
+
+  }
+
     async delete(supplierArticle: SupplierArticleRow):Promise<number>{
         if (!supplierArticle.supplier_id || !supplierArticle.article_id) {
             throw new Error('Cannot delete undefined article');
@@ -25,6 +37,12 @@ export class SupplierArticleDao{
         const result = await db.run("DELETE FROM suppliers_articles WHERE supplier_id = ? AND article_id = ?", supplierArticle.supplier_id,supplierArticle.article_id);
         return result.changes!;
 
+    }
+
+    async deleteAllArticlesBySupplier(supplierId:number):Promise<number>{
+        const db = await Db.getConnection();
+        const result = await db.run("DELETE FROM suppliers_articles WHERE supplier_id = ?", supplierId);
+        return result.changes!;
     }
 
     async findBySupplierId(supplierId:number): Promise<SupplierArticleRow[] | undefined> {

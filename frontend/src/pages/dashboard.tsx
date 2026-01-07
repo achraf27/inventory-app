@@ -1,11 +1,11 @@
 import { useState,useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { getAllInventoryArticles } from "../services/inventory.service";
-import { getRole } from "../services/auth.service";
+import { useAuth } from "../context/authContext";
 
 
 export default function Dashboard() {
-   const role = getRole();
+   const {user} = useAuth();
 
   const [totalStock,setTotalStock] = useState<number|null>(null)
 
@@ -31,7 +31,7 @@ export default function Dashboard() {
                 <h1>Bienvenue</h1>
 
 
-      {role === "User" && (
+      {user?.role === "User" && (
                 <h2>Stock total: {totalStock}</h2>
                 )}
             </div>

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { login } from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authContext";
 
 export default function Login() {
-   const [message, setMessage] = useState<string | null>(null);
+  const {setUser} = useAuth()
+
+  const [message, setMessage] = useState<string | null>(null);
   const [error, setError] =  useState<string | null>(null);
 
   const [name, setName] = useState("");
@@ -19,9 +22,10 @@ export default function Login() {
     try {
       const res = await login({name,password});
       console.log("Connexion réussie :", res);
+      setUser(res.user!)
       setMessage(res.message);
       navigate("/dashboard")
-    } catch (err) {
+    } catch (err:any) {
       console.error(err.response);
       setError(
          err.response.data.message

@@ -19,6 +19,8 @@ import AdminSupplierForm from './pages/admin.supplier.form'
 import Settings from './pages/settings'
 import AdminArticles from './pages/admin.articles'
 import AdminArticleForm from './pages/admin.article.form'
+import { AuthProvider } from './context/authContext'
+
 
 const router = createBrowserRouter([
   {
@@ -72,6 +74,8 @@ const router = createBrowserRouter([
   
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <AuthProvider>
     <RouterProvider router={router}/>
+    </AuthProvider>
   </StrictMode>,
 )

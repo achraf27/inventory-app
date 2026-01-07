@@ -1,13 +1,14 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { getToken, getRole } from "../services/auth.service";
+import { getToken } from "../services/auth.service";
+import { useAuth } from "../context/authContext";
 
 export default function AdminRoutes() {
   const token = getToken();
-  const role = getRole();
+  const {user} = useAuth();
 
   if (!token) return <Navigate to="/" replace />;
 
-  if (role !== "Admin") {
+  if (user?.role !== "Admin") {
     return <Navigate to="/dashboard" replace />;
   }
 

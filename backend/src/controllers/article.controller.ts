@@ -11,7 +11,9 @@ export class ArticleController{
         const { name, unit } = req.body;
         try{
         const article = await this.articleRepo.createArticle({ name, unit });
-        return res.status(200).json({message: "article successfully created"});
+        return res.status(200).json({message: "article successfully created",
+                                    article:article
+        });
         }
         catch(e){
             return res.status(500).json({ message: "server error"});

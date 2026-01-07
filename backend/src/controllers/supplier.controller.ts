@@ -103,6 +103,30 @@ export class SupplierController{
     }
 
 
+     updateSupplierArticles = async (req:Request, res:Response)=>{
+      const {supplier_id} = req.params;
+      const{articleIds} = req.body
+        try{
+
+          const _delete = await this.supplierRepo.removeAllSupplierArticles(Number(supplier_id));
+
+          await this.supplierRepo.updateSupplierArticles(Number(supplier_id),articleIds);
+    
+          if(!_delete) return res.status(404).json({message:"articles could not be updated"});
+    
+    
+          return res.status(200).json({
+                                 message:"article added successfully",
+                                })
+       
+        }
+        catch(e){
+            console.log(e);
+            return res.status(500).json({ message: "server error"});
+        }
+    }
+
+
      addSupplierArticle = async (req:Request, res:Response)=>{
       const {supplier_id,article_id} = req.params;
         try{
@@ -142,6 +166,7 @@ export class SupplierController{
         }
     }
 
+  
     getAllSuppliersArticles = async (req:Request, res:Response)=>{
         try{
 
@@ -174,7 +199,7 @@ export class SupplierController{
     
     
           return res.status(200).json({
-                                 message:"supplier retrived successfully",
+                                 message:"supplier's articles retrived successfully",
                                  articles: articles 
                                 })
        

@@ -1,6 +1,7 @@
   export type AuthResponseDto = {
     message: string;
     token?: string;
+    user?:UserDTO;
 };
 
   
@@ -18,12 +19,6 @@
   message: string;
   article: ArticleDTO;
 };
-
-// type InventoryDTO = {
-//   userId: number;
-//   articleId: number;
-//   quantity: number;
-// };
 
 export type InventoryArticleDTO = {
   user_id: number;
@@ -68,7 +63,7 @@ export type GetOneSupplierResponse = {
 
 export type GetAllSuppliersResponse = {
   message: string;
-  supplier: SupplierDTO[];
+  suppliers: SupplierDTO[];
 };
 
 export type GetAllSupplierArticlesResponse = {
@@ -87,7 +82,17 @@ export type UserDTO = {
   id: number;
   name: string;
   mail: string;
-  role: string;
+  role: UserRole;
+};
+
+export type getAllUsersResponseDTO = {
+  message:string;
+  users:UserDTO[];
+};
+
+export type getUserResponseDTO = {
+  message:string;
+  user:UserDTO;
 };
 
 export type UserRole = "Admin" | "User";
