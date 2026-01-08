@@ -20,6 +20,7 @@ import Settings from './pages/settings'
 import AdminArticles from './pages/admin.articles'
 import AdminArticleForm from './pages/admin.article.form'
 import { AuthProvider } from './context/authContext'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const router = createBrowserRouter([

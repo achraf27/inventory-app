@@ -2,6 +2,7 @@ import { useState } from "react";
 import { login } from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const {setUser} = useAuth()
@@ -35,23 +36,36 @@ export default function Login() {
 
   return (
     <>
-      <h1>Login page</h1>
-      <form onSubmit={handleSubmit}>
-        <input
+      <div className="container">
+      <form className=" mx-auto" style={{maxWidth:"400px"}} onSubmit={handleSubmit}>
+        <h1>Se connecter</h1>
+        <div className= "mb-3 ">
+          <label className="form-label">Nom d'utilisateur</label>   
+          <input
           onChange={(e) => setName(e.target.value)}
           value={name}
-          placeholder="username"
           type="text"
-        />
+          className="form-control"
+        /></div>
+      <div className ="mb-3">
+          <label className="form-label">Mot de passe</label>   
         <input
           onChange={(e) => setPassword(e.target.value)}
           value={password}
-          placeholder="password"
           type="password"
+          className="form-control"
         />
-        <input type="submit" value="Submit" />
+        </div>
+        <div className="mb-3">
+          <input type="checkbox" className="form-check-input" />
+          <label className="form-check-label">Voir le mot de passe</label>
+        </div>
+          <input type="submit" value="Valider" className="btn btn-primary "/>
+           <Link to ="/">
+            <button value="retour" className="btn btn-primary">Retour</button>
+          </Link>
       </form>
-
+  </div>
        {error && (
         <p style={{ color: "red" }}>
           {error}

@@ -36,28 +36,53 @@ export default function Register() {
 
   return (
     <>
-      <h1>Register page</h1>
-      <form onSubmit={handleSubmit}>
+     <div className="container">
+      <form className="mx-auto" style={{width:"400px"}}onSubmit={handleSubmit}>
+         <h1>S'inscrire</h1>
+         <div className="mb-3">
+           <label className="form-label">Email</label>   
         <input
           onChange={(e) => setMail(e.target.value)}
           value={mail}
-          placeholder="email"
           type="text"
+          className="form-control"
         />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Nom d'utilisateur</label> 
         <input
           onChange={(e) => setName(e.target.value)}
           value={name}
-          placeholder="username"
           type="text"
+          className="form-control"
+
         />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Mot de passe</label> 
         <input
           onChange={(e) => setPassword(e.target.value)}
           value={password}
-          placeholder="password"
           type="password"
+          className="form-control"
         />
-        <input type="submit" value="Submit" />
+        </div>
+
+        <div className="mb-3">
+            <input type="checkbox" className="form-check-input" />
+            <label className="form-check-label">Voir le mot de passe</label>
+          </div>
+
+        <div >
+          <button type="submit" value="Valider" className="btn btn-primary">Valider</button>
+          <Link to ="/">
+            <button value="retour" className="btn btn-primary">Retour</button>
+          </Link>
+        </div>
       </form>
+      </div>
             {error && (
         <p style={{ color: "red" }}>
           {error}
@@ -73,9 +98,6 @@ export default function Register() {
         
       )}
 
-       <Link to ="/">
-        <button>retourner dans la page principale</button>
-        </Link>
     </>
   );
 }
