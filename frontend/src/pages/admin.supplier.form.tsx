@@ -78,25 +78,37 @@ function handleArticleToggle(articleId: number) {
                 setError("Impossible de charger le fournisseur en mode edition.")
             }
         }
-        async function loadSupplierArticles(){
+        async function loadArticles(){
             try{
-                const supplierArticlesDto = await getAllArticlesBySupplier(Number(supplier_id))
-                const articlesDto = await getAllArticles();
+                if(isEditMode){
+                    const supplierArticlesDto = await getAllArticlesBySupplier(Number(supplier_id))
+                    const articlesDto = await getAllArticles();
 
-                console.log(articlesDto);
+                    console.log(articlesDto);
 
-                setArticles(articlesDto.articles);
-                setSupplierArticles(supplierArticlesDto.articles)
-                setSelectedArticleIds(
-                supplierArticlesDto.articles.map(a => a.article_id)
-                );
+                    setArticles(articlesDto.articles);
+                    setSupplierArticles(supplierArticlesDto.articles)
+                    setSelectedArticleIds(
+                    supplierArticlesDto.articles.map(a => a.article_id)
+                    );
+            }
+            else{
+                    const articlesDto = await getAllArticles();
+
+                    console.log(articlesDto);
+
+                    setArticles(articlesDto.articles);
+
+            }
             }catch(err:any){
                 setError(" Impossible de charger les articles du fournisseur.")
             }
         }
+
+        
         loadSupplier();
-        loadSupplierArticles();
-    },[supplier_id]);
+        loadArticles();
+    },[]);
 
     return(<>
     <h1>{isEditMode? "Modifier le fournisseur":"Ajouter un fournisseur"}</h1>
@@ -106,30 +118,35 @@ function handleArticleToggle(articleId: number) {
 
 
         <h3>Informations fournisseur : </h3>
-    <form onSubmit={async (e)=> {e.preventDefault() 
+    <form className=" mx-auto" style={{maxWidth:"400px"}} onSubmit={async (e)=> {e.preventDefault() 
                            await handleSubmit()
                             }}>
-        <label>Nom de contact </label>
+        <label className="form-label" >Nom de contact </label>
+        
         <input
+        className="form-control"
         onChange={(e) => setContactName(e.target.value)}
         value={contactName}
           type="text"
         />
-        <label>Mail </label>
+        <label className="form-label" >Mail </label>
         <input
+        className="form-control"
         onChange={(e) => setMail(e.target.value)}
         value={mail}
           type="email"
         />
-        <label>Numero de telephone </label>
+        <label className="form-label">Numero de telephone </label>
         <input
+        className="form-control"
             onChange={(e) => setPhone(e.target.value)}
             value={phone}
             type="tel"
         />
 
-        <label>Addresse </label>
+        <label className="form-label">Addresse </label>
          <input
+            className="form-control"
             onChange={(e) => setAddress(e.target.value)}
             value={address}
             placeholder="Addresse"
@@ -139,14 +156,20 @@ function handleArticleToggle(articleId: number) {
         <h3>Articles associées : </h3>
 
         {articles.map((article) => (
-        <label key={article.id}>
+            <div className="form-check">
+        <label className="form-label" key={article.id}>
+            
             <input
+            className="form-check-input"
             type="checkbox"
             checked={selectedArticleIds.includes(article.id)}
             onChange={() => handleArticleToggle(article.id)}
             />
             {article.name}
+            
         </label>
+        </div>
+        
         ))}
 
 

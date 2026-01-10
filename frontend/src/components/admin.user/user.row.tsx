@@ -16,8 +16,10 @@ export default function UserRow({user,onDelete}:Props){
         <td>{user.name}</td>
         <td>{user.mail}</td>
 
-            <td><button onClick={()=> navigate("/admin/users/"+user.id+"/edit")}>Modifier</button></td>
-            <td><button onClick={()=> onDelete(Number(user.id))}>Supprimer</button></td>
+            <td>
+                <button className = "btn btn-outline-primary" onClick={()=> navigate("/admin/users/"+user.id+"/edit")}>Modifier</button>
+                <button className = "btn btn-outline-danger" onClick={()=> onDelete(Number(user.id))}>Supprimer</button>
+            </td>
         
     </tr>
     )

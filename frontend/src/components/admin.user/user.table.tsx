@@ -8,12 +8,13 @@ type Props = {
 
 export default function UserTable({users,onDelete}:Props){
     return(
-        <table>
+        <table className ="table table-stripped">
             <thead>
                 <tr>
                     <th>Role</th>
                     <th>Nom</th>
                     <th>Mail</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>

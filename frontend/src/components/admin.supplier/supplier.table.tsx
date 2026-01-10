@@ -9,13 +9,14 @@ type Props = {
 
 export default function SupplierTable({suppliers, onDelete}:Props){
     return(
-        <table>
+        <table className ="table table-stripped">
             <thead>
                 <tr>
                     <th>Nom</th>
                     <th>Mail</th>
                     <th>Téléphone</th>
                     <th>Addresse</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>

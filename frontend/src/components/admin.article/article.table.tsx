@@ -9,8 +9,8 @@ type Props = {
 
 export default function ArticleTable({articles, onDelete}:Props){
     return(
-        <table>
-            <thead>
+        <table className ="table table-stripped">
+            <thead className="z">
                 <tr>
                     <th>Nom</th>
                     <th>Unité</th>

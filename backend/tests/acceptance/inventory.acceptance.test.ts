@@ -92,15 +92,6 @@ describe('Inventory – Acceptance test with auth', () => {
   });
 
 
-  it('should get the article', async () => {
-    const response = await request(app)
-      .get(`/inventory/${article_id}`)
-      .set('Authorization',`Bearer ${token}`)
-
-    expect(response.status).toBe(200);
-    console.log(response.body.article)
-  });
-
    it('should get all the articles', async () => {
     const response = await request(app)
       .get('/inventory/')

@@ -11,26 +11,59 @@ export default function Sidebar(){
 
     return(
         <>
-        <div className="flex">
-            <a onClick={()=>{navigate("/dashboard")}}> Dashboard </a>
+    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <div className="container-fluid">
+          <a className="navbar-brand">Inventory App</a>
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+           <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <a className = "nav-link" onClick={()=>{navigate("/dashboard")}}> Dashboard </a>
+              </li>
+            
 
             {user?.role === "User" && (
         <>
-          <a onClick={() => navigate("/inventory")}>Inventaire</a>
-          <a onClick={() => navigate("/catalog")}>Catalogue</a>
+        <li className="nav-item">
+          <a className = "nav-link" onClick={() => navigate("/inventory")}>Inventaire</a>
+        </li>
+        <li className="nav-item">
+          <a className = "nav-link" onClick={() => navigate("/catalog")}>Catalogue</a>
+        </li>
         </>
       )}
 
       {user?.role === "Admin" && (
         <>
-          <a onClick={() => navigate("/admin/users")}> Utilisateurs</a>
-          <a onClick={() => navigate("/admin/suppliers")}> Fournisseurs</a>
-          <a onClick={() => navigate("/admin/articles")}> Articles</a>
+        <li className="nav-item">
+          <a className = "nav-link" onClick={() => navigate("/admin/users")}> Utilisateurs</a>
+        </li>
+        <li className="nav-item">
+          <a className = "nav-link"  onClick={() => navigate("/admin/suppliers")}> Fournisseurs</a>
+        </li>
+
+        <li className="nav-item">
+          <a className = "nav-link" onClick={() => navigate("/admin/articles")}> Articles</a>
+        </li>
+
         </>
       )}
-            <a onClick={()=>{navigate("/settings");console.log(user)}}> Paramètres</a>
-            <a onClick={()=>{logOut(); navigate("/");}}> Deconnexion</a>
+      </ul>
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item"> 
+                <a className =  "nav-link" onClick={()=>{navigate("/settings");console.log(user)}}> Paramètres</a>
+              </li>
+
+              <li className="nav-item">
+                 <a className = "d-flex nav-link" onClick={()=>{logOut(); navigate("/");}}> Deconnexion</a>
+              </li>
+              </ul>
+            
+            </div>
         </div>
+        </nav>
         </>
     )
 }

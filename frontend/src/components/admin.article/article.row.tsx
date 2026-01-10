@@ -14,9 +14,9 @@ export default function ArticleRow({article,onDelete}:Props){
     <tr>
         <td>{article.name}</td>
         <td>{article.unit}</td>
-            <td><button onClick={()=> navigate("/admin/articles/"+article.id+"/edit")} >Modifier</button></td>
-            <td><button onClick={()=> onDelete(Number(article.id))}>Supprimer</button></td>
-        
+            <td><button className = "btn btn-outline-primary"  onClick={()=> navigate("/admin/articles/"+article.id+"/edit")} >Modifier</button>
+            <button className = "btn btn-outline-danger"  onClick={()=> onDelete(Number(article.id))}>Supprimer</button>
+        </td>
     </tr>
     )
 }

@@ -52,7 +52,7 @@ export default function AdminSuppliers() {
 
       <h1>Fournisseurs</h1>
 
-       <button onClick={() => navigate("/admin/suppliers/create")}>
+       <button className="btn btn-outline-primary" onClick={() => navigate("/admin/suppliers/create")}>
         Ajouter un fournisseur
       </button>
 

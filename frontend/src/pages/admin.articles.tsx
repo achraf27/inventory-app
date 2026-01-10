@@ -55,7 +55,7 @@ export default function AdminArticles() {
 
       <h1>Articles</h1>
 
-      <button onClick={() => navigate("/admin/articles/create")}>
+      <button className = "btn btn-outline-primary"  onClick={() => navigate("/admin/articles/create")}>
         Créer un article
       </button>
 

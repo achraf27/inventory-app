@@ -4,7 +4,7 @@ import { Db } from "./dbSqlite.js";
 async function seed() {
   const db = await Db.getConnection();
 
-  console.log("🌱 Seeding database...");
+  console.log("Seeding database...");
 
   // --- USERS ---
   const passwordHash = await bcrypt.hash("password123", 10);

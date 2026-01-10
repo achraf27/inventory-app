@@ -52,26 +52,34 @@ export default function Settings(){
      {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
 
 
+<form className=" mx-auto" style={{maxWidth:"400px"}}>
+     <label className="form-label"> Nom de l'utilisateur</label>
     <input
+    className="form-control"
         onChange={(e) => setUsername(e.target.value)}
         value={username}
           type="text"
         />
     <button onClick={()=>{handleNameUpdate()}}>Modifier son nom</button>
 
+ <label className="form-label"> Mail de l'utilisateur</label>
      <input
+     className="form-control"
         onChange={(e) => setMail(e.target.value)}
         value={mail}
           type="text"
         />
     <button onClick={()=>{handleMailUpdate()}}>Modifier son email</button> 
 
+ <label className="form-label"> Mot de passe de l'utilisateur</label>
      <input
+     className="form-control"
         onChange={(e) => setPassword(e.target.value)}
         value={password}
           type="password"
         />
 
      <button onClick={handlePasswordUpdate}>Modifier son mot de passe</button>
+     </form>
     </>)
 }

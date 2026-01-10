@@ -7,6 +7,7 @@ import supplierRoutes from '../routes/supplier.route.js'
 import dotenv from "dotenv";
 import cors from "cors";
 
+
 dotenv.config();
 
 const app = express();

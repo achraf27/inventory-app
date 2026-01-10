@@ -54,7 +54,7 @@ export default function AdminUsers() {
 
       <h1>Utilisateurs</h1>
 
-      <button onClick={() => navigate("/admin/users/create")}>
+      <button className = "btn btn-outline-primary" onClick={() => navigate("/admin/users/create")}>
         Ajouter un utilisateur
       </button>
 

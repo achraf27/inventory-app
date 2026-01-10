@@ -64,13 +64,15 @@ export default function AdminArticleForm(){
      {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
      {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
 
-    <form onSubmit={async (e)=> {e.preventDefault() 
+    <form className=" mx-auto" style={{maxWidth:"400px"}}
+     onSubmit={async (e)=> {e.preventDefault() 
                            await handleSubmit()
                             }}>
+        <label className="form-label">Nom de l'article</label>   
         <input
+        className="form-control"
         onChange={(e) => setName(e.target.value)}
         value={name}
-          placeholder="Nom"
           type="text"
         />
          <select id="choix" name="choix" value={unit} aria-placeholder="Rôle"

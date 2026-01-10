@@ -67,7 +67,8 @@ export default function AdminUserForm(){
 
      {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
 
-    <form onSubmit={async (e)=> {e.preventDefault() 
+    <form className=" mx-auto" style={{maxWidth:"400px"}} 
+    onSubmit={async (e)=> {e.preventDefault() 
                            await handleSubmit()
                             }}>
         <select id="choix" name="choix" value={role} aria-placeholder="Rôle"
@@ -78,25 +79,31 @@ export default function AdminUserForm(){
             <option value="Admin">Admin</option>
             <option value="User">User</option>
             </select>
+        <label className="form-label"> Nom de l'utilisateur</label>
         <input
+        className="form-control"
         onChange={(e) => setUsername(e.target.value)}
         value={username}
-          placeholder="Nom"
+
           type="text"
         />
+        <label className="form-label"> Mail de l'utilisateur</label>
         <input
+        className="form-control"
         onChange={(e) => setMail(e.target.value)}
         value={mail}
-          placeholder="Mail"
           type="email"
         />
        {!isEditMode && (
+        <>
+        <label className="form-label"> Mot de passe de l'utilisateur</label>
         <input
+        className="form-control"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
-            placeholder="Mot de passe"
             type="password"
         />
+        </>
         )}
         
         <input type="submit" value={isEditMode ? "Mettre à jour" : "Créer"} />
