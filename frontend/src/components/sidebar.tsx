@@ -1,5 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
+import {
+  Home,
+  LayoutDashboard,
+  User,
+  Users,
+  Settings,
+  LogOut,
+  Bell,
+  Mail,
+  FileText
+} from "lucide-react";
+
 
 export default function Sidebar(){
 
@@ -11,16 +23,17 @@ export default function Sidebar(){
 
     return(
         <>
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
-        <div className="container-fluid">
-          <a className="navbar-brand">Logiciel d'inventaire</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-           <div className="collapse navbar-collapse" id="navbarNav">
+      <div className='container-fluid text-light'>
+        <div className="row">
+          <div className="col-auto min-vh-100 bg-dark">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <a className = "nav-link" onClick={()=>{navigate("/dashboard")}}> Dashboard </a>
+
+                <a className = "text-light nav-link" onClick={()=>{navigate("/dashboard")}}>
+                   <Home/>
+                   Dashboard 
+                   </a>
+
               </li>
             
 
@@ -38,7 +51,11 @@ export default function Sidebar(){
       {user?.role === "Admin" && (
         <>
         <li className="nav-item">
-          <a className = "nav-link" onClick={() => navigate("/admin/users")}> Utilisateurs</a>
+          
+          <a className = "nav-link" onClick={() => navigate("/admin/users")}>
+             <Users/>
+             Utilisateurs
+             </a>
         </li>
         <li className="nav-item">
           <a className = "nav-link"  onClick={() => navigate("/admin/suppliers")}> Fournisseurs</a>
@@ -53,17 +70,24 @@ export default function Sidebar(){
       </ul>
             <ul className="navbar-nav ms-auto">
               <li className="nav-item"> 
-                <a className =  "nav-link" onClick={()=>{navigate("/settings");console.log(user)}}> Paramètres</a>
+                <a className =  "nav-link" onClick={()=>{navigate("/settings");console.log(user)}}>
+                   <Settings/>
+                   Paramètres
+                   </a>
               </li>
 
               <li className="nav-item">
-                 <a className = "d-flex nav-link" onClick={()=>{logOut(); navigate("/");}}> Deconnexion</a>
+                 <a className = "d-flex nav-link" onClick={()=>{logOut(); navigate("/");}}>
+                   <LogOut/>
+                   Deconnexion
+                   </a>
               </li>
               </ul>
-            
-            </div>
+          </div>
         </div>
-        </nav>
+
+      </div>
+
         </>
     )
 }

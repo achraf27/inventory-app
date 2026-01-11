@@ -35,8 +35,8 @@ export default function Login() {
   }
 
   return (
-    <>
-      <div className="container bg-light position-absolute top-50 start-50 translate-middle pt-5 pb-5">
+    <div className="bg-light bg-gradient min-vh-100">
+      <div className="container position-absolute top-50 start-50 translate-middle pt-5 pb-5">
       <form className=" mx-auto" style={{maxWidth:"400px"}} onSubmit={handleSubmit}>
         <h1>Se connecter</h1>
         <div className= "mb-3 ">
@@ -46,7 +46,8 @@ export default function Login() {
           value={name}
           type="text"
           className="form-control"
-        /></div>
+        />
+        </div>
       <div className ="mb-3">
           <label className="form-label">Mot de passe</label>   
         <input
@@ -82,6 +83,6 @@ export default function Login() {
   </div>
       
 
-    </>
+    </div>
   );
 }
