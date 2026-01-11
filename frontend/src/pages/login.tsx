@@ -36,7 +36,7 @@ export default function Login() {
 
   return (
     <>
-      <div className="container">
+      <div className="container bg-light position-absolute top-50 start-50 translate-middle pt-5 pb-5">
       <form className=" mx-auto" style={{maxWidth:"400px"}} onSubmit={handleSubmit}>
         <h1>Se connecter</h1>
         <div className= "mb-3 ">
@@ -57,16 +57,14 @@ export default function Login() {
         />
         </div>
         <div className="mb-3">
-          <input type="checkbox" className="form-check-input" />
+          <input type="checkbox" className="form-check-input me-2" />
           <label className="form-check-label">Voir le mot de passe</label>
         </div>
-          <input type="submit" value="Valider" className="btn btn-primary "/>
+          <input type="submit" value="Valider" className="btn btn-dark me-2 "/>
            <Link to ="/">
-            <button value="retour" className="btn btn-primary">Retour</button>
+            <button value="retour" className="btn btn-outline-dark">Retour</button>
           </Link>
-      </form>
-  </div>
-       {error && (
+           {error && (
         <p style={{ color: "red" }}>
           {error}
         </p>
@@ -80,6 +78,9 @@ export default function Login() {
         </p>
         
       )}
+      </form>
+  </div>
+      
 
     </>
   );

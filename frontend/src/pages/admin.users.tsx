@@ -50,7 +50,7 @@ export default function AdminUsers() {
   }, []);
 
   return (
-    <>
+    <div style={{padding:"2rem", textAlign:"center"}}>
 
       <h1>Utilisateurs</h1>
 
@@ -68,6 +68,6 @@ export default function AdminUsers() {
       ) :(
           <UserTable users={users} onDelete ={onDelete}/>
           )}
-    </>
+    </div>
   );
 }

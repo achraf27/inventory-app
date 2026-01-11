@@ -51,7 +51,7 @@ export default function AdminArticles() {
   }, []);
 
   return (
-    <>
+    <div style={{padding:"2rem", textAlign:"center"}}>
 
       <h1>Articles</h1>
 
@@ -69,6 +69,6 @@ export default function AdminArticles() {
       ) :(
           <ArticleTable articles={articles} onDelete ={onDelete}/>
           )}
-    </>
+    </div>
   );
 }

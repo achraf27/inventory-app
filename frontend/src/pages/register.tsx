@@ -36,68 +36,71 @@ export default function Register() {
 
   return (
     <>
-     <div className="container">
-      <form className="mx-auto" style={{width:"400px"}}onSubmit={handleSubmit}>
-         <h1>S'inscrire</h1>
-         <div className="mb-3">
-           <label className="form-label">Email</label>   
-        <input
-          onChange={(e) => setMail(e.target.value)}
-          value={mail}
-          type="text"
-          className="form-control"
-        />
-        </div>
+     <div className="container bg-light position-absolute top-50 start-50 translate-middle pt-5 pb-5">
+        <form className="mx-auto" style={{width:"400px"}}onSubmit={handleSubmit}>
+            <h1>S'inscrire</h1>
+            <div className="mb-3">
+              <label className="form-label">Email</label>   
+            <input
+              onChange={(e) => setMail(e.target.value)}
+              value={mail}
+              type="text"
+              className="form-control"
+            />
+            </div>
 
-        <div className="mb-3">
-          <label className="form-label">Nom d'utilisateur</label> 
-        <input
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          type="text"
-          className="form-control"
+            <div className="mb-3">
+              <label className="form-label">Nom d'utilisateur</label> 
+            <input
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              type="text"
+              className="form-control"
 
-        />
-        </div>
+            />
+            </div>
 
-        <div className="mb-3">
-          <label className="form-label">Mot de passe</label> 
-        <input
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-          type="password"
-          className="form-control"
-        />
-        </div>
+            <div className="mb-3">
+              <label className="form-label">Mot de passe</label> 
+            <input
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              type="password"
+              className="form-control"
+            />
+            </div>
 
-        <div className="mb-3">
-            <input type="checkbox" className="form-check-input" />
-            <label className="form-check-label">Voir le mot de passe</label>
-          </div>
+            <div className="mb-3">
+                <input type="checkbox" className="form-check-input me-2" />
+                <label className="form-check-label">Voir le mot de passe</label>
+              </div>
 
-        <div >
-          <button type="submit" value="Valider" className="btn btn-primary">Valider</button>
-          <Link to ="/">
-            <button value="retour" className="btn btn-primary">Retour</button>
-          </Link>
-        </div>
-      </form>
-      </div>
+            <div >
+              <button type="submit" value="Valider" className="btn btn-dark me-2">Valider</button>
+              <Link to ="/">
+                <button value="retour" className="btn btn-outline-dark">Retour</button>
+              </Link>
+            </div>
+            
             {error && (
-        <p style={{ color: "red" }}>
-          {error}
-        </p>
+            <p style={{ color: "red" }}>
+              {error}
+            </p>
 
+            
+          )}
+
+          {message && (
+            <p style={{ color: "green" }}>
+              {message}
+            </p>
+            
+          )}
+
+        </form>
         
-      )}
-
-       {message && (
-        <p style={{ color: "green" }}>
-          {message}
-        </p>
-        
-      )}
-
+      </div>
+            
     </>
   );
 }

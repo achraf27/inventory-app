@@ -48,7 +48,7 @@ export default function AdminSuppliers() {
   }, []);
 
   return (
-    <>
+    <div style={{padding:"2rem", textAlign:"center"}}>
 
       <h1>Fournisseurs</h1>
 
@@ -65,6 +65,6 @@ export default function AdminSuppliers() {
       ) :(
           <SupplierTable suppliers={suppliers} onDelete={onDelete}/>
           )}
-    </>
+    </div>
   );
 }
