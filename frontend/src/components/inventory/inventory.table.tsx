@@ -11,7 +11,7 @@ export default function InventoryTable({articles,onDelete,onUpdateQuantity}:Prop
 
     
     return(
-        <table>
+        <table className="table table-stripped">
             <thead>
                 <tr>
                     <th>Nom</th>

@@ -52,7 +52,8 @@ export default function Settings(){
      {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
 
 
-<form className=" mx-auto" style={{maxWidth:"400px"}}>
+<form className="" style={{maxWidth:"400px"}}>
+    <div>
      <label className="form-label"> Nom de l'utilisateur</label>
     <input
     className="form-control"
@@ -60,8 +61,10 @@ export default function Settings(){
         value={username}
           type="text"
         />
-    <button onClick={()=>{handleNameUpdate()}}>Modifier son nom</button>
-
+    <button className = "mt-3 mb-3 btn btn-dark"
+            onClick={()=>{handleNameUpdate()}}>Modifier son nom</button>
+</div>
+<div>
  <label className="form-label"> Mail de l'utilisateur</label>
      <input
      className="form-control"
@@ -69,8 +72,10 @@ export default function Settings(){
         value={mail}
           type="text"
         />
-    <button onClick={()=>{handleMailUpdate()}}>Modifier son email</button> 
-
+    <button className = "mt-3 mb-3 btn btn-dark"
+            onClick={()=>{handleMailUpdate()}}>Modifier son email</button> 
+</div>
+<div>
  <label className="form-label"> Mot de passe de l'utilisateur</label>
      <input
      className="form-control"
@@ -79,7 +84,9 @@ export default function Settings(){
           type="password"
         />
 
-     <button onClick={handlePasswordUpdate}>Modifier son mot de passe</button>
+     <button className = "mt-3 btn btn-dark"
+             onClick={handlePasswordUpdate}>Modifier son mot de passe</button>
+    </div>
      </form>
     </>)
 }

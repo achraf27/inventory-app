@@ -25,7 +25,9 @@ export default function Login() {
       console.log("Connexion réussie :", res);
       setUser(res.user!)
       setMessage(res.message);
-      navigate("/dashboard")
+      if(res?.user?.role === "User")
+          navigate("/dashboard")
+      navigate("/admin/users")
     } catch (err:any) {
       console.error(err.response);
       setError(

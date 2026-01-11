@@ -51,11 +51,11 @@ export default function AdminArticles() {
   }, []);
 
   return (
-    <div style={{padding:"2rem", textAlign:"center"}}>
+    <div style={{padding:"2rem"}}>
 
-      <h1>Articles</h1>
+      <h1 className="mb-3">Articles</h1>
 
-      <button className = "btn btn-outline-primary"  onClick={() => navigate("/admin/articles/create")}>
+      <button className = "mb-3 btn btn-outline-dark"  onClick={() => navigate("/admin/articles/create")}>
         Créer un article
       </button>
 

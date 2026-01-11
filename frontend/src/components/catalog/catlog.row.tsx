@@ -29,7 +29,10 @@ export default function CatalogRow({article}:Props){
         </td>
         <td>{article.unit}</td>
         <td>
-            <button onClick={handleAdd}>Ajouter</button>
+            <button 
+                    className="btn btn-dark"
+                    onClick={handleAdd}>Ajouter
+            </button>
         </td>
     </tr>
     )

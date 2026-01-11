@@ -48,11 +48,11 @@ export default function AdminSuppliers() {
   }, []);
 
   return (
-    <div style={{padding:"2rem", textAlign:"center"}}>
+    <div style={{padding:"2rem"}}>
 
-      <h1>Fournisseurs</h1>
+      <h1 className="mb-3">Fournisseurs</h1>
 
-       <button className="btn btn-outline-primary" onClick={() => navigate("/admin/suppliers/create")}>
+       <button className=" mb-3 btn btn-outline-dark" onClick={() => navigate("/admin/suppliers/create")}>
         Ajouter un fournisseur
       </button>
 

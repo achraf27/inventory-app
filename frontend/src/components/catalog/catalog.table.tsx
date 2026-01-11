@@ -7,7 +7,7 @@ type Props = {
 
 export default function CatalogTable({articles}:Props){
     return(
-        <table>
+        <table className="table table-stripped">
             <thead>
                 <tr>
                     <th>Fournisseur</th>

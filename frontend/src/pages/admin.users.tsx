@@ -50,11 +50,11 @@ export default function AdminUsers() {
   }, []);
 
   return (
-    <div style={{padding:"2rem", textAlign:"center"}}>
+    <div style={{padding:"2rem"}}>
 
-      <h1>Utilisateurs</h1>
+      <h1 className="mb-3">Utilisateurs</h1>
 
-      <button className = "btn btn-outline-primary" onClick={() => navigate("/admin/users/create")}>
+      <button className = "mb-3 btn btn-outline-dark" onClick={() => navigate("/admin/users/create")}>
         Ajouter un utilisateur
       </button>
 

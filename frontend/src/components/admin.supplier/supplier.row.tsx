@@ -18,7 +18,7 @@ export default function SupplierRow({supplier,onDelete}:Props){
         <td>{supplier.address}</td>
         
             <td>
-                <button className = "btn btn-primary me-2" onClick={()=> navigate("/admin/suppliers/"+supplier.id+"/edit")} >Modifier</button>
+                <button className = "btn btn-dark me-2" onClick={()=> navigate("/admin/suppliers/"+supplier.id+"/edit")} >Modifier</button>
                 <button className="btn btn-outline-danger" onClick={()=> onDelete(Number(supplier.id))}>Supprimer</button>
             </td>
         

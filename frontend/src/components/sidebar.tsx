@@ -31,7 +31,12 @@ export default function Sidebar(){
                    <p>Utilisateur: {user?.name}</p>
 
               </li>
-              <li className="nav-item">
+             
+            
+
+            {user?.role === "User" && (
+        <>
+         <li className="nav-item">
 
                 <a className = "text-light nav-link" onClick={()=>{navigate("/dashboard")}}>
                    <LayoutDashboard size={20}/>
@@ -39,10 +44,6 @@ export default function Sidebar(){
                    </a>
 
               </li>
-            
-
-            {user?.role === "User" && (
-        <>
         <li className="nav-item">
           <a className = "nav-link" onClick={() => navigate("/inventory")}>
             <Handbag size={20}/>

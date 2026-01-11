@@ -23,21 +23,31 @@ export default function Dashboard() {
       
       < >
       
-      <div className = 'flex'>
-        
+     <div className="flex-1 ml-16 md:ml-64 bg-gray-100 min-h-screen p-6">
+  
+  {/* Header */}
+  <div className="mb-8">
+    <h1 className="text-3xl font-bold">Dashboard</h1>
+    <p className="text-gray-500">
+      Vue d’ensemble de votre inventaire
+    </p>
+  </div>
 
-            <div className = 'flex-1 ml-16 md:ml-64 bg-gray-100 min-h-screen'>
-                <Outlet/>
-                <h1>Dashboard</h1>
+  {/* KPIs */}
+  <div className="flex gap-4 mb-8">
+    {user?.role === "User" && (
+      <div className="bg-white rounded-lg shadow p-6">
+        <p className="text-sm text-gray-500">Stock total</p>
+        <p className="text-3xl font-bold">{totalStock}</p>
+      </div>
+    )}
+  </div>
 
+  {/* Sous-pages */}
+  <Outlet />
 
-      {user?.role === "User" && (
-                <h2>Stock total: {totalStock}</h2>
-                )}
-            </div>
-            
+</div>
 
-        </div>
       </>
     );
   }
