@@ -20,6 +20,7 @@ import Settings from './pages/settings'
 import AdminArticles from './pages/admin.articles'
 import AdminArticleForm from './pages/admin.article.form'
 import { AuthProvider } from './context/authContext'
+import './scss/styles.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 

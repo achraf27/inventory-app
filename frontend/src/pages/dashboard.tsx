@@ -28,7 +28,7 @@ export default function Dashboard() {
 
             <div className = 'flex-1 ml-16 md:ml-64 bg-gray-100 min-h-screen'>
                 <Outlet/>
-                <h1>Bienvenue</h1>
+                <h1>Dashboard</h1>
 
 
       {user?.role === "User" && (

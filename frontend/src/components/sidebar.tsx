@@ -1,16 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import {
-  Home,
   LayoutDashboard,
-  User,
+  Van,
   Users,
   Settings,
   LogOut,
-  Bell,
-  Mail,
-  FileText
+  Store,
+  Handbag,
+  ShoppingBag,
 } from "lucide-react";
+
 
 
 export default function Sidebar(){
@@ -23,15 +23,19 @@ export default function Sidebar(){
 
     return(
         <>
-      <div className='container-fluid text-light'>
-        <div className="row">
-          <div className="col-auto min-vh-100 bg-dark">
+          <div className="col-auto min-vh-100 bg-dark text-light px-4 pt-4 d-flex flex-column">
             <ul className="navbar-nav">
               <li className="nav-item">
 
+              
+                   <p>Utilisateur: {user?.name}</p>
+
+              </li>
+              <li className="nav-item">
+
                 <a className = "text-light nav-link" onClick={()=>{navigate("/dashboard")}}>
-                   <Home/>
-                   Dashboard 
+                   <LayoutDashboard size={20}/>
+                    <span className="ms-1 d-none d-sm-inline">Dashboard</span> 
                    </a>
 
               </li>
@@ -40,10 +44,16 @@ export default function Sidebar(){
             {user?.role === "User" && (
         <>
         <li className="nav-item">
-          <a className = "nav-link" onClick={() => navigate("/inventory")}>Inventaire</a>
+          <a className = "nav-link" onClick={() => navigate("/inventory")}>
+            <Handbag size={20}/>
+             <span className="ms-1 d-none d-sm-inline">Inventaire</span>
+            </a>
         </li>
         <li className="nav-item">
-          <a className = "nav-link" onClick={() => navigate("/catalog")}>Catalogue</a>
+          <a className = "nav-link" onClick={() => navigate("/catalog")}>
+            <ShoppingBag size={20}/>
+             <span className="ms-1 d-none d-sm-inline">Catalogue</span>
+            </a>
         </li>
         </>
       )}
@@ -53,41 +63,43 @@ export default function Sidebar(){
         <li className="nav-item">
           
           <a className = "nav-link" onClick={() => navigate("/admin/users")}>
-             <Users/>
-             Utilisateurs
+             <Users size={20}/>
+              <span className="ms-1 d-none d-sm-inline">Utilisateurs</span>
              </a>
         </li>
         <li className="nav-item">
-          <a className = "nav-link"  onClick={() => navigate("/admin/suppliers")}> Fournisseurs</a>
+          <a className = "nav-link"  onClick={() => navigate("/admin/suppliers")}>
+             <Van size={20}/>
+             <span className="ms-1 d-none d-sm-inline">Fournisseurs</span>
+             </a>
         </li>
 
         <li className="nav-item">
-          <a className = "nav-link" onClick={() => navigate("/admin/articles")}> Articles</a>
+          <a className = "nav-link" onClick={() => navigate("/admin/articles")}>
+             <Store size={20}/>
+              <span className="ms-1 d-none d-sm-inline">Articles</span>
+             </a>
         </li>
 
         </>
       )}
       </ul>
-            <ul className="navbar-nav ms-auto">
+            <ul className="navbar-nav mt-auto pb-5">
               <li className="nav-item"> 
                 <a className =  "nav-link" onClick={()=>{navigate("/settings");console.log(user)}}>
-                   <Settings/>
-                   Paramètres
+                   <Settings size={20}/>
+                    <span className="ms-1 d-none d-sm-inline">Paramètres</span>
                    </a>
               </li>
 
               <li className="nav-item">
                  <a className = "d-flex nav-link" onClick={()=>{logOut(); navigate("/");}}>
-                   <LogOut/>
-                   Deconnexion
+                   <LogOut size={20}/>
+                    <span className="ms-1 d-none d-sm-inline">Deconnexion</span>
                    </a>
               </li>
               </ul>
           </div>
-        </div>
-
-      </div>
-
         </>
     )
 }
