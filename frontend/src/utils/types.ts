@@ -26,7 +26,7 @@ export type InventoryArticleDTO = {
   name:string;
   quantity: number;
   unit:string;
-  
+  addedAt:Date;
 };
 
 export type GetAllInventoryArticlesResponse = {

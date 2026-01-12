@@ -2,6 +2,7 @@ export type InventoryRow = {
     article_id:number,
     user_id:number,
     quantity:number
+    addedAt?:Date
 }
 
 export type InventoryArticleRow = {
@@ -10,4 +11,5 @@ export type InventoryArticleRow = {
     quantity:number
     name:string;
     unit:string;
+    addedAt:Date;
 }

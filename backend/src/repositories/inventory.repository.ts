@@ -13,6 +13,8 @@ export type CreateInventoryInput = {
   articleId: number;
   /** Quantité de l'article */
   quantity: number;
+ 
+
 };
 
 /**
@@ -37,12 +39,14 @@ export class InventoryRepository {
    * @returns Instance de InventoryArticle
    */
   private mapRowToInventoryArticle(row: InventoryArticleRow): InventoryArticle {
+      const addedAtDate = row.addedAt ? new Date(row.addedAt) : new Date();
     return new InventoryArticle(
       row.user_id,
       row.article_id,
       row.name,
       row.quantity,
-      row.unit
+      row.unit,
+      addedAtDate
     );
   }
 
@@ -52,12 +56,14 @@ export class InventoryRepository {
    * @returns L'article ajouté sous forme d'objet Inventory
    */
   async addArticle(_inventory: CreateInventoryInput): Promise<Inventory> {
-    const newInventory = new Inventory(_inventory.userId, _inventory.articleId, _inventory.quantity);
-    await this.inventoryDao.insert({
+    
+     await this.inventoryDao.insert({
       user_id: _inventory.userId,
       article_id: _inventory.articleId,
-      quantity: _inventory.quantity
+      quantity: _inventory.quantity,
     });
+
+    const newInventory = new Inventory(_inventory.userId, _inventory.articleId, _inventory.quantity,new Date());
     return newInventory;
   }
 

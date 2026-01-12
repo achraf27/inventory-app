@@ -15,8 +15,9 @@ export default function InventoryTable({articles,onDelete,onUpdateQuantity}:Prop
             <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Unite</th>
                     <th>Quantité</th>
+                    <th>Unité</th>
+                    <th>Date d'ajout</th>
                     <th>Action</th>
                 </tr>
             </thead>

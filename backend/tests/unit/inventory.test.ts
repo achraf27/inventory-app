@@ -45,7 +45,7 @@ describe('inventoryRepository', () => {
 
    it("Should return a article",async ()=>{
   
-      const fakeRow = { articleId:1,userId:1, quantity:5};
+      const fakeRow = { articleId:1,userId:1, quantity:5,addedAt:'2025-01-01T10:00:00Z'};
   
       const mockFindById = jest.spyOn(InventoryDaoModule.InventoryDao.prototype, 'findOneArticle')
         .mockResolvedValue(fakeRow as any);
@@ -63,8 +63,8 @@ describe('inventoryRepository', () => {
   
     it("Should return every articles",async ()=>{
   
-      const fakeRows = [{ articleId:1,userId:1, quantity:5},
-                        { articleId:2,userId:1, quantity:2}];
+      const fakeRows = [{ articleId:1,userId:1, quantity:5,addedAt:'2025-01-01T10:00:00Z'},
+                        { articleId:2,userId:1, quantity:2,addedAt:'2025-01-01T10:00:00Z'}];
   
       const mockFindAll = jest.spyOn(InventoryDaoModule.InventoryDao.prototype, 'findByUserId')
         .mockResolvedValue(fakeRows as any);

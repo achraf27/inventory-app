@@ -45,14 +45,15 @@ async function seed() {
       (2, 4)
   `);
 
-  // --- INVENTORY (optionnel pour tests) ---
-  await db.run(`
-    INSERT OR IGNORE INTO inventory (user_id, article_id, quantity)
-    VALUES
-      (2, 1, 10), -- Alice : 10kg tomates
-      (2, 3, 5),  -- Alice : 5L lait
-      (3, 2, 7)   -- Bob : 7kg pommes
-  `);
+  // --- INVENTORY avec dates fictives ---
+await db.run(`
+  INSERT OR IGNORE INTO inventory (user_id, article_id, quantity, added_at)
+  VALUES
+    (2, 1, 10, ?),
+    (2, 3, 5, ?),
+    (3, 2, 7, ?)
+`, [new Date().toISOString(), new Date().toISOString(), new Date().toISOString()]);
+
 
   console.log("Database seeded successfully");
 }

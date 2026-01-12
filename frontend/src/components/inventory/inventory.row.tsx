@@ -16,6 +16,11 @@ export default function InventoryRow({ article, onDelete, onUpdateQuantity }: Pr
     setIsEditing(false);
   };
 
+  function formatDate(date:string|Date|undefined){
+    if(!date) return'-';
+    return new Date(date).toLocaleDateString('fr-FR');
+  }
+
   return (
     <tr key={`${article.user_id}-${article.article_id}`}>
       <td>{article.name}</td>
@@ -32,7 +37,12 @@ export default function InventoryRow({ article, onDelete, onUpdateQuantity }: Pr
         )}
       </td>
       <td>{article.unit}</td>
+      <td>{formatDate(article.addedAt)}</td>
+
       <td>
+
+        
+
        
         {isEditing ? (
           <>

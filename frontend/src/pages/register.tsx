@@ -35,7 +35,7 @@ export default function Register() {
   }
 
   return (
-    <div className="bg-light bg-gradient">
+    <div className="bg-light bg-gradient min-vh-100">
      <div className="container position-absolute top-50 start-50 translate-middle pt-5 pb-5">
         <form className="mx-auto" style={{width:"400px"}}onSubmit={handleSubmit}>
             <h1>S'inscrire</h1>

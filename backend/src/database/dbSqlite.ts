@@ -69,6 +69,7 @@ export class Db {
         article_id INTEGER NOT NULL,
         user_id INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
+        added_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         UNIQUE (user_id, article_id),
         FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

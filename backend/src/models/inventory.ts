@@ -8,6 +8,8 @@ export type InventoryDto = {
   articleId: number;
   /** Quantité de l'article dans l'inventaire */
   quantity: number;
+  /** Quantité de l'article dans l'inventaire */
+  addedAt: Date;
 };
 
 /**
@@ -25,17 +27,22 @@ export class Inventory {
   /** Quantité de l'article (lecture seule) */
   readonly quantity: number;
 
+  /** Date de l''ajout de l'article (lecture seule) */
+  readonly addedAt: Date;
+
   /**
    * Crée une instance d'Inventory.
    *
    * @param userId - Identifiant de l'utilisateur
    * @param articleId - Identifiant de l'article
    * @param quantity - Quantité de l'article
+   * @param addedAt - Date d'ajout de l'article
    */
-  constructor(userId: number, articleId: number, quantity: number) {
+  constructor(userId: number, articleId: number, quantity: number,addedAt:Date) {
     this.user_id = userId;
     this.article_id = articleId;
     this.quantity = quantity;
+    this.addedAt  = addedAt;
   }
 
   /**
@@ -48,6 +55,7 @@ export class Inventory {
       userId: this.user_id,
       articleId: this.article_id,
       quantity: this.quantity,
+      addedAt: this.addedAt,
     };
   }
 }

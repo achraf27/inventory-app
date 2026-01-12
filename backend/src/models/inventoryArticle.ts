@@ -13,6 +13,8 @@ export type InventoryArticleDto = {
   quantity: number;
   /** Unité de mesure de l'article */
   unit: string;
+  /** Quantité de l'article dans l'inventaire */
+  addedAt?: Date|undefined;
 };
 
 /**
@@ -35,6 +37,9 @@ export class InventoryArticle {
   /** Unité de l'article (lecture seule) */
   readonly unit: string;
 
+  /** Unité de l'article (lecture seule) */
+  readonly addedAt?: Date;
+
   /**
    * Crée une instance d'InventoryArticle.
    *
@@ -43,13 +48,16 @@ export class InventoryArticle {
    * @param name - Nom de l'article
    * @param quantity - Quantité de l'article
    * @param unit - Unité de mesure de l'article
+   * @param addedAt - Date d'ajout de l'article
    */
-  constructor(userId: number, articleId: number, name: string, quantity: number, unit: string) {
+  constructor(userId: number, articleId: number, name: string, quantity: number, unit: string,addedAt?: Date) {
     this.user_id = userId;
     this.article_id = articleId;
     this.name = name;
     this.quantity = quantity;
     this.unit = unit;
+    if(addedAt)
+    this.addedAt = addedAt ?? new Date();
   }
 
   /**
@@ -64,6 +72,7 @@ export class InventoryArticle {
       name: this.name,
       quantity: this.quantity,
       unit: this.unit,
+      addedAt:this.addedAt
     };
   }
 }

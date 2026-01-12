@@ -21,7 +21,7 @@ export class InventoryDao {
       inventory.user_id,
       inventory.quantity
     );
-
+  
     return result.changes!;
   }
 
@@ -55,7 +55,7 @@ export class InventoryDao {
   async findByUserId(id: number): Promise<InventoryArticleRow[] | undefined> {
     const db = await Db.getConnection();
     const rows = await db.all(`
-      SELECT i.user_id, i.article_id, i.quantity, a.name, a.unit
+      SELECT i.user_id, i.article_id, i.quantity, a.name, a.unit, i.added_at
       FROM inventory i
       JOIN articles a ON i.article_id = a.id
       WHERE i.user_id = ?
@@ -73,7 +73,8 @@ export class InventoryDao {
   async findOneArticle(userId: number, articleId: number): Promise<InventoryArticleRow | undefined> {
     const db = await Db.getConnection();
     const row = await db.get(`
-      SELECT i.user_id, i.article_id, i.quantity, a.name, a.unit
+      SELECT i.user_id, i.article_id, i.quantity, a.name, a.unit,i.addedAt
+
       FROM inventory i
       JOIN articles a ON i.article_id = a.id
       WHERE i.user_id = ? AND i.article_id = ?
