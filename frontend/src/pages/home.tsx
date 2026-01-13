@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom"
 import landingBg from "../assets/landing.jpg"
 import inventoryDraw from "../assets/inventory.png"
 import functionnalityDraw from "../assets/functionnality.jpg"
-import teamDraw from "../assets/team.png"
 
 
 export default function Home(){
@@ -100,39 +99,8 @@ export default function Home(){
                     
                 
 
-                <div className="bg-gradient
-                                d-flex
-                                flex-column 
-                                justify-content-center 
-                                align-items-center" 
-                    style={{
-                    width:"100%",
-
-
-                }}>
-                    <h2 style={{
-                        fontSize:"3rem",
-                        fontWeight:"800",
-                        marginBottom:"1.5em"
-                        
-                    }}>Pour qui?</h2>
-                        <div className="d-flex
-                                flex-wrap 
-                                justify-content-center 
-                                align-items-center"
-                                >
-                    <p style={{
-                        
-                        fontWeight:"400",
-                        fontSize:"1.3em",
-                        maxWidth:"500px"
-                        }}>Cet outil informatique à été pensé pour être simple à utiliser, il peut convenir
-                        aux petites structures, associations etc...
-                    </p>
-                    <img src={teamDraw} style={{maxWidth:"700px"}} />
-                    </div>
-                   
-                </div>
+            
+              
               <footer className="bg-light bg-gradient text-dark d-flex flex-column flex-md-row justify-content-between align-items-center p-4">
                 <div>
                     © AIT DAOUD Achraf Tous droits réservés.

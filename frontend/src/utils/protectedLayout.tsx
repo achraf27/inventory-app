@@ -11,16 +11,16 @@ export default function ProtectedLayout(){
         <AnimatePresence mode="wait">
             <div className="container-fluid">
                 <div className="row">
-                    <Sidebar/>
-                    <PageWrapper key={location.key}>
-                            <Outlet/>
+                    <Sidebar />
+                    <PageWrapper className="col-12 col-md" key={location.key}>
+                            <Outlet />
                     </PageWrapper>
                 </div>
             </div>
     </AnimatePresence>)
 }
 
-export function PageWrapper({children}:any){
+function PageWrapper({children}:any){
     return(
 
         <motion.div

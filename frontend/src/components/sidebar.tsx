@@ -27,8 +27,8 @@ export default function Sidebar(){
             <ul className="navbar-nav">
               <li className="nav-item">
 
-              
-                   <p>Utilisateur: {user?.name}</p>
+                    
+                   <h6>{user?.name}: {user?.role}</h6>
 
               </li>
              

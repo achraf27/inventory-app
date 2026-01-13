@@ -44,6 +44,18 @@ export default function AdminArticleForm(){
     }
 
     useEffect(()=>{
+        if(!message && !error)
+            return;
+
+        const timer = setTimeout(()=>{
+            setMessage(null);
+            setError(null);
+        },3000)
+
+        return () => clearTimeout(timer);
+    },[message,error])
+
+    useEffect(()=>{
         if(!article_id) return;
 
         async function loadArticle(){
@@ -64,7 +76,7 @@ export default function AdminArticleForm(){
      {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
      {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
 
-    <form className=" mx-auto" style={{maxWidth:"400px"}}
+    <form className=" d-flex flex-column mx-auto gap-2" style={{maxWidth:"400px"}}
      onSubmit={async (e)=> {e.preventDefault() 
                            await handleSubmit()
                             }}>
@@ -75,19 +87,22 @@ export default function AdminArticleForm(){
         value={name}
           type="text"
         />
-         <select id="choix" name="choix" value={unit} aria-placeholder="Rôle"
+         <label className="form-label">Unité de l'article</label>   
+         <select className ="form-select" id="choix" name="choix" value={unit} aria-placeholder="Rôle"
         onChange={(e)=>setUnit(e.target.value)}>
             <option value="" disabled>
             -- Sélectionnez une unité --
             </option>
             <option value="litres">litres</option>
+            <option value="ml">ml</option>
             <option value="kg">kg</option>
-            <option value="grammes">grammes</option>
+            <option value="g">g</option>
+            <option value="unité">unité</option>
             </select>
       
         
         
-        <input type="submit" value={isEditMode ? "Mettre à jour" : "Créer"} />
+        <input className="btn btn-dark mt-2"type="submit" value={isEditMode ? "Mettre à jour" : "Créer"} />
       </form>
 
     </>)

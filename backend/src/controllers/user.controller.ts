@@ -20,7 +20,7 @@ export class UserController {
     const { role, name, password, mail } = req.body;
     const hash = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS!));
     try {
-      const user = await this.userRepo.createUser({ role, name, mail, passwordHash: hash });
+      const user = await this.userRepo.createUser({ role, name, mail, passwordhash: hash });
       return res.status(201).json({ message: "user created", user });
     } catch (e) {
       console.log(e);

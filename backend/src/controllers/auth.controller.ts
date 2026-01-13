@@ -71,7 +71,7 @@ export class AuthController {
                 : DEFAULT_ROLE;
 
         try {
-            const user = await this.authRepo.createUser({ role: finalRole, name, mail, passwordHash: hash });
+            const user = await this.authRepo.createUser({ role: finalRole, name, mail, passwordhash: hash });
 
             const token = jwt.sign(
                 { id: user.id, role: user.role, name },

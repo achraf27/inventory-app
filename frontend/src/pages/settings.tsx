@@ -1,5 +1,5 @@
 import { useAuth } from "../context/authContext";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { updateMail, updateName, updatePassword } from "../services/user.service";
 
 export default function Settings(){
@@ -17,11 +17,12 @@ export default function Settings(){
 
      async function handleNameUpdate(){
         try{
-            const res = await updateName(mail);
+            const res = await updateName(username);
             setUser(prev => ({ ...prev!, name: username }));
             setMessage(res.message)
         }catch(err:any){
-            setError(err)
+            setError(err?.response?.data?.message ?? "Erreur inconnue");
+
         }
     }
 
@@ -31,62 +32,89 @@ export default function Settings(){
             setUser(prev => ({ ...prev!, mail }));
             setMessage(res.message)
         }catch(err:any){
-            setError(err);
+            setError(err?.response?.data?.message ?? "Erreur inconnue");
+
         }
     }
 
     async function handlePasswordUpdate(){
         try{
+            if(password.length === 0 || password.length<8)
+                 setError("Mot de passe trop court")
             const res = await updatePassword(password);
             setMessage(res.message)
         }catch(err:any){
-            setError(err);
+            setError(err?.response?.data?.message ?? "Erreur inconnue");
+
         }
     }
    
+    useEffect(()=>{
+        if(!message && !error)
+            return;
+
+        const timer = setTimeout(()=>{
+            setMessage(null);
+            setError(null);
+        },3000)
+
+        return () => clearTimeout(timer);
+    },[message,error])
     
-    return(<>
+    return(
+    <>
+
+
     <h1>Paramètres utilisateur</h1>
 
      {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
      {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
 
 
-<form className="" style={{maxWidth:"400px"}}>
-    <div>
-     <label className="form-label"> Nom de l'utilisateur</label>
-    <input
-    className="form-control"
-        onChange={(e) => setUsername(e.target.value)}
-        value={username}
-          type="text"
-        />
-    <button className = "mt-3 mb-3 btn btn-dark"
-            onClick={()=>{handleNameUpdate()}}>Modifier son nom</button>
-</div>
-<div>
- <label className="form-label"> Mail de l'utilisateur</label>
-     <input
-     className="form-control"
-        onChange={(e) => setMail(e.target.value)}
-        value={mail}
-          type="text"
-        />
-    <button className = "mt-3 mb-3 btn btn-dark"
-            onClick={()=>{handleMailUpdate()}}>Modifier son email</button> 
-</div>
-<div>
- <label className="form-label"> Mot de passe de l'utilisateur</label>
-     <input
-     className="form-control"
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-          type="password"
-        />
+<form className="d-flex flex-column mx-auto gap-2" style={{maxWidth:"400px"}}>
 
-     <button className = "mt-3 btn btn-dark"
-             onClick={handlePasswordUpdate}>Modifier son mot de passe</button>
+
+ 
+        
+     <label className="form-label"> Nom de l'utilisateur</label>
+            <div className="input-group mb-3">
+    <input onChange={(e) => setUsername(e.target.value)}
+            value={username} type="text" className="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2"></input>
+    <div className="input-group-append">
+        <button className="btn btn-outline-dark" type="button"
+                onClick={()=>{handleNameUpdate()}}>Modifier
+                </button>
+        </div>
     </div>
+
+
+
+
+    <label className="form-label"> Mail de l'utilisateur</label>
+
+            <div className="input-group mb-3">
+    <input  onChange={(e) => setMail(e.target.value)}
+            value={mail} type="email" className="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2"></input>
+    <div className="input-group-append">
+        <button className="btn btn-outline-dark" type="button"
+                onClick={()=>{handleMailUpdate()}}>Modifier
+                </button>
+        </div>
+        </div>
+
+
+    <label className="form-label"> Mot de passe de l'utilisateur</label>
+        <div className="input-group mb-3">
+    <input  onChange={(e) => setPassword(e.target.value)}
+            value={password} type="mail" className="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2"></input>
+    <div className="input-group-append">
+        <button className="btn btn-outline-dark" type="button"
+                onClick={()=>{handlePasswordUpdate()}}>Modifier
+                </button>
+        </div>
+        </div>
+    
+    
      </form>
     </>)
 }

@@ -23,6 +23,8 @@ export default function AdminSupplierForm(){
     const [selectedArticleIds, setSelectedArticleIds] = useState<number[]>([]);
 
 
+    
+
     async function handleSubmit(){
         try{
             console.log({ contactName, mail, phone, address });
@@ -62,6 +64,18 @@ function handleArticleToggle(articleId: number) {
     );
 }
 
+
+    useEffect(()=>{
+            if(!message && !error)
+                return;
+
+            const timer = setTimeout(()=>{
+                setMessage(null);
+                setError(null);
+            },3000)
+
+            return () => clearTimeout(timer);
+        },[message,error])
 
 
     useEffect(()=>{
@@ -118,7 +132,7 @@ function handleArticleToggle(articleId: number) {
 
 
         <h3>Informations fournisseur : </h3>
-    <form className=" mx-auto" style={{maxWidth:"400px"}} onSubmit={async (e)=> {e.preventDefault() 
+    <form className="d-flex flex-column mx-auto gap-2" style={{maxWidth:"400px"}} onSubmit={async (e)=> {e.preventDefault() 
                            await handleSubmit()
                             }}>
         <label className="form-label" >Nom de contact </label>
@@ -162,8 +176,8 @@ function handleArticleToggle(articleId: number) {
             <input
             className="form-check-input"
             type="checkbox"
-            checked={selectedArticleIds.includes(article.id)}
-            onChange={() => handleArticleToggle(article.id)}
+            checked={selectedArticleIds.includes(article.id ?? 0)}
+            onChange={() => handleArticleToggle(article.id ?? 0)}
             />
             {article.name}
             
@@ -173,7 +187,7 @@ function handleArticleToggle(articleId: number) {
         ))}
 
 
-        <input type="submit" value={isEditMode ? "Mettre à jour" : "Créer"} />
+        <input className="btn btn-dark mt-2" type="submit" value={isEditMode ? "Mettre à jour" : "Créer"} />
       </form>
 
     </>)

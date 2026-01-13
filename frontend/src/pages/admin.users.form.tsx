@@ -14,9 +14,12 @@ export default function AdminUserForm(){
     const [password,setPassword] = useState<string>("");
 
     const [error, setError] = useState<string | null>(null);
+    const [message, setMessage] = useState<string | null>(null);
 
     async function handleSubmit(){
         try{
+            setError(null);
+            setMessage(null);
             console.log({ role, username, mail, password });
 
             if (!role || !username || !mail || (!isEditMode && !password)) {
@@ -29,9 +32,12 @@ export default function AdminUserForm(){
                 adminUpdateRole(Number(user_id), role),
                 adminUpdateName(Number(user_id), username),
                 adminUpdateMail(Number(user_id), mail)
+                
             ]);
+            setMessage("user updated successfully");
             }else{
                 await createUser({role,name:username,password,mail});
+                setMessage("user updated successfully");
             }
         }
         catch(err:any){
@@ -45,6 +51,18 @@ export default function AdminUserForm(){
             }
         }
     }
+
+    useEffect(()=>{
+        if(!message && !error)
+            return;
+
+        const timer = setTimeout(()=>{
+            setMessage(null);
+            setError(null);
+        },3000)
+
+        return () => clearTimeout(timer);
+    },[message,error])
 
     useEffect(()=>{
         if(!user_id) return;
@@ -66,12 +84,15 @@ export default function AdminUserForm(){
     <h1>{isEditMode? "Modifier l'utilisateur":"Ajouter un utilisateur"}</h1>
 
      {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
+     {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
 
-    <form className=" mx-auto" style={{maxWidth:"400px"}} 
+    <form className=" d-flex flex-column mx-auto gap-2" style={{maxWidth:"400px"}} 
     onSubmit={async (e)=> {e.preventDefault() 
                            await handleSubmit()
                             }}>
-        <select id="choix" name="choix" value={role} aria-placeholder="Rôle"
+
+        <label className="form-label"> Rôle de l'utilisateur</label>                        
+        <select  className="form-select" id="choix" name="choix" value={role} aria-placeholder="Rôle"
         onChange={(e)=>setRole(e.target.value)}>
             <option value="" disabled>
             -- Sélectionner un rôle --
@@ -106,7 +127,7 @@ export default function AdminUserForm(){
         </>
         )}
         
-        <input type="submit" value={isEditMode ? "Mettre à jour" : "Créer"} />
+        <input className="btn btn-dark"type="submit" value={isEditMode ? "Mettre à jour" : "Créer"} />
       </form>
 
     </>)

@@ -3,5 +3,5 @@ export type UserRow = {
     role:string;
     name:string;
     mail:string;
-    passwordHash:string;
+    passwordhash:string;
 }

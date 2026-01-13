@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { login } from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { Link } from "react-router-dom";
 
 export default function Login() {
+
+  
+
   const {setUser} = useAuth()
 
   const [message, setMessage] = useState<string | null>(null);
@@ -12,6 +15,9 @@ export default function Login() {
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+
+  const [showPassword,setShowPassword] = useState<"password"|"text">("password");
+
 
   const navigate = useNavigate();
 
@@ -29,12 +35,25 @@ export default function Login() {
           navigate("/dashboard")
       navigate("/admin/users")
     } catch (err:any) {
-      console.error(err.response);
+      console.error(err.response || err);
       setError(
-         err.response.data.message
+         err.response?.data?.message
+         || "Erreur serveur"
       )
     }
   }
+
+  useEffect(()=>{
+        if(!message && !error)
+            return;
+
+        const timer = setTimeout(()=>{
+            setMessage(null);
+            setError(null);
+        },3000)
+
+        return () => clearTimeout(timer);
+    },[message,error])
 
   return (
     <div className="bg-light bg-gradient min-vh-100">
@@ -55,13 +74,23 @@ export default function Login() {
         <input
           onChange={(e) => setPassword(e.target.value)}
           value={password}
-          type="password"
+          type={showPassword}
           className="form-control"
         />
         </div>
         <div className="mb-3">
-          <input type="checkbox" className="form-check-input me-2" />
-          <label className="form-check-label">Voir le mot de passe</label>
+          <input type="checkbox" className="form-check-input me-2"
+           onChange={()=>{
+                  console.log(showPassword)
+                  if(showPassword === "password" ){
+                   setShowPassword("text")
+                    return;
+                  }
+                 setShowPassword("password")
+
+        }} />
+          <label className="form-check-label"
+                 >Voir le mot de passe</label>
         </div>
           <input type="submit" value="Valider" className="btn btn-dark me-2 "/>
            <Link to ="/">

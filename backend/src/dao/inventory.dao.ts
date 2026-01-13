@@ -1,5 +1,5 @@
 import type { InventoryArticleRow, InventoryRow } from "../types/inventoryRow.js";
-import { Db } from "../database/dbSqlite.js";
+import { DbPostgreSQL } from "../database/dbPostgreSql.js";
 
 /**
  * Data Access Object pour l'inventaire.
@@ -14,15 +14,12 @@ export class InventoryDao {
    * @returns Promise<number> Nombre de lignes insérées (normalement 1)
    */
   async insert(inventory: InventoryRow): Promise<number> {
-    const db = await Db.getConnection();
-    const result = await db.run(
-      "INSERT INTO inventory (article_id, user_id, quantity) VALUES (?, ?, ?)",
-      inventory.article_id,
-      inventory.user_id,
-      inventory.quantity
+    const pool = DbPostgreSQL.getPool();
+    const result = await pool.query(
+      "INSERT INTO inventory (article_id, user_id, quantity) VALUES ($1, $2, $3)",
+      [inventory.article_id, inventory.user_id, inventory.quantity]
     );
-  
-    return result.changes!;
+    return result.rowCount!;
   }
 
   /**
@@ -37,13 +34,12 @@ export class InventoryDao {
     if (userId === undefined || articleId === undefined) {
       throw new Error("Cannot delete undefined inventory");
     }
-    const db = await Db.getConnection();
-    const result = await db.run(
-      "DELETE FROM inventory WHERE article_id = ? AND user_id = ?",
-      articleId,
-      userId
+    const pool = DbPostgreSQL.getPool();
+    const result = await pool.query(
+      "DELETE FROM inventory WHERE article_id = $1 AND user_id = $2",
+      [articleId, userId]
     );
-    return result.changes!;
+    return result.rowCount!;
   }
 
   /**
@@ -53,14 +49,15 @@ export class InventoryDao {
    * @returns Promise<InventoryArticleRow[] | undefined> Liste des articles avec nom et unité
    */
   async findByUserId(id: number): Promise<InventoryArticleRow[] | undefined> {
-    const db = await Db.getConnection();
-    const rows = await db.all(`
-      SELECT i.user_id, i.article_id, i.quantity, a.name, a.unit, i.added_at
-      FROM inventory i
-      JOIN articles a ON i.article_id = a.id
-      WHERE i.user_id = ?
-    `, [id]);
-    return rows as InventoryArticleRow[];
+    const pool = DbPostgreSQL.getPool();
+    const result = await pool.query(
+      `SELECT i.user_id, i.article_id, i.quantity, a.name, a.unit, i.added_at
+       FROM inventory i
+       JOIN articles a ON i.article_id = a.id
+       WHERE i.user_id = $1`,
+      [id]
+    );
+    return result.rows as InventoryArticleRow[];
   }
 
   /**
@@ -71,15 +68,15 @@ export class InventoryDao {
    * @returns Promise<InventoryArticleRow | undefined> L'article trouvé ou undefined
    */
   async findOneArticle(userId: number, articleId: number): Promise<InventoryArticleRow | undefined> {
-    const db = await Db.getConnection();
-    const row = await db.get(`
-      SELECT i.user_id, i.article_id, i.quantity, a.name, a.unit,i.addedAt
-
-      FROM inventory i
-      JOIN articles a ON i.article_id = a.id
-      WHERE i.user_id = ? AND i.article_id = ?
-    `, [userId, articleId]);
-    return row as InventoryArticleRow;
+    const pool = DbPostgreSQL.getPool();
+    const result = await pool.query(
+      `SELECT i.user_id, i.article_id, i.quantity, a.name, a.unit, i.added_at
+       FROM inventory i
+       JOIN articles a ON i.article_id = a.id
+       WHERE i.user_id = $1 AND i.article_id = $2`,
+      [userId, articleId]
+    );
+    return result.rows[0] as InventoryArticleRow;
   }
 
   /**
@@ -91,13 +88,11 @@ export class InventoryDao {
    * @returns Promise<number> Nombre de lignes modifiées
    */
   async updateQuantity(userId: number, articleId: number, quantity: number): Promise<number> {
-    const db = await Db.getConnection();
-    const result = await db.run(
-      "UPDATE inventory SET quantity = ? WHERE user_id = ? AND article_id = ?",
-      quantity,
-      userId,
-      articleId
+    const pool = DbPostgreSQL.getPool();
+    const result = await pool.query(
+      "UPDATE inventory SET quantity = $1 WHERE user_id = $2 AND article_id = $3",
+      [quantity, userId, articleId]
     );
-    return result.changes!;
+    return result.rowCount!;
   }
 }

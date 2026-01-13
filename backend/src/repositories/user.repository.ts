@@ -13,7 +13,7 @@ export type CreateUserInput = {
   /** Email de l'utilisateur */
   mail: string;
   /** Hash du mot de passe */
-  passwordHash: string;
+  passwordhash: string;
 };
 
 /**
@@ -36,7 +36,7 @@ export class UserRepository {
    * @returns Instance de User
    */
   private mapRowToUser(row: UserRow): User {
-    return new User(row.role, row.name, row.mail, row.passwordHash, row.id);
+    return new User(row.role, row.name, row.mail, row.passwordhash, row.id);
   }
 
   /**
@@ -74,7 +74,7 @@ export class UserRepository {
    * @returns User créé avec son ID
    */
   public async createUser(_user: CreateUserInput): Promise<User> {
-    const newUser = new User(_user.role, _user.name, _user.mail, _user.passwordHash);
+    const newUser = new User(_user.role, _user.name, _user.mail, _user.passwordhash);
     const id = await this.UserDao.insert(_user);
     newUser.id = id;
     return newUser;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { register } from "../services/auth.service";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
@@ -12,6 +12,8 @@ export default function Register() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [mail, setMail] = useState("");
+
+  const [showPassword,setShowPassword] = useState<"password"|"text">("password");
 
   async function handleSubmit(e: React.FormEvent) {
     console.log("SUBMIT FIRED");
@@ -33,6 +35,18 @@ export default function Register() {
     );
     }
   }
+
+  useEffect(()=>{
+          if(!message && !error)
+              return;
+  
+          const timer = setTimeout(()=>{
+              setMessage(null);
+              setError(null);
+          },3000)
+  
+          return () => clearTimeout(timer);
+      },[message, error])
 
   return (
     <div className="bg-light bg-gradient min-vh-100">
@@ -65,13 +79,22 @@ export default function Register() {
             <input
               onChange={(e) => setPassword(e.target.value)}
               value={password}
-              type="password"
+              type={showPassword}
               className="form-control"
             />
             </div>
 
             <div className="mb-3">
-                <input type="checkbox" className="form-check-input me-2" />
+                <input type="checkbox" className="form-check-input me-2"
+                  onChange={()=>{
+                  console.log(showPassword)
+                  if(showPassword === "password" ){
+                   setShowPassword("text")
+                    return;
+                  }
+                 setShowPassword("password")
+
+        }} />
                 <label className="form-check-label">Voir le mot de passe</label>
               </div>
 

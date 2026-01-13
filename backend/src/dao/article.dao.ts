@@ -1,5 +1,5 @@
 import type { ArticleRow } from "../types/articleRow.js";
-import { Db } from "../database/dbSqlite.js";
+import { DbPostgreSQL } from "../database/dbPostgreSql.js";
 
 /**
  * Data Access Object pour les articles.
@@ -15,18 +15,12 @@ export class ArticleDao {
    * @throws Error si l'insertion échoue
    */
   async insert(article: Omit<ArticleRow, "id">): Promise<number> {
-    const db = await Db.getConnection();
-    const result = await db.run(
-      "INSERT INTO articles (name, unit) VALUES (?, ?)",
-      article.name,
-      article.unit
+    const pool = DbPostgreSQL.getPool();
+    const result = await pool.query(
+      "INSERT INTO articles (name, unit) VALUES ($1, $2) RETURNING id",
+      [article.name, article.unit]
     );
-
-    if (result.lastID === undefined) {
-      throw new Error("Failed to get last inserted ID");
-    }
-
-    return result.lastID;
+    return result.rows[0].id;
   }
 
   /**
@@ -37,12 +31,13 @@ export class ArticleDao {
    * @throws Error si l'ID n'est pas fourni
    */
   async delete(id: number): Promise<number> {
-    if (!id) {
-      throw new Error("Cannot delete undefined article");
-    }
-    const db = await Db.getConnection();
-    const result = await db.run("DELETE FROM articles WHERE id = ?", id);
-    return result.changes!;
+    if (!id) throw new Error("Cannot delete undefined article");
+    const pool = DbPostgreSQL.getPool();
+    const result = await pool.query(
+      "DELETE FROM articles WHERE id = $1",
+      [id]
+    );
+    return result.rowCount!;
   }
 
   /**
@@ -52,9 +47,12 @@ export class ArticleDao {
    * @returns Promise<ArticleRow | undefined> L'article trouvé ou undefined
    */
   async findById(id: number): Promise<ArticleRow | undefined> {
-    const db = await Db.getConnection();
-    const row = await db.get("SELECT * FROM articles WHERE id = ?", id);
-    return row as ArticleRow | undefined;
+    const pool = DbPostgreSQL.getPool();
+    const result = await pool.query(
+      "SELECT * FROM articles WHERE id = $1",
+      [id]
+    );
+    return result.rows[0] as ArticleRow | undefined;
   }
 
   /**
@@ -63,9 +61,9 @@ export class ArticleDao {
    * @returns Promise<ArticleRow[] | undefined> Liste des articles
    */
   async findAll(): Promise<ArticleRow[] | undefined> {
-    const db = await Db.getConnection();
-    const rows = await db.all("SELECT * FROM articles");
-    return rows as ArticleRow[] | undefined;
+    const pool = DbPostgreSQL.getPool();
+    const result = await pool.query("SELECT * FROM articles");
+    return result.rows as ArticleRow[] | undefined;
   }
 
   /**
@@ -76,9 +74,12 @@ export class ArticleDao {
    * @returns Promise<number> Nombre de lignes modifiées
    */
   async updateName(id: number, name: string): Promise<number> {
-    const db = await Db.getConnection();
-    const result = await db.run("UPDATE articles SET name = ? WHERE id = ?", name, id);
-    return result.changes!;
+    const pool = DbPostgreSQL.getPool();
+    const result = await pool.query(
+      "UPDATE articles SET name = $1 WHERE id = $2",
+      [name, id]
+    );
+    return result.rowCount!;
   }
 
   /**
@@ -89,8 +90,11 @@ export class ArticleDao {
    * @returns Promise<number> Nombre de lignes modifiées
    */
   async updateUnit(id: number, unit: string): Promise<number> {
-    const db = await Db.getConnection();
-    const result = await db.run("UPDATE articles SET unit = ? WHERE id = ?", unit, id);
-    return result.changes!;
+    const pool = DbPostgreSQL.getPool();
+    const result = await pool.query(
+      "UPDATE articles SET unit = $1 WHERE id = $2",
+      [unit, id]
+    );
+    return result.rowCount!;
   }
 }
