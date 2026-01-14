@@ -14,7 +14,7 @@ const app = express();
 app.use(cors({
      origin: [
     'http://localhost:5173',
-    'https://ton-frontend.vercel.app'
+    'https://inventory-app-b1xc-git-main-achraf27s-projects.vercel.app'
   ],
   credentials: true
 }));
