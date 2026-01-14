@@ -10,17 +10,33 @@ import cors from "cors";
 
 dotenv.config();
 
-const allowedOrigins = [
- 'http://localhost:5173',
- 'https://inventory-app-b1xc-git-main-achraf27s-projects.vercel.app'
-]
-
 const app = express();
-app.use(cors({ 
-     origin: allowedOrigins,  
-     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-     allowedHeaders: ['Content-Type', 'Authorization'],
-     credentials: true
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://inventory-app-b1xc-git-main-achraf27s-projects.vercel.app',
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // requêtes serveur → serveur ou curl
+    if (!origin) return callback(null, true);
+
+    // localhost
+    if (origin === 'http://localhost:5173') {
+      return callback(null, true);
+    }
+
+    // toutes les URLs vercel.app
+    if (origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Not allowed by CORS'));
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 }));
 
 
