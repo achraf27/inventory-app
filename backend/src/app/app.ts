@@ -10,20 +10,16 @@ import cors from "cors";
 
 dotenv.config();
 
+const allowedOrigins = [
+ 'http://localhost:5173',
+ 'https://inventory-app-b1xc-git-main-achraf27s-projects.vercel.app'
+]
+
 const app = express();
 app.use(cors({
-     origin: [
-    'http://localhost:5173',
-    'https://inventory-app-b1xc-git-main-achraf27s-projects.vercel.app'
-  ]
+     origin: allowedOrigins
 }));
 
-app.options('*',cors({
-     origin: [
-    'http://localhost:5173',
-    'https://inventory-app-b1xc-git-main-achraf27s-projects.vercel.app'
-  ]
-}));
 
 app.use(express.json());
 app.get('/', (req, res) => {res.send('Hello Express!');});
