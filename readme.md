@@ -87,6 +87,16 @@ npm run dev
 ```
 
 
+## Identifiants pour tester
+
+Rôle: Admin
+Nom d'utilisateur : JeanDupont
+Mot de passe : password123
+
+Rôle : Utilisateur
+Nom d'utilisateur : MarieMartin
+Mot de passe : password123
+
 ## Améliorations futures
 
 - Pagination des résultats
