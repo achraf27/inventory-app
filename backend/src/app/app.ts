@@ -15,9 +15,16 @@ app.use(cors({
      origin: [
     'http://localhost:5173',
     'https://inventory-app-b1xc-git-main-achraf27s-projects.vercel.app'
-  ],
-  credentials: true
+  ]
 }));
+
+app.options('*',cors({
+     origin: [
+    'http://localhost:5173',
+    'https://inventory-app-b1xc-git-main-achraf27s-projects.vercel.app'
+  ]
+}));
+
 app.use(express.json());
 app.get('/', (req, res) => {res.send('Hello Express!');});
 app.use('/auth', authRoutes);
