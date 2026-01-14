@@ -1,4 +1,4 @@
-import type { getAllUsersResponseDTO, getUserResponseDTO, MessageDTO, UserDTO } from '../utils/types';
+import type { getAllUsersResponseDTO, getUserResponseDTO, MessageDTO } from '../utils/types';
 import { apiClient } from './apiClient';
 import { getToken } from './auth.service';
 

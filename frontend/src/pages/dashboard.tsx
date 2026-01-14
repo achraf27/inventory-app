@@ -2,9 +2,6 @@ import { useState,useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { getAllInventoryArticles } from "../services/inventory.service";
 import { useAuth } from "../context/authContext";
-import {
-CircleAlert
-} from "lucide-react";
 import type { InventoryArticleDTO } from "../utils/types";
 
 

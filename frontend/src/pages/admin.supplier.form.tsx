@@ -17,7 +17,7 @@ export default function AdminSupplierForm(){
     const [message, setMessage] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const [supplierArticles,setSupplierArticles]= useState<SupplierArticleDTO[]>([]);
+    const [_supplierArticles,setSupplierArticles]= useState<SupplierArticleDTO[]>([]);
     const [articles,setArticles]= useState<ArticleDTO[]>([]);
 
     const [selectedArticleIds, setSelectedArticleIds] = useState<number[]>([]);
