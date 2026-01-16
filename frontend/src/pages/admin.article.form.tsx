@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom"
 import { useEffect } from "react";
 import { createArticle, getArticle, updateArticle } from "../services/article.service";
+import Spinner from "../components/spinner.loader";
 
 export default function AdminArticleForm(){
     const {article_id} = useParams<{article_id:string}>();
@@ -12,12 +13,15 @@ export default function AdminArticleForm(){
     const [unit,setUnit] = useState<string>("");
     const [message, setMessage] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [isLoading,setIsLoading] = useState<boolean>(false);
 
     async function handleSubmit(){
         try{
+            setIsLoading(true);
             console.log({ name, unit});
 
             if (!name || !unit) {
+                setIsLoading(false);
                 setError("Tous les champs obligatoires doivent être remplis");
                 return;
                 } 
@@ -30,8 +34,10 @@ export default function AdminArticleForm(){
                 const res = await createArticle({name,unit});
                 setMessage(res.message);
             }
+            setIsLoading(false);
         }
         catch(err:any){
+            setIsLoading(false);
             console.log(err);
             console.log(name + unit);
              console.error("Erreur lors de la soumission du formulaire:", err);
@@ -56,6 +62,7 @@ export default function AdminArticleForm(){
     },[message,error])
 
     useEffect(()=>{
+        setIsLoading(true);
         if(!article_id) return;
 
         async function loadArticle(){
@@ -63,7 +70,9 @@ export default function AdminArticleForm(){
                 const articleDto = await getArticle(Number(article_id))
                 setName(articleDto.article.name);
                 setUnit(articleDto.article.unit);
+                setIsLoading(false);
             }catch(err:any){
+                setIsLoading(false);
                 setError("Impossible de charger l'article en mode edition.")
             }
         }
@@ -102,7 +111,14 @@ export default function AdminArticleForm(){
       
         
         
-        <input className="btn btn-dark mt-2"type="submit" value={isEditMode ? "Mettre à jour" : "Créer"} />
+        <button disabled={isLoading} className="btn btn-dark mt-2"type="submit"> 
+            {isLoading ? (
+            <Spinner />
+        ) : isEditMode ? (
+            "Mettre à jour"
+        ) : (
+            "Créer"
+        )} </button>
       </form>
 
     </>)

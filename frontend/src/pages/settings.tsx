@@ -1,10 +1,12 @@
 import { useAuth } from "../context/authContext";
 import { useState,useEffect } from "react";
 import { updateMail, updateName, updatePassword } from "../services/user.service";
+import Spinner from "../components/spinner.loader";
 
 export default function Settings(){
     const [message, setMessage] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [isLoading,setIsLoading] = useState<boolean>(false);
     
 
 
@@ -17,10 +19,12 @@ export default function Settings(){
 
      async function handleNameUpdate(){
         try{
+            setIsLoading(true);
             const res = await updateName(username);
             setUser(prev => ({ ...prev!, name: username }));
             setMessage(res.message)
         }catch(err:any){
+            setIsLoading(false);
             setError(err?.response?.data?.message ?? "Erreur inconnue");
 
         }
@@ -28,10 +32,12 @@ export default function Settings(){
 
     async function handleMailUpdate(){
         try{
+            setIsLoading(true)
             const res = await updateMail(mail);
             setUser(prev => ({ ...prev!, mail }));
             setMessage(res.message)
         }catch(err:any){
+            setIsLoading(false);
             setError(err?.response?.data?.message ?? "Erreur inconnue");
 
         }
@@ -39,11 +45,12 @@ export default function Settings(){
 
     async function handlePasswordUpdate(){
         try{
-            if(password.length === 0 || password.length<8)
-                 setError("Mot de passe trop court")
+            setIsLoading(true)
+            if(password.length === 0 || password.length<8){ setError("Mot de passe trop court"); setIsLoading(false);}
             const res = await updatePassword(password);
             setMessage(res.message)
         }catch(err:any){
+            setIsLoading(false)
             setError(err?.response?.data?.message ?? "Erreur inconnue");
 
         }
@@ -81,8 +88,8 @@ export default function Settings(){
     <input onChange={(e) => setUsername(e.target.value)}
             value={username} type="text" className="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2"></input>
     <div className="input-group-append">
-        <button className="btn btn-outline-dark" type="button"
-                onClick={()=>{handleNameUpdate()}}>Modifier
+        <button className="btn btn-outline-dark" type="button" disabled={isLoading}
+                onClick={()=>{handleNameUpdate()}}>{isLoading ? <Spinner /> : "Modifier"}
                 </button>
         </div>
     </div>
@@ -96,9 +103,10 @@ export default function Settings(){
     <input  onChange={(e) => setMail(e.target.value)}
             value={mail} type="email" className="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2"></input>
     <div className="input-group-append">
-        <button className="btn btn-outline-dark" type="button"
-                onClick={()=>{handleMailUpdate()}}>Modifier
+        <button className="btn btn-outline-dark" type="button" disabled={isLoading}
+                onClick={()=>{handleMailUpdate()}}>{isLoading ? <Spinner /> : "Modifier"}
                 </button>
+                 
         </div>
         </div>
 
@@ -108,8 +116,8 @@ export default function Settings(){
     <input  onChange={(e) => setPassword(e.target.value)}
             value={password} type="mail" className="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2"></input>
     <div className="input-group-append">
-        <button className="btn btn-outline-dark" type="button"
-                onClick={()=>{handlePasswordUpdate()}}>Modifier
+        <button className="btn btn-outline-dark" type="button" disabled={isLoading}
+                onClick={()=>{handlePasswordUpdate()}}> {isLoading ? <Spinner /> : "Modifier"}
                 </button>
         </div>
         </div>

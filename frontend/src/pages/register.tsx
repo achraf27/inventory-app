@@ -3,10 +3,14 @@ import { register } from "../services/auth.service";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import Spinner from "../components/spinner.loader";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
-  const {setUser}=useAuth();
 
+  const {setUser}=useAuth();
+  const navigate = useNavigate();
+
+  
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] =  useState<string | null>(null);
   const [isLoading,setIsLoading] = useState<boolean>(false);
@@ -17,28 +21,53 @@ export default function Register() {
 
   const [showPassword,setShowPassword] = useState<"password"|"text">("password");
 
+  function isValidEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function isValidPassword(password: string): boolean {
+    return password.length>=8;
+  }
+
+
   async function handleSubmit(e: React.FormEvent) {
+   
     console.log("SUBMIT FIRED");
     e.preventDefault();
     setMessage(null);
     setError(null);
-    setIsLoading(false);
+    
+
+
+    if (!isValidEmail(mail)) {
+      setError("Email invalide");
+      return;
+    }
+
+    if (!isValidPassword(password)) {
+      setError("Le mot de passe doit contenir au moins 8 caractères");
+      return;
+    }
+    setIsLoading(true);
+
     try {
-      setIsLoading(true);
       const res = await register({name,mail,password});
       console.log(res);
       setUser(res.user!)
        setMessage(
      res.message
     );
+    navigate("/dashboard")
     } catch (err:any) {
-      setIsLoading(false);
       console.log(err.response.data)
        setError(
      err.response.data.error
      || err.response.data.message
     );
-    }
+    }finally {
+    setIsLoading(false);
+    
+  }
   }
 
   useEffect(()=>{
