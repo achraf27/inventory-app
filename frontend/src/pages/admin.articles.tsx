@@ -4,28 +4,37 @@ import { deleteArticle } from "../services/article.service";
 import { getAllArticles } from "../services/article.service";
 import type { ArticleDTO } from "../utils/types";
 import ArticleTable from "../components/admin.article/article.table";
+import Spinner from "../components/spinner.loader";
 
 
 export default function AdminArticles() {
   const [articles, setArticles] = useState<ArticleDTO[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const navigate = useNavigate();
 
 
   async function loadSuppliers() {
+    setIsLoading(false);
     try {
+      setIsLoading(true);
       const data = await getAllArticles();
+      
       console.log("getAllUsers response:", data);
       if (Array.isArray(data.articles)) {
         setArticles(data.articles);
         setError(null);
+
       } else {
         console.error("Données invalides reçues:", data);
         setError("Données invalides reçues du serveur");
+        
       }
+      setIsLoading(false);
     } catch (err: any) {
       console.error("Erreur lors du chargement des stocks:", err);
+      setIsLoading(false);
       if (err.response) {
         setError(`Erreur ${err.response.status}: ${err.response.data?.message || err.message}`);
       } else {
@@ -59,16 +68,19 @@ export default function AdminArticles() {
         Créer un article
       </button>
 
+      
+
       {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
 
       {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
 
 
-      {articles.length === 0 ? (
+      {articles.length === 0 && !isLoading ? (
         <p>La liste d'articles est vide.</p>
       ) :(
           <ArticleTable articles={articles} onDelete ={onDelete}/>
           )}
+          {isLoading && <Spinner/>}
     </div>
   );
 }

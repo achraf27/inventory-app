@@ -2,14 +2,19 @@ import { useEffect, useState } from "react";
 import type { InventoryArticleDTO } from "../utils/types";
 import { getAllInventoryArticles, removeArticleFromInventory, updateInventoryArticleQuantity } from "../services/inventory.service";
 import InventoryTable from "../components/inventory/inventory.table";
+import Spinner from "../components/spinner.loader";
 
 export default function Inventory() {
   const [inventory, setInventory] = useState<InventoryArticleDTO[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading,setIsLoading] = useState<boolean>(false);
+  
 
 
   async function loadInventory() {
+    setIsLoading(false);
     try {
+      setIsLoading(true);
       const data = await getAllInventoryArticles();
       console.log("getAllArticles response:", data);
 
@@ -21,7 +26,9 @@ export default function Inventory() {
         console.error("Données invalides reçues:", data);
         setError("Données invalides reçues du serveur");
       }
+      setIsLoading(false);
     } catch (err: any) {
+      setIsLoading(false);
       console.error("Erreur lors du chargement des stocks:", err);
       if (err.response) {
         setError(`Erreur ${err.response.status}: ${err.response.data?.message || err.message}`);
@@ -76,11 +83,13 @@ async function handleUpdateQuantity(articleId: number,quantity:string):Promise<v
       {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
 
 
-      {inventory.length === 0 ? (
+      {inventory.length === 0 && !isLoading ? (
         <p>L’inventaire est vide.</p>
       ) :(
           <InventoryTable articles={inventory} onDelete={handleDelete} onUpdateQuantity={handleUpdateQuantity}/>
           )}
+
+        {isLoading && (<Spinner/>)}
     </>
   );
 }

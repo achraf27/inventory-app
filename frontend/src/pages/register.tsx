@@ -2,12 +2,14 @@ import { useState,useEffect } from "react";
 import { register } from "../services/auth.service";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
+import Spinner from "../components/spinner.loader";
 
 export default function Register() {
   const {setUser}=useAuth();
 
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] =  useState<string | null>(null);
+  const [isLoading,setIsLoading] = useState<boolean>(false);
   
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +22,9 @@ export default function Register() {
     e.preventDefault();
     setMessage(null);
     setError(null);
+    setIsLoading(false);
     try {
+      setIsLoading(true);
       const res = await register({name,mail,password});
       console.log(res);
       setUser(res.user!)
@@ -28,6 +32,7 @@ export default function Register() {
      res.message
     );
     } catch (err:any) {
+      setIsLoading(false);
       console.log(err.response.data)
        setError(
      err.response.data.error
@@ -99,7 +104,13 @@ export default function Register() {
               </div>
 
             <div >
-              <button type="submit" value="Valider" className="btn btn-dark me-2">Valider</button>
+              <button
+                type="submit"
+                className="btn btn-dark me-2"
+                disabled={isLoading}
+                        >
+                {isLoading ? <Spinner /> : "Valider"}
+              </button>
               <Link to ="/">
                 <button value="retour" className="btn btn-outline-dark">Retour</button>
               </Link>

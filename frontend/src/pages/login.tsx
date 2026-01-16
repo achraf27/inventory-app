@@ -3,6 +3,7 @@ import { login } from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { Link } from "react-router-dom";
+import Spinner from "../components/spinner.loader";
 
 export default function Login() {
 
@@ -18,6 +19,8 @@ export default function Login() {
 
   const [showPassword,setShowPassword] = useState<"password"|"text">("password");
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
 
   const navigate = useNavigate();
 
@@ -26,7 +29,9 @@ export default function Login() {
     e.preventDefault();
     setMessage(null);
     setError(null);
+    setIsLoading(false);
     try {
+      setIsLoading(true);
       const res = await login({name,password});
       console.log("Connexion réussie :", res);
       setUser(res.user!)
@@ -35,11 +40,13 @@ export default function Login() {
           navigate("/dashboard")
       navigate("/admin/users")
     } catch (err:any) {
+      setIsLoading(false)
       console.error(err.response || err);
       setError(
          err.response?.data?.message
          || "Erreur serveur"
       )
+      
     }
   }
 
@@ -78,7 +85,9 @@ export default function Login() {
           className="form-control"
         />
         </div>
+        
         <div className="mb-3">
+          
           <input type="checkbox" className="form-check-input me-2"
            onChange={()=>{
                   console.log(showPassword)
@@ -89,13 +98,28 @@ export default function Login() {
                  setShowPassword("password")
 
         }} />
+        
           <label className="form-check-label"
                  >Voir le mot de passe</label>
+                 
         </div>
-          <input type="submit" value="Valider" className="btn btn-dark me-2 "/>
+
+
+          
+
+          <button
+            type="submit"
+            className="btn btn-dark me-2"
+            disabled={isLoading}
+          >
+            {isLoading ? <Spinner /> : "Valider"}
+          </button>
            <Link to ="/">
             <button value="retour" className="btn btn-outline-dark">Retour</button>
           </Link>
+
+         
+
            {error && (
         <p style={{ color: "red" }}>
           {error}
@@ -110,7 +134,10 @@ export default function Login() {
         </p>
         
       )}
+
+      
       </form>
+      
   </div>
       
 

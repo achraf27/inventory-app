@@ -3,17 +3,21 @@ import { useEffect, useState } from "react";
 import type {  UserDTO } from "../utils/types";
 import { deleteUser, getAllUsers } from "../services/user.service";
 import UserTable from "../components/admin.user/user.table";
+import Spinner from "../components/spinner.loader";
 
 
 export default function AdminUsers() {
   const [users, setUsers] = useState<UserDTO[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const navigate = useNavigate();
 
 
   async function loadUsers() {
+    setIsLoading(false);
     try {
+      setIsLoading(true);
       const data = await getAllUsers();
       console.log("getAllUsers response:", data);
       if (Array.isArray(data.users)) {
@@ -23,7 +27,9 @@ export default function AdminUsers() {
         console.error("Données invalides reçues:", data);
         setError("Données invalides reçues du serveur");
       }
+      setIsLoading(false);
     } catch (err: any) {
+      setIsLoading(false);
       console.error("Erreur lors du chargement des stocks:", err);
       if (err.response) {
         setError(`Erreur ${err.response.status}: ${err.response.data?.message || err.message}`);
@@ -63,11 +69,12 @@ export default function AdminUsers() {
       {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
 
 
-      {users.length === 0 ? (
+      {users.length === 0 && !isLoading ? (
         <p>La liste d'utilisateurs est vide.</p>
       ) :(
           <UserTable users={users} onDelete ={onDelete}/>
           )}
+          {isLoading && (<Spinner/>)}
     </div>
   );
 }

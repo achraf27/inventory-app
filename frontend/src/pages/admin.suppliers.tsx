@@ -3,16 +3,20 @@ import { useEffect, useState } from "react";
 import type {  SupplierDTO } from "../utils/types";
 import SupplierTable from "../components/admin.supplier/supplier.table";
 import { deleteSupplier, getAllSuppliers } from "../services/supplier.service";
+import Spinner from "../components/spinner.loader";
 
 export default function AdminSuppliers() {
   const [suppliers, setSuppliers] = useState<SupplierDTO[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const navigate = useNavigate();
 
 
   async function loadSuppliers() {
+    setIsLoading(false);
     try {
+      setIsLoading(true);
       const data = await getAllSuppliers();
       console.log("getAllUsers response:", data);
       if (Array.isArray(data.suppliers)) {
@@ -22,8 +26,10 @@ export default function AdminSuppliers() {
         console.error("Données invalides reçues:", data);
         setError("Données invalides reçues du serveur");
       }
+      setIsLoading(false);
     } catch (err: any) {
       console.error("Erreur lors du chargement des stocks:", err);
+      setIsLoading(false);
       if (err.response) {
         setError(`Erreur ${err.response.status}: ${err.response.data?.message || err.message}`);
       } else {
@@ -60,11 +66,13 @@ export default function AdminSuppliers() {
       {message && <div style={{ color: "green", marginBottom: "1rem" }}>{message}</div>}
 
 
-      {suppliers.length === 0 ? (
+      {suppliers.length === 0 && !isLoading ? (
         <p>La liste de fournisseurs est vide.</p>
       ) :(
           <SupplierTable suppliers={suppliers} onDelete={onDelete}/>
           )}
+
+          {isLoading && (<Spinner/>)}
     </div>
   );
 }
