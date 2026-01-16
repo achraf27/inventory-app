@@ -29,7 +29,17 @@ export default function Login() {
     e.preventDefault();
     setMessage(null);
     setError(null);
-    setIsLoading(false);
+
+     if (!name) {
+      setError("Nom vide");
+      return;
+    }
+
+    if (!password) {
+      setError("Mot de passe vide");
+      return;
+    }
+
     try {
       setIsLoading(true);
       const res = await login({name,password});
@@ -40,13 +50,14 @@ export default function Login() {
           navigate("/dashboard")
       navigate("/admin/users")
     } catch (err:any) {
-      setIsLoading(false)
       console.error(err.response || err);
       setError(
          err.response?.data?.message
          || "Erreur serveur"
       )
       
+    }finally{
+      setIsLoading(false);
     }
   }
 
