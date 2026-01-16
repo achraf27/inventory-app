@@ -61,9 +61,9 @@ export default function Register() {
     } catch (err:any) {
       console.log(err.response.data)
        setError(
-     err.response.data.error
-     || err.response.data.message
-    );
+         err.response?.data?.message
+         || "Erreur serveur"
+      )
     }finally {
     setIsLoading(false);
     
