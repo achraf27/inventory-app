@@ -34,7 +34,7 @@ export default function AdminArticleForm(){
                 const res = await createArticle({name,unit});
                 setMessage(res.message);
             }
-            setIsLoading(false);
+            
         }
         catch(err:any){
             setIsLoading(false);
@@ -46,6 +46,8 @@ export default function AdminArticleForm(){
             } else {
                 setError(err.message || "Erreur inconnue");
             }
+        }finally{
+            setIsLoading(false);
         }
     }
 
@@ -62,9 +64,10 @@ export default function AdminArticleForm(){
     },[message,error])
 
     useEffect(()=>{
-        setIsLoading(true);
-        if(!article_id) return;
 
+        if(!article_id) return;
+        
+        setIsLoading(true);
         async function loadArticle(){
             try{
                 const articleDto = await getArticle(Number(article_id))
